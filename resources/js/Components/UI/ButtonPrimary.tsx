@@ -11,8 +11,6 @@ export default function ButtonPrimary({
 }: ButtonPrimaryProps) {
     return (
         <Button
-            // Contoh styling: Gunakan warna utama (misal: emerald)
-            color="emerald"
             variant="solid" // Atau 'soft', 'surface'
             highContrast
             className={cn('shadow-sm', className)} // Gabungkan kelas
