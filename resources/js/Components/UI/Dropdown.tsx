@@ -1,130 +1,54 @@
-import { Transition } from '@headlessui/react';
-import { InertiaLinkProps, Link } from '@inertiajs/react';
-import {
-    createContext,
-    Dispatch,
-    PropsWithChildren,
-    SetStateAction,
-    useContext,
-    useState,
-} from 'react';
+// resources/js/Components/UI/Dropdown.tsx
+import * as RadixDropdown from '@radix-ui/react-dropdown-menu'; // Impor sebagai namespace
+import { AnimatePresence, motion } from 'framer-motion';
+import React from 'react';
 
-const DropDownContext = createContext<{
-    open: boolean;
-    setOpen: Dispatch<SetStateAction<boolean>>;
-    toggleOpen: () => void;
-}>({
-    open: false,
-    setOpen: () => {},
-    toggleOpen: () => {},
-});
+interface DropdownProps {
+    trigger: React.ReactNode;
+    children: React.ReactNode;
+    contentProps?: RadixDropdown.DropdownMenuContentProps;
+}
 
-const Dropdown = ({ children }: PropsWithChildren) => {
-    const [open, setOpen] = useState(false);
-
-    const toggleOpen = () => {
-        setOpen((previousState) => !previousState);
-    };
-
-    return (
-        <DropDownContext.Provider value={{ open, setOpen, toggleOpen }}>
-            <div className="relative">{children}</div>
-        </DropDownContext.Provider>
-    );
-};
-
-const Trigger = ({ children }: PropsWithChildren) => {
-    const { open, setOpen, toggleOpen } = useContext(DropDownContext);
-
-    return (
-        <>
-            <div onClick={toggleOpen}>{children}</div>
-
-            {open && (
-                <div
-                    className="fixed inset-0 z-40"
-                    onClick={() => setOpen(false)}
-                ></div>
-            )}
-        </>
-    );
-};
-
-const Content = ({
-    align = 'right',
-    width = '48',
-    contentClasses = 'py-1 bg-white dark:bg-gray-700',
+export default function Dropdown({
+    trigger,
     children,
-}: PropsWithChildren<{
-    align?: 'left' | 'right';
-    width?: '48';
-    contentClasses?: string;
-}>) => {
-    const { open, setOpen } = useContext(DropDownContext);
-
-    let alignmentClasses = 'origin-top';
-
-    if (align === 'left') {
-        alignmentClasses = 'ltr:origin-top-left rtl:origin-top-right start-0';
-    } else if (align === 'right') {
-        alignmentClasses = 'ltr:origin-top-right rtl:origin-top-left end-0';
-    }
-
-    let widthClasses = '';
-
-    if (width === '48') {
-        widthClasses = 'w-48';
-    }
-
+    contentProps = {},
+}: DropdownProps) {
+    const [open, setOpen] = React.useState(false);
     return (
-        <>
-            <Transition
-                show={open}
-                enter="transition ease-out duration-200"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-            >
-                <div
-                    className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
-                    onClick={() => setOpen(false)}
-                >
-                    <div
-                        className={
-                            `rounded-md ring-1 ring-black ring-opacity-5 ` +
-                            contentClasses
-                        }
-                    >
-                        {children}
-                    </div>
-                </div>
-            </Transition>
-        </>
+        <RadixDropdown.Root open={open} onOpenChange={setOpen}>
+            <RadixDropdown.Trigger asChild>{trigger}</RadixDropdown.Trigger>
+            <AnimatePresence>
+                {open && (
+                    <RadixDropdown.Portal forceMount>
+                        <RadixDropdown.Content
+                            asChild
+                            forceMount
+                            sideOffset={5}
+                            align="end"
+                            className="z-50 min-w-[8rem] overflow-hidden rounded-md border border-gray-200 bg-white p-1 shadow-md dark:border-gray-700 dark:bg-gray-800"
+                            {...contentProps}
+                        >
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                transition={{ duration: 0.1 }}
+                            >
+                                {children}
+                            </motion.div>
+                        </RadixDropdown.Content>
+                    </RadixDropdown.Portal>
+                )}
+            </AnimatePresence>
+        </RadixDropdown.Root>
     );
-};
+}
 
-const DropdownLink = ({
-    className = '',
-    children,
-    ...props
-}: InertiaLinkProps) => {
-    return (
-        <Link
-            {...props}
-            className={
-                'block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 transition duration-150 ease-in-out hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-gray-300 dark:hover:bg-gray-800 dark:focus:bg-gray-800 ' +
-                className
-            }
-        >
-            {children}
-        </Link>
-    );
-};
-
-Dropdown.Trigger = Trigger;
-Dropdown.Content = Content;
-Dropdown.Link = DropdownLink;
-
-export default Dropdown;
+// Export item-itemnya juga agar mudah digunakan
+export const DropdownItem = RadixDropdown.Item;
+export const DropdownCheckboxItem = RadixDropdown.CheckboxItem;
+export const DropdownRadioItem = RadixDropdown.RadioItem;
+export const DropdownSeparator = RadixDropdown.Separator;
+export const DropdownLabel = RadixDropdown.Label;
+export const DropdownRadioGroup = RadixDropdown.RadioGroup;

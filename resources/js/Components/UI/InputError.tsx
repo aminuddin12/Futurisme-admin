@@ -1,16 +1,17 @@
-import { HTMLAttributes } from 'react';
+// resources/js/Components/UI/InputError.tsx
+import { Text } from '@radix-ui/themes';
 
 export default function InputError({
     message,
     className = '',
     ...props
-}: HTMLAttributes<HTMLParagraphElement> & { message?: string }) {
+}: {
+    message?: string;
+    className?: string;
+}) {
     return message ? (
-        <p
-            {...props}
-            className={'text-sm text-red-600 dark:text-red-400 ' + className}
-        >
+        <Text color="red" size="1" className={className} {...props}>
             {message}
-        </p>
+        </Text>
     ) : null;
 }
