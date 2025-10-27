@@ -1,51 +1,46 @@
-// resources/js/Pages/Profile/AccountProfile.tsx
+import ProfileWindow from '@/Components/Profile/ProfileWindow';
+import { useState } from 'react';
+import PublicProfileForm from './Partials/PublicProfileForm';
+import { sidebarMenuData } from './Partials/SidebarListMenu'; // Assuming data is defined here
+import UpdatePasswordForm from './Partials/UpdatePasswordForm';
+// Import other forms as needed
 
-import React, { useState } from 'react';
-import { Head, usePage } from '@inertiajs/react';
-import AdminLayout from '@/Layouts/AdminLayout'; // Gunakan layout admin Anda
-import { Flex, Heading } from '@radix-ui/themes';
-import ProfileSidebar, { ProfileSidebarItem } from '@/Components/Profile/Sidebar'; // Impor Sidebar
-import ProfileWindow from '@/Components/Profile/ProfileWindow'; // Impor Window
+export default function AccountProfile({
+    user /* Add other props passed from Laravel if needed */,
+}) {
+    // State to track the active menu item
+    const [activeMenuKey, setActiveMenuKey] = useState('public-profile'); // Default to 'public-profile'
 
-// Definisikan item sidebar di sini
-const sidebarItems: ProfileSidebarItem[] = [
-    { id: 'account', label: 'Account', icon: 'heroicons:user-circle' },
-    // { id: 'personal', label: 'Personal Info', icon: 'heroicons:identification' },
-    // { id: 'address', label: 'Address', icon: 'heroicons:map-pin' },
-    { id: 'social', label: 'Social Media', icon: 'heroicons:share' },
-    { id: 'history', label: 'Account History', icon: 'heroicons:clock'},
-    { id: 'password', label: 'Password', icon: 'heroicons:key'},
-    // Item 'Delete Account' ditambahkan langsung di Sidebar.tsx
-];
-
-export default function AccountProfile() {
-    const { props } = usePage();
-    const user = props.auth?.user; // Ambil data user
-    const pageTitle = props.pageTitle || "Profile Settings"; // Ambil judul
-
-    // State untuk melacak item aktif
-    const [activeItemId, setActiveItemId] = useState<string>(sidebarItems[0]?.id || 'account');
+    // Function to render the correct form based on the active key
+    const renderMainContent = () => {
+        switch (activeMenuKey) {
+            case 'public-profile':
+                return <PublicProfileForm user={user} />;
+            case 'password-auth':
+                return <UpdatePasswordForm />;
+            // Add cases for other menu keys:
+            // case 'notification':
+            //     return <NotificationForm />;
+            // case 'email-username':
+            //     return <EmailUsernameForm />;
+            // ... etc.
+            default:
+                return <div>Select a menu item</div>;
+        }
+    };
 
     return (
-        <>
-            <Head title={pageTitle} />
-            {/* Hapus Heading H1 dari sini, karena sudah di layout */}
-
-            {/* Layout Utama Halaman Profil */}
-            <Flex gap="6" align="start" className='p-4 m-4'> {/* Beri jarak antar sidebar dan window */}
-                <ProfileSidebar
-                    items={sidebarItems}
-                    activeItemId={activeItemId}
-                    onItemClick={setActiveItemId} // Update state saat item diklik
-                />
-                <ProfileWindow
-                    activeItemId={activeItemId}
-                    user={user} // Kirim data user ke window
-                />
-            </Flex>
-        </>
+        <ProfileWindow
+            sidebarMenuData={sidebarMenuData}
+            activeMenuKey={activeMenuKey}
+            setActiveMenuKey={setActiveMenuKey}
+        >
+            {/* The children prop of ProfileWindow will be the main content */}
+            {renderMainContent()}
+        </ProfileWindow>
     );
 }
 
-// Gunakan AdminLayout
-AccountProfile.layout = (page: React.ReactNode) => <AdminLayout>{page}</AdminLayout>;
+// Ensure this page uses your authenticated layout if you have one
+// Example (may vary based on your setup):
+// AccountProfile.layout = page => <AuthenticatedLayout children={page} />;

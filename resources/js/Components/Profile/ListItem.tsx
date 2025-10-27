@@ -7,7 +7,12 @@ interface ListItemProps {
     icon?: React.ReactNode;
 }
 
-export default function ListItem({ label, isActive, onClick }: ListItemProps) {
+export default function ListItem({
+    label,
+    isActive,
+    onClick,
+    icon,
+}: ListItemProps) {
     return (
         <li>
             <button
@@ -20,7 +25,7 @@ export default function ListItem({ label, isActive, onClick }: ListItemProps) {
                 }`}
             >
                 {/* Optional Icon Placeholder */}
-                {/* {icon && <span className="flex-shrink-0 w-5 h-5">{icon}</span>} */}
+                {icon && <span className="h-5 w-5 flex-shrink-0">{icon}</span>}
                 <span>{label}</span>
             </button>
         </li>
