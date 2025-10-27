@@ -33,7 +33,7 @@ const menuItems: MenuItem[] = [
     {
         name: 'Dashboard',
         icon: 'heroicons:squares-2x2-solid',
-        href: route('admin.dashboard'), // Ganti dengan route Anda
+        href: route('admin.dashboard'),
         routeName: 'admin.dashboard',
     },
     {
@@ -154,21 +154,22 @@ function SidebarMenuItem({
     item,
     isSidebarOpen,
     isActive,
+    isSubmenuActive,
     isOpen,
     onClick,
 }: {
     item: MenuItem;
     isSidebarOpen: boolean;
     isActive: boolean;
+    isSubmenuActive: boolean;
     isOpen: boolean;
     onClick: () => void;
 }) {
     const hasSubmenu = item.submenu && item.submenu.length > 0;
-    const page = usePage(); // Untuk cek submenu aktif
 
-    const isSubmenuActive =
-        hasSubmenu &&
-        item.submenu?.some((subItem) => route().current(subItem.routeName));
+    // const isSubmenuActive =
+    //     hasSubmenu &&
+    //     item.submenu?.some((subItem) => route().current(subItem.routeName));
 
     // Konten Tautan Internal (Ikon + Teks jika terbuka)
     const LinkContent = (
@@ -255,30 +256,16 @@ function SidebarMenuItem({
                 <Tooltip.Provider delayDuration={100}>
                     <Tooltip.Root>
                         <Tooltip.Trigger asChild>
-                            {/* Gunakan div biasa sebagai trigger, Link di dalamnya */}
-                            <div
-                                className={linkClasses}
-                                onClick={(e) => {
-                                    if (item.href && !hasSubmenu) {
-                                    } else if (hasSubmenu) {
-                                    }
-                                }}
-                            >
-                                {LinkContent}
-                            </div>
+                            <div className={linkClasses}>{LinkContent}</div>
                         </Tooltip.Trigger>
                         <Tooltip.Portal>
                             <Tooltip.Content
                                 side="right"
                                 align="start"
-                                sideOffset={6} // Sedikit tambah jarak
-                                className="z-[60] rounded-md border border-gray-200 bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800" // Naikkan z-index
-                                // Hapus Framer Motion sementara untuk debugging
-                                // asChild
+                                sideOffset={6}
+                                className="z-[60] rounded-md border bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
                             >
-                                {/* <motion.div ...> */}
                                 {TooltipPopupContent}
-                                {/* </motion.div> */}
                             </Tooltip.Content>
                         </Tooltip.Portal>
                     </Tooltip.Root>
@@ -299,7 +286,6 @@ function SidebarMenuItem({
                 </Link>
             )}
 
-            {/* Submenu (Hanya tampil jika sidebar terbuka) */}
             <AnimatePresence>
                 {hasSubmenu && isOpen && isSidebarOpen && (
                     <motion.div
@@ -307,28 +293,22 @@ function SidebarMenuItem({
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        // 1. Tambah relative & padding kiri untuk garis
-                        className="relative overflow-hidden pl-7 pr-2" // pl lebih besar dari icon+margin
+                        className="relative mt-0.5 overflow-hidden pl-7 pr-2" // Tambah mt-0.5
                     >
-                        {/* 2. Garis Vertikal Utama */}
-                        <div className="absolute left-[26px] top-0 h-full w-px bg-gray-200 dark:bg-gray-600"></div>
+                        {/* Garis Vertikal Utama */}
+                        <div className="absolute bottom-1 left-[26px] top-0 w-px bg-gray-200 dark:bg-gray-600"></div>
 
-                        {item.submenu?.map((subItem, index) => {
+                        {item.submenu?.map((subItem) => {
                             const isSubActive = route().current(
                                 subItem.routeName,
                             );
-                            const isLastItem =
-                                index === (item.submenu?.length ?? 0) - 1;
                             return (
-                                // 3. Wrapper relatif untuk setiap item submenu
                                 <div
                                     key={subItem.name}
                                     className="relative my-0.5"
                                 >
-                                    {/* 4. Garis Horizontal ke Item */}
-                                    <div className="absolute left-[-9px] top-1/2 h-px w-[10px] -translate-y-1/2 bg-gray-200 dark:bg-gray-600"></div>
-                                    {/* 5. Masking Garis Vertikal (opsional, untuk akhir list) */}
-                                    {/* {isLastItem && <div className="absolute left-[-9px] top-1/2 h-1/2 w-px bg-white dark:bg-gray-800"></div>} */}
+                                    {/* Garis Horizontal ke Item */}
+                                    <div className="absolute left-[-9px] top-[11px] h-px w-[10px] bg-gray-200 dark:bg-gray-600"></div>
 
                                     <Link
                                         href={subItem.href || '#'}
@@ -351,8 +331,24 @@ function SidebarMenuItem({
 }
 
 // Komponen Sidebar Utama
-export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) {
+export default function Sidebar({
+    isSidebarOpen,
+    toggleSidebar,
+}: SidebarProps) {
+    const { url } = usePage();
     const [openMenus, setOpenMenus] = useState<Record<string, boolean>>({});
+    useState(() => {
+        const activeParent = [
+            ...menuItems,
+            ...supportItems,
+            ...otherItems,
+        ].find((item) =>
+            item.submenu?.some((sub) => route().current(sub.routeName)),
+        );
+        if (activeParent) {
+            setOpenMenus((prev) => ({ ...prev, [activeParent.name]: true }));
+        }
+    }, [url]);
 
     const toggleMenu = (menuName: string) => {
         setOpenMenus((prev) => ({
@@ -362,7 +358,7 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) 
     };
 
     const renderMenuGroup = (title: string, items: MenuItem[]) => (
-        <div className="mb-3">
+        <div className="mb-4">
             {isSidebarOpen && (
                 <Text
                     size="1"
@@ -372,22 +368,23 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) 
                 </Text>
             )}
             {!isSidebarOpen && (
-                <Separator size="4" my="2" className="dark:!bg-gray-700" />
+                <Separator className="mx-4 my-2 dark:!bg-gray-700" />
             )}
             <Flex direction="column" gap="0.5">
                 {items.map((item) => {
                     const isActiveDirect =
                         item.routeName && route().current(item.routeName);
-                    const isActiveSubmenu = item.submenu?.some((sub) =>
-                        route().current(sub.routeName),
-                    );
-
+                    const isSubmenuActive =
+                        item.submenu?.some((sub) =>
+                            route().current(sub.routeName),
+                        ) ?? false; // Cek submenu aktif
                     return (
                         <SidebarMenuItem
                             key={item.name}
                             item={item}
                             isSidebarOpen={isSidebarOpen}
                             isActive={!!isActiveDirect}
+                            isSubmenuActive={isSubmenuActive} // <-- Kirim prop ini
                             isOpen={!!openMenus[item.name]}
                             onClick={() => toggleMenu(item.name)}
                         />
@@ -411,66 +408,123 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) 
         <Flex direction="column" gap="2" p="2" align="center">
             <Link
                 href={route('admin.dashboard')}
-                className="flex items-center gap-2 text-xs text-gray-700 hover:text-emerald-600 dark:text-gray-200 dark:hover:text-emerald-400"
+                className="flex w-full items-center gap-2 rounded px-3 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
             >
                 <Icon icon="heroicons:home-solid" className="h-4 w-4" />
                 <span>Dashboard</span>
             </Link>
-            <Separator className="!bg-gray-200 dark:!bg-gray-600" />
-            <IconButton
-                size="1"
-                variant="ghost"
-                color="gray"
-                onClick={toggleSidebar} // Panggil toggleSidebar
+            <Separator className="my-1 !bg-gray-200 dark:!bg-gray-600" />
+            <button
+                onClick={toggleSidebar}
+                className="flex w-full items-center gap-2 rounded px-3 py-1 text-xs text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
                 aria-label="Expand sidebar"
             >
+                {/* Ganti ikon expand */}
                 <Icon
-                    icon="heroicons:arrow-right-end-on-rectangle-solid"
+                    icon="heroicons:arrows-pointing-out"
                     className="h-4 w-4"
                 />
-            </IconButton>
+                <span>Expand</span>
+            </button>
         </Flex>
     );
 
     return (
-        // Tambahkan 'group' di sini agar hover bisa dideteksi oleh anak
         <aside
-            className={`group ${isSidebarOpen ? 'w-60' : 'w-[72px]'} flex-shrink-0 overflow-x-hidden border-r border-gray-200 bg-white shadow-lg transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800`}
+            className={` ${isSidebarOpen ? 'w-60' : 'w-[72px]'} flex-shrink-0 ...`}
             style={{ overflowY: 'hidden' }}
         >
-            {/* Logo */}
+            {/* Logo & Tombol Toggle */}
             <div
-                className={`flex items-center ${isSidebarOpen ? 'pl-4 pr-2' : 'justify-center'} h-[65px] py-5`}
+                className={`flex items-center justify-between ${isSidebarOpen ? 'pl-4 pr-2' : 'justify-center px-2'} h-[65px] flex-shrink-0`}
             >
-                <Link href="/" className="flex items-center gap-2">
-                    <Flex
-                        align="center"
-                        justify="center"
-                        className="rounded-lg bg-gradient-to-br from-emerald-400 to-blue-500 p-1.5"
-                    >
-                        <Icon
-                            icon="heroicons:chart-bar-solid"
-                            className="h-5 w-5 text-white"
-                        />
-                    </Flex>
-                    {isSidebarOpen && (
+                {!isSidebarOpen ? (
+                    <Tooltip.Provider delayDuration={100}>
+                        <Tooltip.Root>
+                            <Tooltip.Trigger asChild>
+                                <Link
+                                    href={route('admin.dashboard')}
+                                    className="flex items-center justify-center"
+                                >
+                                    <Flex
+                                        align="center"
+                                        justify="center"
+                                        className="rounded-lg bg-gray-800 p-1.5 dark:bg-gray-700"
+                                    >
+                                        {' '}
+                                        {/* Ubah background logo */}
+                                        <Icon
+                                            icon="heroicons:squares-2x2-solid"
+                                            className="h-5 w-5 text-white"
+                                        />{' '}
+                                        {/* Ganti ikon logo */}
+                                    </Flex>
+                                </Link>
+                            </Tooltip.Trigger>
+                            <Tooltip.Portal>
+                                <Tooltip.Content
+                                    side="right"
+                                    align="center"
+                                    sideOffset={8}
+                                    className="z-[60] rounded-md border bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                                >
+                                    {LogoTooltipContent}
+                                </Tooltip.Content>
+                            </Tooltip.Portal>
+                        </Tooltip.Root>
+                    </Tooltip.Provider>
+                ) : (
+                    <Link href="/" className="flex items-center gap-2">
+                        <Flex
+                            align="center"
+                            justify="center"
+                            className="rounded-lg bg-gray-800 p-1.5 dark:bg-gray-700"
+                        >
+                            {' '}
+                            {/* Ubah background logo */}
+                            <Icon
+                                icon="heroicons:squares-2x2-solid"
+                                className="h-5 w-5 text-white"
+                            />{' '}
+                            {/* Ganti ikon logo */}
+                        </Flex>
                         <span className="text-lg font-bold text-black dark:text-white">
-                            Fx<span className="text-emerald-500">o</span>logy
+                            Fxology {/* Ganti dengan nama Anda */}
                         </span>
-                    )}
-                </Link>
+                    </Link>
+                )}
+
+                {/* Tombol Minimize */}
+                {isSidebarOpen && (
+                    <IconButton
+                        size="1"
+                        variant="ghost"
+                        color="gray"
+                        onClick={toggleSidebar}
+                        className="text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
+                        aria-label="Minimize sidebar"
+                    >
+                        {/* Ganti ikon minimize */}
+                        <Icon
+                            icon="heroicons:arrows-pointing-in"
+                            className="h-5 w-5"
+                        />
+                    </IconButton>
+                )}
             </div>
 
-            {/* Kontainer Nav dengan scrollbar kustom */}
+            <Separator className="dark:!bg-gray-700" />
+
+            {/* Kontainer Nav */}
             <div
-                className={`h-[calc(100%-65px)] overflow-y-auto overflow-x-hidden`}
+                className="h-[calc(100%-65px)] overflow-y-auto overflow-x-hidden"
                 style={customScrollbarHideCSS}
             >
-                <nav className="mt-1 flex flex-col">
+                <nav className="mt-4 flex flex-col justify-between">
                     <div>
-                        {renderMenuGroup('Menu', menuItems)}
-                        {renderMenuGroup('Support', supportItems)}
-                        {renderMenuGroup('Others', otherItems)}
+                        {renderMenuGroup('MAIN NAVIGATION', menuItems)}
+                        {renderMenuGroup('SUPPORT ITEMS', supportItems)}
+                        {/* Ganti nama grup sesuai contoh */}
                     </div>
                     <div className="mt-auto p-4"></div>
                 </nav>
@@ -478,3 +532,10 @@ export default function Sidebar({ isSidebarOpen, toggleSidebar }: SidebarProps) 
         </aside>
     );
 }
+
+// Definisikan ulang customScrollbarHideCSS di sini jika belum
+const customScrollbarHideCSS = {
+    '&::-webkit-scrollbar': { display: 'none' },
+    '-ms-overflow-style': 'none',
+    'scrollbar-width': 'none',
+} as React.CSSProperties;

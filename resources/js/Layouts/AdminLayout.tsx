@@ -40,12 +40,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
             {/* Konten Utama */}
             <div className="flex flex-1 flex-col overflow-hidden">
-                {/* Header */}
-                <header
-                    // 4. Hapus background default, atur padding & posisi
-                    className="relative z-20 flex h-[65px] items-center justify-between px-6 py-2"
-                >
-                    {/* Kiri: Toggle & Judul Halaman */}
+                <header className="relative z-20 flex h-[65px] items-center justify-between px-6 py-2">
                     <div className="flex items-center gap-4">
                         <button
                             onClick={toggleSidebar}
