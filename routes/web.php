@@ -30,6 +30,15 @@ Route::get('/admin/chat', function () {
     ]);
 })->name('admin.chat');
 
+// -- TAMBAHKAN ROUTE PROFIL --
+// Bisa langsung render view atau lewat controller
+Route::get('/admin/profile', function () {
+    return Inertia::render('Profile/AccountProfile', [
+        'pageTitle' => 'Profile Settings', // Kirim judul
+        // Kirim data lain jika perlu (misal: history)
+    ]);
+})->name('admin.profile');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

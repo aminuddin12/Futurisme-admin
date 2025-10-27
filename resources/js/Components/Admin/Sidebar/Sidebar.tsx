@@ -67,7 +67,7 @@ const menuItems: MenuItem[] = [
     {
         name: 'User Profile',
         icon: 'heroicons:user-solid',
-        href: '#',
+        href: route('admin.profile'),
         routeName: 'admin.profile',
     },
     {
