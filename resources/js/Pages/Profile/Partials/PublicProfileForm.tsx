@@ -8,14 +8,18 @@ import { useForm, usePage } from '@inertiajs/react';
 import React from 'react';
 // import AdminBadge from '@/components/Badge/AdminBadge'; // Contoh
 
-export default function PublicProfileForm({ user }) {
-    const { props } = usePage();
-    const currentUser = props.auth?.user; // Asumsi data user ada di props.auth
+interface User {
+    id: number;
+    name: string;
+    email: string;
+}
 
+export default function PublicProfileForm({ user }: { user: User }) {
+    const { props: pageProps } = usePage();
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            name: currentUser?.name || '',
-            email: currentUser?.email || '',
+            name: user?.name || '',
+            email: user?.email || '',
             // Tambahkan field lain jika perlu, misal username
         });
 
@@ -38,10 +42,10 @@ export default function PublicProfileForm({ user }) {
             <form onSubmit={submit} className="mt-6 space-y-6">
                 {/* Profile Image Section */}
                 <div>
-                    <InputLabel htmlFor="photo" value="Photo" />
+                    <InputLabel value="Photo" />
                     <div className="mt-2 flex items-center gap-x-3">
                         <ProfileImage
-                            user={currentUser}
+                            user={user}
                             size="w-24 h-24"
                             onImageUpload={handleImageUpload}
                         />
@@ -50,7 +54,7 @@ export default function PublicProfileForm({ user }) {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel value="Name" />
                     <TextInput
                         id="name"
                         className="mt-1 block w-full"
@@ -63,7 +67,7 @@ export default function PublicProfileForm({ user }) {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel value="Email" />
                     <TextInput
                         id="email"
                         type="email"
