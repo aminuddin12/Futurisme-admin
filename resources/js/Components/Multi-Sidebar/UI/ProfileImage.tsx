@@ -1,6 +1,6 @@
 // resources/js/Components/Profile/UI/ProfileImage.tsx
 
-import { User } from '@/types'; // Import User type if you have it defined
+import { User } from '@/types'; // Import User type
 import { Icon } from '@iconify/react';
 import { useForm } from '@inertiajs/react';
 import {
@@ -12,70 +12,97 @@ import {
     IconButton,
     Text,
 } from '@radix-ui/themes';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface ProfileImageProps {
-    // Tipe user mengizinkan null atau undefined
     user: User | null | undefined;
 }
 
 export default function ProfileImage({ user }: ProfileImageProps) {
+    // ... (state dan fungsi handle* tetap sama)
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null); // Ref for file input
+
     const { data, setData, post, processing, errors, reset } = useForm({
         avatar: null as File | null,
     });
 
+    // Effect to clean up object URL when previewImage changes or component unmounts
+    useEffect(() => {
+        return () => {
+            if (previewImage) {
+                URL.revokeObjectURL(previewImage);
+            }
+        };
+    }, [previewImage]);
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+        const file = e.target.files ? e.target.files[0] : null;
+
+        // Revoke previous preview URL if it exists before creating a new one
+        if (previewImage) {
+            URL.revokeObjectURL(previewImage);
+        }
+
+        setData('avatar', file);
+
         if (file) {
-            setData('avatar', file);
             setPreviewImage(URL.createObjectURL(file));
         } else {
-            setData('avatar', null);
             setPreviewImage(null);
-        }
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (data.avatar) {
-            post(route('profile.update_avatar'), {
-                preserveScroll: true,
-                onSuccess: () => {
-                    setDialogOpen(false);
-                    setPreviewImage(null);
-                    reset();
-                },
-                onError: (formErrors) => {
-                    console.error('Avatar update failed:', formErrors);
-                },
-            });
         }
     };
 
     const handleCloseDialog = () => {
-        if (isDialogOpen) {
-            setDialogOpen(false);
-            setPreviewImage(null);
-            reset();
+        setDialogOpen(false);
+        reset('avatar'); // Reset only the avatar field
+        setPreviewImage(null); // Clear preview image
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ''; // Clear file input value
         }
     };
 
     const handleOpenChange = (open: boolean) => {
         if (!open) {
-            handleCloseDialog();
+            handleCloseDialog(); // If dialog is closing, reset everything
         }
         setDialogOpen(open);
     };
 
-    // --- PERBAIKAN DI SINI ---
-    // Gunakan optional chaining (?.) dan berikan fallback default
-    const userName = user?.name || 'User'; // Fallback name
-    const userInitial = userName?.charAt(0).toUpperCase() || 'U'; // Fallback initial
-    const userAvatarUrl = user?.avatar_url
-        ? `/storage/${user.avatar_url}`
-        : undefined; // Fallback avatar URL
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Assuming a route named 'profile.update.avatar' exists in your Inertia.js setup
+        post(route('profile.update.avatar'), {
+            onSuccess: () => {
+                handleCloseDialog(); // Close dialog and reset on success
+            },
+            // onError is implicitly handled by `errors` object from useForm
+            // You could add specific error handling here if needed
+        });
+    };
+
+    // --- PERBAIKAN LEBIH AMAN ---
+    // Jika user belum ada, render placeholder atau null
+    if (!user) {
+        // Atau render skeleton loading state
+        return (
+            <Box className="relative inline-block">
+                <Avatar
+                    radius="full"
+                    size="7"
+                    fallback="?"
+                    className="bg-gray-200 shadow-md dark:bg-gray-700"
+                />
+                {/* Tombol edit bisa disembunyikan jika user tidak ada */}
+            </Box>
+        );
+    }
+
+    // Jika user ada, lanjutkan seperti biasa
+    const userName = user.name || 'User';
+    const userInitial = userName.charAt(0).toUpperCase() || 'U';
+    const userAvatarUrl = user.avatar_url ? user.avatar_url : undefined;
 
     return (
         <Box className="relative inline-block">
@@ -83,9 +110,7 @@ export default function ProfileImage({ user }: ProfileImageProps) {
             <Avatar
                 radius="full"
                 size="7"
-                // Gunakan fallback yang sudah aman
                 fallback={userInitial}
-                // Gunakan URL yang sudah aman
                 src={userAvatarUrl}
                 className="shadow-md"
             />
@@ -113,34 +138,42 @@ export default function ProfileImage({ user }: ProfileImageProps) {
 
                     <form onSubmit={handleSubmit}>
                         <Flex direction="column" gap="3">
-                            {/* Preview Gambar */}
                             <Flex justify="center" align="center" mb="3">
                                 <Avatar
                                     radius="full"
                                     size="7"
-                                    // Gunakan preview atau URL saat ini (sudah aman)
                                     src={previewImage || userAvatarUrl}
-                                    // Gunakan fallback yang sudah aman
-                                    fallback={userInitial} // <-- BARIS 92 (sekarang aman)
+                                    fallback={userInitial} // Baris 92 sekarang aman
                                     className="border-2 border-dashed border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-700"
                                 />
                             </Flex>
-
-                            {/* Input File */}
+                            {/* Custom file input trigger */}
+                            <Button
+                                type="button"
+                                variant="soft"
+                                onClick={() => fileInputRef.current?.click()}
+                            >
+                                Choose File
+                            </Button>
                             <input
                                 id="avatarInput"
                                 type="file"
                                 accept="image/png, image/jpeg, image/webp"
                                 onChange={handleFileChange}
-                                className="block w-full cursor-pointer text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100 dark:text-gray-400 dark:file:bg-blue-900/50 dark:file:text-blue-300 dark:hover:file:bg-blue-800/50"
+                                ref={fileInputRef} // Attach ref
+                                className="sr-only" // Visually hide the actual input
                             />
+                            {data.avatar && (
+                                <Text size="1" color="gray">
+                                    Selected: {data.avatar.name}
+                                </Text>
+                            )}
                             {errors.avatar && (
                                 <Text color="red" size="1">
                                     {errors.avatar}
                                 </Text>
                             )}
                         </Flex>
-
                         <Flex gap="3" mt="4" justify="end">
                             <Dialog.Close>
                                 <Button

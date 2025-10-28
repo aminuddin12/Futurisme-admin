@@ -1,6 +1,12 @@
 import { Config } from 'ziggy-js';
 
 export interface User {
+    twitter_url: string;
+    linkedin_url: string;
+    postal_code: string;
+    city: string;
+    street: string;
+    created_at(created_at: string): import('react').ReactNode;
     id: number;
     name: string;
     email: string;

@@ -1,14 +1,12 @@
 // resources/js/Components/UI/TextInput.tsx
 import React, { forwardRef, useEffect, useRef } from 'react';
-// 1. Import HANYA 'TextField' dan tipe props Root jika perlu styling root
+// 1. Import TextField dari Radix Themes
 import { cn } from '@/lib/utils'; // Pastikan path ini benar
-import { TextField } from '@radix-ui/themes';
+import { TextField } from '@radix-ui/themes'; // Box mungkin diperlukan jika styling root kompleks
 
-// 2. Interface sekarang extend React.InputHTMLAttributes untuk props input standar
+// 2. Interface sekarang extend React.InputHTMLAttributes
 interface TextInputProps
     extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
-    inputClassName?: string; // className HANYA untuk <input>
-    rootClassName?: string; // className HANYA untuk Root element
     isFocused?: boolean;
     // Props untuk TextField.Root
     size?: '1' | '2' | '3';
@@ -21,8 +19,7 @@ interface TextInputProps
 const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     (
         {
-            inputClassName = '',
-            rootClassName = '',
+            className = '',
             isFocused = false,
             type = 'text',
             size = '2',
@@ -30,7 +27,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             radius,
             leftSlot,
             rightSlot,
-            ...props // Props sisanya akan diteruskan ke <input>
+            ...props // Props sisanya akan diteruskan ke TextField.Root
         },
         ref,
     ) => {
@@ -44,30 +41,21 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             }
         }, [isFocused, ref]);
 
+        // 3. Gunakan TextField.Root sebagai input utama.
+        //    Tidak perlu merender <input> terpisah di dalamnya.
         return (
-            // 3. Gunakan TextField.Root dan TextField.Slot
             <TextField.Root
+                ref={ref}
+                type={type}
                 size={size}
                 variant={variant}
                 radius={radius}
-                className={cn('shadow-sm', rootClassName)} // Terapkan rootClassName
+                className={cn('shadow-sm', className)} // Styling Root
+                {...props} // Sebarkan props sisanya (value, onChange, placeholder, dll.)
             >
                 {leftSlot && (
                     <TextField.Slot side="left">{leftSlot}</TextField.Slot>
                 )}
-                {/* 4. Render elemen <input> HTML standar di dalamnya */}
-                <input
-                    ref={ref || inputRef} // Teruskan ref ke input
-                    type={type}
-                    className={cn(
-                        // Kelas styling dasar biasanya tidak perlu di sini,
-                        // Radix menangani styling input di dalam Root.
-                        // Hanya tambahkan kelas spesifik jika perlu override.
-                        'w-full', // Pastikan input mengisi Root
-                        inputClassName, // Terapkan inputClassName
-                    )}
-                    {...props} // Sebarkan props sisanya (value, onChange, placeholder, dll.)
-                />
                 {rightSlot && (
                     <TextField.Slot side="right">{rightSlot}</TextField.Slot>
                 )}

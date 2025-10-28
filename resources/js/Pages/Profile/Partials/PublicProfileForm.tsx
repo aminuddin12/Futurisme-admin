@@ -1,99 +1,110 @@
-import BoxItem from '@/Components/Profile/BoxItem';
-import ProfileImage from '@/Components/Profile/UI/ProfileImage';
-import ButtonPrimary from '@/Components/UI/ButtonPrimary';
-import InputError from '@/Components/UI/InputError';
+// resources/js/Pages/Profile/Partials/PublicProfileForm.tsx
+import AdminBadge from '@/Components/Badge/AdminBadge'; // Contoh Badge
+import BoxItem from '@/Components/Multi-Sidebar/BoxItem';
+import Box2column from '@/Components/Multi-Sidebar/UI/Box2column';
+import ProfileImage from '@/Components/Multi-Sidebar/UI/ProfileImage';
+import ActionButton from '@/Components/UI/ActionButton';
 import InputLabel from '@/Components/UI/InputLabel';
 import TextInput from '@/Components/UI/TextInput';
-import { useForm, usePage } from '@inertiajs/react';
-import React from 'react';
-// import AdminBadge from '@/components/Badge/AdminBadge'; // Contoh
+import { Box, Flex, Text, TextArea } from '@radix-ui/themes';
 
-interface User {
-    id: number;
-    name: string;
-    email: string;
-}
-
-export default function PublicProfileForm({ user }: { user: User }) {
-    const { props: pageProps } = usePage();
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
-        useForm({
-            name: user?.name || '',
-            email: user?.email || '',
-            // Tambahkan field lain jika perlu, misal username
-        });
-
-    const submit = (e: React.FormEvent) => {
-        e.preventDefault();
-        patch(route('profile.update')); // Sesuaikan nama route jika berbeda
-    };
-
-    const handleImageUpload = (file: File) => {
-        // Implementasi logika upload foto profil di sini
-        // Biasanya menggunakan `router.post` dari Inertia dengan FormData
-        console.log('Upload file:', file);
-    };
+export default function PublicProfileForm({ user }: { user: any }) {
+    // Anda akan menggunakan useForm di sini untuk data yang bisa diubah
+    const name = user?.name || 'User Name';
+    const email = user?.email || 'user@example.com';
 
     return (
-        <BoxItem
-            title="Public Profile Information"
-            description="Update your account's profile information and email address."
-        >
-            <form onSubmit={submit} className="mt-6 space-y-6">
-                {/* Profile Image Section */}
-                <div>
-                    <InputLabel value="Photo" />
-                    <div className="mt-2 flex items-center gap-x-3">
-                        <ProfileImage
-                            user={user}
-                            size="w-24 h-24"
-                            onImageUpload={handleImageUpload}
+        <Flex direction="column" gap="6">
+            {/* Box 1: Public Account */}
+            <BoxItem
+                title="Public Account"
+                description="This information will be displayed publicly."
+                footer={<ActionButton>Save Changes</ActionButton>}
+            >
+                <Flex direction="column" gap="4">
+                    <Flex gap="4" align="center">
+                        <ProfileImage user={user} />
+                        <div>
+                            <Flex align="center" gap="2" mb="1">
+                                <Text weight="medium">{name}</Text>
+                                {/* Contoh menampilkan badge */}
+                                {user?.isAdmin && <AdminBadge size={16} />}
+                            </Flex>
+                            <Text size="2" color="gray">
+                                {email}
+                            </Text>
+                        </div>
+                    </Flex>
+                </Flex>
+            </BoxItem>
+
+            {/* Box 2: Status & Quote */}
+            <BoxItem
+                title="Status & Quote"
+                description="Set your current status and a personal quote."
+                footer={<ActionButton>Save Status</ActionButton>}
+            >
+                <Flex direction="column" gap="3">
+                    <Box>
+                        <InputLabel htmlFor="status">Status</InputLabel>
+                        <TextInput
+                            id="status"
+                            placeholder="What's happening?"
+                            defaultValue="Working on Futurisme Admin..."
                         />
-                        {/* Tombol Hapus Foto bisa ditambahkan di sini */}
-                    </div>
-                </div>
+                    </Box>
+                    <Box>
+                        <InputLabel htmlFor="quote">Quote</InputLabel>
+                        <TextArea
+                            id="quote"
+                            placeholder="Your favorite quote"
+                            defaultValue="Simplicity is the ultimate sophistication."
+                        />
+                    </Box>
+                </Flex>
+            </BoxItem>
 
-                <div>
-                    <InputLabel value="Name" />
-                    <TextInput
-                        id="name"
-                        className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                        autoComplete="name"
-                    />
-                    <InputError className="mt-2" message={errors.name} />
-                </div>
+            {/* Box 3: Account Details (Contoh 2 Kolom) */}
+            <BoxItem
+                title="Account Details"
+                description="Update your account information."
+                footer={<ActionButton>Save Details</ActionButton>}
+            >
+                <Box2column>
+                    <Box>
+                        <InputLabel htmlFor="username">Username</InputLabel>
+                        <TextInput
+                            id="username"
+                            placeholder="Username"
+                            defaultValue={user?.username || ''}
+                        />
+                    </Box>
+                    <Box>
+                        <InputLabel htmlFor="phone">Phone Number</InputLabel>
+                        <TextInput
+                            id="phone"
+                            type="tel"
+                            placeholder="+62 812..."
+                            defaultValue={user?.phone || ''}
+                        />
+                    </Box>
+                    <Box>
+                        <InputLabel htmlFor="website">Website</InputLabel>
+                        <TextInput
+                            id="website"
+                            type="url"
+                            placeholder="https://example.com"
+                            defaultValue={user?.website || ''}
+                        />
+                    </Box>
+                    {/* ... field lainnya */}
+                </Box2column>
+            </BoxItem>
 
-                <div>
-                    <InputLabel value="Email" />
-                    <TextInput
-                        id="email"
-                        type="email"
-                        className="mt-1 block w-full"
-                        value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                        autoComplete="username"
-                    />
-                    <InputError className="mt-2" message={errors.email} />
-
-                    {/* Jika ada fitur verifikasi email */}
-                    {/* {mustVerifyEmail && user.email_verified_at === null && ( ... )} */}
-                </div>
-
-                {/* Tambahkan field lain di sini jika perlu */}
-
-                <div className="flex items-center gap-4">
-                    <ButtonPrimary disabled={processing}>Save</ButtonPrimary>
-                    {recentlySuccessful && (
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                            Saved.
-                        </p>
-                    )}
-                </div>
-            </form>
-        </BoxItem>
+            {/* Address & Social dipisah jadi form sendiri atau digabung di sini */}
+            {/* Contoh jika formnya dipisah: */}
+            {/* <AddressProfileForm /> */}
+            {/* <SocialMediaForm /> */}
+        </Flex>
     );
 }

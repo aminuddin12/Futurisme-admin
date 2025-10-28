@@ -1,44 +1,96 @@
-export interface SidebarItem {
-    key: string;
+// resources/js/Pages/Profile/Partials/SidebarListMenu.tsx
+
+export interface ProfileSidebarItem {
+    key: string; // ID unik
     label: string;
-    icon?: string; // Optional: Icon name (e.g., from heroicons)
+    icon: string;
 }
 
-export interface SidebarData {
-    groupKey: string;
-    groupLabel: string;
-    items: SidebarItem[];
+export interface ProfileSidebarItemGroup {
+    title: string;
+    items: ProfileSidebarItem[];
 }
 
-export const sidebarMenuData: SidebarData[] = [
+export const sidebarMenuData: ProfileSidebarItemGroup[] = [
     {
-        groupKey: 'account',
-        groupLabel: 'Account',
+        title: 'Account',
         items: [
-            { key: 'public-profile', label: 'Public Profile' },
-            { key: 'notification', label: 'Notification' },
-            { key: 'appearance', label: 'Appearance' },
-            { key: 'accessibility', label: 'Accessibility' },
+            {
+                key: 'public-profile',
+                label: 'Public Profile',
+                icon: 'heroicons:user-circle',
+            },
+            {
+                key: 'notification',
+                label: 'Notification',
+                icon: 'heroicons:bell',
+            },
+            {
+                key: 'appearance',
+                label: 'Appearance',
+                icon: 'heroicons:swatch',
+            },
+            {
+                key: 'accessibility',
+                label: 'Accessibility',
+                icon: 'heroicons:command-line',
+            }, // Ganti ikon jika perlu
         ],
     },
     {
-        groupKey: 'access',
-        groupLabel: 'Access',
+        title: 'Access',
         items: [
-            { key: 'email-username', label: 'Email & Username' },
-            { key: 'verification', label: 'Verification' },
-            { key: 'payment', label: 'Payment' },
-            { key: 'organization', label: 'Organization' },
+            {
+                key: 'email-username',
+                label: 'Email & Username',
+                icon: 'heroicons:envelope-open',
+            },
+            {
+                key: 'verification',
+                label: 'Verification',
+                icon: 'heroicons:check-badge',
+            },
+            { key: 'payment', label: 'Payment', icon: 'heroicons:credit-card' },
+            {
+                key: 'organization',
+                label: 'Organization',
+                icon: 'heroicons:building-office-2',
+            },
         ],
     },
     {
-        groupKey: 'security',
-        groupLabel: 'Security',
+        title: 'Security',
         items: [
-            { key: 'password-auth', label: 'Password & Authentication' },
-            { key: 'token-key', label: 'Token & Key' },
-            { key: 'recovery', label: 'Recovery' },
-            { key: 'session', label: 'Session' },
+            {
+                key: 'password-auth',
+                label: 'Password & Authentication',
+                icon: 'heroicons:key',
+            },
+            {
+                key: 'token-key',
+                label: 'Token & Key',
+                icon: 'heroicons:finger-print',
+            }, // Ganti ikon jika perlu
+            {
+                key: 'recovery',
+                label: 'Recovery',
+                icon: 'heroicons:shield-check',
+            },
+            {
+                key: 'session',
+                label: 'Session',
+                icon: 'heroicons:computer-desktop',
+            },
+        ],
+    },
+    {
+        title: 'Danger Zone', // Grup untuk Delete
+        items: [
+            {
+                key: 'delete-account',
+                label: 'Delete Account',
+                icon: 'heroicons:trash',
+            },
         ],
     },
 ];
