@@ -1,39 +1,11 @@
 // resources/js/Components/Profile/UI/AccountUser.tsx
+import ClientOnlyDate from '@/Components/ClientOnlyDate';
 import { User } from '@/types';
 import { Box, Flex, Heading, Text } from '@radix-ui/themes';
-import { useEffect, useState } from 'react';
 
 import AccountAddress from './AccountAddress';
 import AccountPersonalInformation from './AccountPersonalInformation';
 import ProfileImage from './ProfileImage';
-
-/**
- * A component that formats and renders a date only on the client-side
- * to prevent server-client hydration mismatch due to timezones.
- */
-function ClientOnlyDate({
-    dateString,
-    options,
-}: {
-    dateString: string | undefined;
-    options: Intl.DateTimeFormatOptions;
-}) {
-    const [formattedDate, setFormattedDate] = useState<string | null>(null);
-
-    useEffect(() => {
-        setFormattedDate(
-            dateString
-                ? new Date(dateString).toLocaleDateString('en-US', options)
-                : 'Not available',
-        );
-    }, [dateString, options]);
-
-    if (formattedDate === null) {
-        return '...'; // Placeholder during server render and initial client render
-    }
-
-    return <>{formattedDate}</>;
-}
 
 export default function AccountUser({ user }: { user: User }) {
     return (

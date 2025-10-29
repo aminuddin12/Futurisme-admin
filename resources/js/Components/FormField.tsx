@@ -1,12 +1,14 @@
 import { Box, Text } from '@radix-ui/themes';
-import React, { isValidElement, useId, type ComponentProps } from 'react';
+import React, { isValidElement, useId, type ComponentProps, type PropsWithChildren } from 'react';
 
-interface FormFieldProps extends Omit<ComponentProps<typeof Box>, 'children'> {
-    label: string;
-    error?: string;
-    htmlFor?: string;
-    children: React.ReactNode;
-}
+interface FormFieldProps
+    extends PropsWithChildren<
+        Omit<ComponentProps<typeof Box>, 'children'> & {
+            label: string;
+            error?: string;
+            htmlFor?: string;
+        }
+    > {}
 
 /**
  * A reusable and accessible form field component.

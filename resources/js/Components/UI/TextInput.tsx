@@ -31,13 +31,12 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         },
         ref,
     ) => {
-        const inputRef = useRef<HTMLInputElement>(null);
-
         useEffect(() => {
             if (isFocused) {
-                const targetRef =
-                    ref && typeof ref !== 'function' ? ref : inputRef;
-                targetRef.current?.focus();
+                // Asumsikan ref adalah RefObject jika diteruskan
+                if (ref && typeof ref !== 'function' && ref.current) {
+                    ref.current.focus();
+                }
             }
         }, [isFocused, ref]);
 

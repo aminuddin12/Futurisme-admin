@@ -102,7 +102,9 @@ export default function ProfileImage({ user }: ProfileImageProps) {
     // Jika user ada, lanjutkan seperti biasa
     const userName = user.name || 'User';
     const userInitial = userName.charAt(0).toUpperCase() || 'U';
-    const userAvatarUrl = user.avatar_url ? user.avatar_url : undefined;
+    // Asumsikan backend mengirimkan URL lengkap.
+    // Jika tidak, Anda mungkin perlu menambahkan prefix di sini.
+    const userAvatarUrl = user.avatar_url || undefined;
 
     return (
         <Box className="relative inline-block">
