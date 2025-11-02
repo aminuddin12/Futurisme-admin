@@ -3,17 +3,17 @@ import { ProfileSidebarItemGroup } from '@/Pages/Profile/Partials/SidebarListMen
 import { Flex, Separator, Text } from '@radix-ui/themes';
 import ProfileListItem from './ListItem'; // Ganti nama impor
 
-interface ProfileSidebarProps {
+interface SidebarProps {
     menuGroups: ProfileSidebarItemGroup[]; // Terima grup menu
     activeMenuKey: string;
     setActiveMenuKey: (key: string) => void;
 }
 
-export default function ProfileSidebar({
+export default function Sidebar({
     menuGroups,
     activeMenuKey,
     setActiveMenuKey,
-}: ProfileSidebarProps) {
+}: SidebarProps) {
     return (
         <Flex
             direction="column"

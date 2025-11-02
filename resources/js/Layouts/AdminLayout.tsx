@@ -53,7 +53,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                                             weight="medium"
                                             className="block text-gray-800 dark:text-gray-100"
                                         >
-                                            {user?.name || 'User Name'}
+                                            {user?.username || 'User Name'}
                                         </Text>
                                         <Text
                                             size="1"

@@ -1,16 +1,11 @@
-// resources/js/Components/Badge/SuperSellerBadge.tsx
 import { Icon } from '@iconify/react';
-import * as React from 'react';
-interface Props extends React.SVGProps<SVGSVGElement> {
-    size?: string | number;
+import { Badge } from '@radix-ui/themes';
+
+export default function SuperSellerBadge() {
+    return (
+        <Badge color="orange">
+            <Icon icon="heroicons:star-solid" className="mr-1 h-3 w-3" />
+            Super Seller
+        </Badge>
+    );
 }
-const SuperSellerBadge = ({ size = 18, className = '', ...props }: Props) => (
-    <Icon
-        icon="heroicons:star-solid"
-        width={size}
-        height={size}
-        className={`text-orange-500 ${className}`}
-        {...props}
-    />
-);
-export default SuperSellerBadge;

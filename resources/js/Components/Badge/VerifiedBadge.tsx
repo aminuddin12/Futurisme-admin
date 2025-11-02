@@ -1,16 +1,11 @@
-// resources/js/Components/Badge/VerifiedBadge.tsx
 import { Icon } from '@iconify/react';
-import * as React from 'react';
-interface Props extends React.SVGProps<SVGSVGElement> {
-    size?: string | number;
+import { Badge } from '@radix-ui/themes';
+
+export default function VerifiedBadge() {
+    return (
+        <Badge color="blue">
+            <Icon icon="heroicons:check-badge-solid" className="mr-1 h-3 w-3" />
+            Verified
+        </Badge>
+    );
 }
-const VerifiedBadge = ({ size = 18, className = '', ...props }: Props) => (
-    <Icon
-        icon="heroicons:check-badge-solid"
-        width={size}
-        height={size}
-        className={`text-blue-500 ${className}`}
-        {...props}
-    />
-);
-export default VerifiedBadge;

@@ -3,19 +3,19 @@ import { cn } from '@/lib/utils';
 import { Icon } from '@iconify/react';
 import { Text } from '@radix-ui/themes';
 
-interface ProfileListItemProps {
+interface ListItemProps {
     icon: string;
     label: string;
     isActive: boolean;
     onClick: () => void;
 }
 
-export default function ProfileListItem({
+export default function ListItem({
     icon,
     label,
     isActive,
     onClick,
-}: ProfileListItemProps) {
+}: ListItemProps) {
     return (
         <button
             onClick={onClick}

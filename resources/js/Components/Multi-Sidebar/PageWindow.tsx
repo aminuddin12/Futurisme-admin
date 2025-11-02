@@ -1,31 +1,30 @@
 // resources/js/Components/Profile/PageWindow.tsx
-import { sidebarMenuData } from '@/Pages/Profile/Partials/SidebarListMenu'; // Impor data & tipe
-import { User } from '@/types';
+import { ProfileSidebarItemGroup } from '@/Pages/Profile/Partials/SidebarListMenu';
 import { Flex } from '@radix-ui/themes';
-import Main from './Main';
+import React from 'react';
 import Sidebar from './Sidebar';
 
 interface PageWindowProps {
     activeMenuKey: string;
     setActiveMenuKey: (key: string) => void;
-    user: User;
+    menuGroups: ProfileSidebarItemGroup[];
+    children: React.ReactNode;
 }
 
 export default function PageWindow({
     activeMenuKey,
     setActiveMenuKey,
-    user,
+    menuGroups,
+    children,
 }: PageWindowProps) {
     return (
         <Flex gap="6" align="start" className="flex w-full px-6 py-4">
-            {' '}
-            {/* Layout utama: Sidebar | Main */}
             <Sidebar
-                menuGroups={sidebarMenuData} // Kirim data menu
+                menuGroups={menuGroups}
                 activeMenuKey={activeMenuKey}
                 setActiveMenuKey={setActiveMenuKey}
             />
-            <Main activeMenuKey={activeMenuKey} user={user} />
+            <div className="flex-1">{children}</div>
         </Flex>
     );
 }

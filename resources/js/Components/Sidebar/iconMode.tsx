@@ -104,6 +104,20 @@ const menuData: MenuGroup[] = [
             },
         ],
     },
+    {
+        key: 'group-Site',
+        title: 'Site Settings',
+        items: [
+            {
+                key: 'web-settings',
+                label: 'Website Settings',
+                icon: 'heroicons:cog-6-tooth',
+                iconFilled: 'heroicons:cog-6-tooth-solid',
+                href: route('admin.settings'),
+                routeName: 'settings',
+            },
+        ],
+    },
 ];
 
 export default function IconMode() {

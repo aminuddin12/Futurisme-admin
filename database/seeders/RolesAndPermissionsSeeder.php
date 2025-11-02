@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use App\Models\User;
+use App\Models\Role;
+use App\Models\Permission;
+use App\Models\Insider;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -76,18 +76,16 @@ class RolesAndPermissionsSeeder extends Seeder
         $password = Hash::make('password');
 
         // Admin User
-        $admin = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
-            ['name' => 'Admin User', 'password' => $password, 'email_verified_at' => now()]
+        $admin = Insider::firstOrCreate(
+            ['email' => 'admin@example.com'], // 1. Atribut untuk mencari user
+            [                                 // 2. Atribut untuk membuat user jika tidak ada
+                'front_name' => 'Admin',
+                'last_name' => 'User',
+                'username' => 'administratos',
+                'password' => $password
+            ]
         );
         $admin->assignRole($adminRole);
-
-        // Insider User (Multi Role)
-        // $insider = User::firstOrCreate(
-        //     ['email' => 'insider@example.com'],
-        //     ['name' => 'Insider User', 'password' => $password, 'email_verified_at' => now()]
-        // );
-        // $insider->assignRole($insiderRole, $customerRole); // Punya role Insider DAN Customer
 
         // Vendor Users
         // $vendorOwner = User::firstOrCreate(

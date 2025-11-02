@@ -22,7 +22,7 @@ export default function PublicProfileForm({
                 <Flex align="center" gap="4">
                     <ProfileImage user={user} />
                     <div>
-                        <Text weight="medium">{user?.name || 'User Name'}</Text>
+                        <Text weight="medium">{user?.username || 'User Name'}</Text>
                         <Text size="2" color="gray">
                             {user?.email || 'user@example.com'}
                         </Text>

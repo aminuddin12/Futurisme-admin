@@ -10,6 +10,7 @@ import AccountDeleteForm from './Partials/AccountDeleteForm';
 import AppearanceForm from './Partials/AppearanceForm';
 import CustomForm from './Partials/CustomForm';
 import PaymentForm from './Partials/PaymentForm';
+import { sidebarMenuData } from './Partials/SidebarListMenu';
 import PublicProfileForm from './Partials/PublicProfileForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 
@@ -104,7 +105,7 @@ export default function AccountProfile() {
             <ProfileWindow
                 activeMenuKey={activeMenuKey}
                 setActiveMenuKey={setActiveMenuKey}
-                user={user}
+                menuGroups={sidebarMenuData}
             >
                 {renderMainContent()}
             </ProfileWindow>
