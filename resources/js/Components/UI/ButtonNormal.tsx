@@ -1,21 +1,5 @@
-// resources/js/Components/UI/ButtonNormal.tsx
-import { cn } from '@/lib/utils';
 import { Button, ButtonProps } from '@radix-ui/themes';
+const ButtonNormal = (props: ButtonProps) => <Button size="2" {...props} />;
 
-interface ButtonNormalProps extends ButtonProps {}
-
-export default function ButtonNormal({
-    className,
-    children,
-    ...props
-}: ButtonNormalProps) {
-    return (
-        <Button
-            size="2" // Ukuran default Radix
-            className={cn('', className)}
-            {...props}
-        >
-            {children}
-        </Button>
-    );
-}
+ButtonNormal.displayName = 'ButtonNormal';
+export default ButtonNormal;

@@ -1,21 +1,7 @@
-// resources/js/Components/UI/ButtonWarning.tsx
-import { cn } from '@/lib/utils';
 import { Button, ButtonProps } from '@radix-ui/themes';
+const ButtonWarning = (props: ButtonProps) => (
+    <Button color="yellow" {...props} />
+);
 
-interface ButtonWarningProps extends ButtonProps {}
-
-export default function ButtonWarning({
-    className,
-    children,
-    ...props
-}: ButtonWarningProps) {
-    return (
-        <Button
-            color="yellow" // Warna warning
-            className={cn('', className)}
-            {...props}
-        >
-            {children}
-        </Button>
-    );
-}
+ButtonWarning.displayName = 'ButtonWarning';
+export default ButtonWarning;

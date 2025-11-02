@@ -1,10 +1,7 @@
-// resources/js/Components/Landing-Page/ServicesSection.tsx
-
 import { Icon } from '@iconify/react';
 import { Flex, Heading, Text } from '@radix-ui/themes';
 import { motion } from 'framer-motion';
 
-// 1. Data baru dengan konteks Startup & Layanan
 const serviceFeatures = [
     {
         icon: 'heroicons:swatch',
@@ -32,13 +29,12 @@ const serviceFeatures = [
     },
 ];
 
-// 2. Varian animasi untuk stagger (efek muncul satu per satu)
 const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.1, // Jeda antar kartu
+            staggerChildren: 0.1,
         },
     },
 };
@@ -79,29 +75,26 @@ export default function ServicesSection() {
                 </Heading>
                 <Heading
                     as="h3"
-                    size="7" // Ukuran heading lebih kecil
+                    size="7"
                     className="mt-1 font-medium text-gray-700 dark:text-gray-300"
                 >
                     untuk Pertumbuhan Startup Anda
                 </Heading>
             </motion.div>
 
-            {/* 3. Grid untuk Kartu Layanan */}
             <motion.div
                 className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4"
                 initial="hidden"
                 whileInView="visible"
-                viewport={{ once: true, amount: 0.2 }} // Muncul saat 20% terlihat
+                viewport={{ once: true, amount: 0.2 }}
                 variants={containerVariants}
             >
                 {serviceFeatures.map((feature) => (
                     <motion.div
                         key={feature.title}
                         variants={itemVariants}
-                        // 4. Styling Kartu (Dark/Light Mode)
                         className="rounded-xl bg-gray-100/50 p-6 shadow-sm dark:bg-gray-900/50"
                     >
-                        {/* 5. Styling Ikon (Tema Emerald) */}
                         <Flex
                             align="center"
                             justify="center"

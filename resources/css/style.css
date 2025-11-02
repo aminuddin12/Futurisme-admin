@@ -1,0 +1,101 @@
+.no-scrollbar {
+    scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    background: transparent;
+}
+
+
+.glassmorphism {
+    @apply bg-white/60 backdrop-blur-xl dark:bg-gray-900/60;
+    @apply border-r border-white/20 dark:border-gray-800/50;
+}
+
+.animated-border {
+    position: relative;
+    overflow: hidden;
+    border-right: 1px solid transparent;
+}
+
+/* Pseudo-element untuk efek cahaya */
+.animated-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    pointer-events: none;
+
+    border-radius: inherit;
+
+    background: radial-gradient(
+        350px circle at var(--mouse-x, -100px) var(--mouse-y, -100px),
+        rgba(5, 150, 105, 0.3),
+        transparent 40%
+    );
+
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+
+    padding: 1px;
+    opacity: 25;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.animated-border:hover::before {
+    opacity: 1;
+}
+
+@keyframes nebula-rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.nebula-bg {
+}
+
+.nebula-bg::before,
+.nebula-bg::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    mix-blend-mode: screen;
+    animation: nebula-rotate 80s linear infinite;
+    opacity: 0.5;
+}
+
+.dark .nebula-bg::before,
+.dark .nebula-bg::after {
+    opacity: 1; /* Opacity untuk dark mode */
+}
+
+.nebula-bg::before {
+    background-image: radial-gradient(ellipse at 50% 50%, rgba(28, 100, 242, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 80%, rgba(132, 204, 22, 0.2) 0%, transparent 40%),
+        radial-gradient(ellipse at 80% 30%, rgba(236, 72, 153, 0.2) 0%, transparent 40%);
+    animation-duration: 70s;
+}
+
+.nebula-bg::after {
+    background-image: radial-gradient(ellipse at 50% 50%, rgba(168, 85, 247, 0.2) 0%, transparent 40%),
+        radial-gradient(ellipse at 70% 70%, rgba(34, 197, 94, 0.2) 0%, transparent 40%);
+    animation-duration: 90s;
+    animation-direction: reverse;
+}

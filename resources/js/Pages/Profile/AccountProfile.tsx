@@ -1,35 +1,117 @@
-// resources/js/Pages/Profile/AccountProfile.tsx
-
-import PageWindow from '@/Components/Multi-Sidebar/PageWindow'; // Impor Window Layout Profil
-import AdminLayout from '@/Layouts/AdminLayout'; // Gunakan layout admin Anda
+import AdminLayout from '@/Layouts/AdminLayout';
+import { User } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import React, { useState } from 'react';
-import { sidebarMenuData } from './Partials/SidebarListMenu'; // Impor data menu
+
+import ProfileWindow from '@/Components/Multi-Sidebar/PageWindow';
+
+// Impor semua form yang akan dirender
+import AccountDeleteForm from './Partials/AccountDeleteForm';
+import AppearanceForm from './Partials/AppearanceForm';
+import CustomForm from './Partials/CustomForm';
+import PaymentForm from './Partials/PaymentForm';
+import PublicProfileForm from './Partials/PublicProfileForm';
+import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 
 export default function AccountProfile() {
     const { props } = usePage();
-    const user = props.auth?.user; // Ambil data user
-    const pageTitle = props.pageTitle || 'Profile Settings'; // Ambil judul
+    const user = (props.auth as any).user as User | null | undefined;
+    const pageTitle = props.pageTitle || 'Profile Settings';
 
-    // State untuk melacak item aktif, default ke item pertama
-    const [activeMenuKey, setActiveMenuKey] = useState<string>(
-        sidebarMenuData[0]?.items[0]?.key ?? 'public-profile',
-    );
+    const [activeMenuKey, setActiveMenuKey] =
+        useState<string>('public-profile');
+
+    const renderMainContent = () => {
+        switch (activeMenuKey) {
+            case 'public-profile':
+                return <PublicProfileForm user={user} />;
+            case 'notification':
+                return (
+                    <CustomForm
+                        title="Notification"
+                        description="Manage notification preferences."
+                    />
+                );
+            case 'appearance':
+                return <AppearanceForm />;
+            case 'accessibility':
+                return (
+                    <CustomForm
+                        title="Accessibility"
+                        description="Manage accessibility settings."
+                    />
+                );
+
+            case 'email-username':
+                return (
+                    <CustomForm
+                        title="Email & Username"
+                        description="Manage your email and username."
+                    />
+                );
+            case 'verification':
+                return (
+                    <CustomForm
+                        title="Verification"
+                        description="Verify your account."
+                    />
+                );
+            case 'payment':
+                return <PaymentForm />;
+            case 'organization':
+                return (
+                    <CustomForm
+                        title="Organization"
+                        description="Manage organization details."
+                    />
+                );
+
+            case 'password-auth':
+                return <UpdatePasswordForm />;
+            case 'token-key':
+                return (
+                    <CustomForm
+                        title="Token & Key"
+                        description="Manage API tokens and keys."
+                    />
+                );
+            case 'recovery':
+                return (
+                    <CustomForm
+                        title="Recovery"
+                        description="Set account recovery options."
+                    />
+                );
+            case 'session':
+                return (
+                    <CustomForm
+                        title="Session"
+                        description="Manage your active sessions."
+                    />
+                );
+
+            case 'delete-account':
+                return <AccountDeleteForm />;
+
+            default:
+                return <PublicProfileForm user={user} />;
+        }
+    };
 
     return (
         <>
             <Head title={pageTitle} />
-            {/* ProfileWindow sekarang menjadi layout utama halaman ini */}
-            <PageWindow
+            <ProfileWindow
                 activeMenuKey={activeMenuKey}
                 setActiveMenuKey={setActiveMenuKey}
                 user={user}
-            />
+            >
+                {renderMainContent()}
+            </ProfileWindow>
         </>
     );
 }
 
-// Gunakan AdminLayout
 AccountProfile.layout = (page: React.ReactNode) => (
     <AdminLayout>{page}</AdminLayout>
 );

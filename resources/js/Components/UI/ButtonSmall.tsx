@@ -1,21 +1,5 @@
-// resources/js/Components/UI/ButtonSmall.tsx
-import { cn } from '@/lib/utils';
 import { Button, ButtonProps } from '@radix-ui/themes';
+const ButtonSmall = (props: ButtonProps) => <Button size="1" {...props} />;
 
-interface ButtonSmallProps extends ButtonProps {}
-
-export default function ButtonSmall({
-    className,
-    children,
-    ...props
-}: ButtonSmallProps) {
-    return (
-        <Button
-            size="1" // Ukuran small Radix
-            className={cn('', className)}
-            {...props}
-        >
-            {children}
-        </Button>
-    );
-}
+ButtonSmall.displayName = 'ButtonSmall';
+export default ButtonSmall;

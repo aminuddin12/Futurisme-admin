@@ -83,50 +83,50 @@ class RolesAndPermissionsSeeder extends Seeder
         $admin->assignRole($adminRole);
 
         // Insider User (Multi Role)
-        $insider = User::firstOrCreate(
-            ['email' => 'insider@example.com'],
-            ['name' => 'Insider User', 'password' => $password, 'email_verified_at' => now()]
-        );
-        $insider->assignRole($insiderRole, $customerRole); // Punya role Insider DAN Customer
+        // $insider = User::firstOrCreate(
+        //     ['email' => 'insider@example.com'],
+        //     ['name' => 'Insider User', 'password' => $password, 'email_verified_at' => now()]
+        // );
+        // $insider->assignRole($insiderRole, $customerRole); // Punya role Insider DAN Customer
 
         // Vendor Users
-        $vendorOwner = User::firstOrCreate(
-            ['email' => 'vendor.owner@example.com'],
-            ['name' => 'Vendor Owner', 'password' => $password, 'email_verified_at' => now()]
-        );
-        $vendorOwner->assignRole($vendorOwnerRole);
+        // $vendorOwner = User::firstOrCreate(
+        //     ['email' => 'vendor.owner@example.com'],
+        //     ['name' => 'Vendor Owner', 'password' => $password, 'email_verified_at' => now()]
+        // );
+        // $vendorOwner->assignRole($vendorOwnerRole);
 
-        $vendorTeam = User::firstOrCreate(
-            ['email' => 'vendor.team@example.com'],
-            ['name' => 'Vendor Team Member', 'password' => $password, 'email_verified_at' => now()]
-        );
-        $vendorTeam->assignRole($vendorTeamRole);
+        // $vendorTeam = User::firstOrCreate(
+        //     ['email' => 'vendor.team@example.com'],
+        //     ['name' => 'Vendor Team Member', 'password' => $password, 'email_verified_at' => now()]
+        // );
+        // $vendorTeam->assignRole($vendorTeamRole);
 
         // Merchant Users
-        $merchantOwner = User::firstOrCreate(
-            ['email' => 'merchant.owner@example.com'],
-            ['name' => 'Merchant Owner', 'password' => $password, 'email_verified_at' => now()]
-        );
-        $merchantOwner->assignRole($merchantOwnerRole);
+        // $merchantOwner = User::firstOrCreate(
+        //     ['email' => 'merchant.owner@example.com'],
+        //     ['name' => 'Merchant Owner', 'password' => $password, 'email_verified_at' => now()]
+        // );
+        // $merchantOwner->assignRole($merchantOwnerRole);
 
-        $merchantTeam = User::firstOrCreate(
-            ['email' => 'merchant.team@example.com'],
-            ['name' => 'Merchant Team Member', 'password' => $password, 'email_verified_at' => now()]
-        );
-        $merchantTeam->assignRole($merchantTeamRole);
+        // $merchantTeam = User::firstOrCreate(
+        //     ['email' => 'merchant.team@example.com'],
+        //     ['name' => 'Merchant Team Member', 'password' => $password, 'email_verified_at' => now()]
+        // );
+        // $merchantTeam->assignRole($merchantTeamRole);
 
         // Driver User
-        $driver = User::firstOrCreate(
-            ['email' => 'driver@example.com'],
-            ['name' => 'Driver User', 'password' => $password, 'email_verified_at' => now()]
-        );
-        $driver->assignRole($driverRole);
+        // $driver = User::firstOrCreate(
+        //     ['email' => 'driver@example.com'],
+        //     ['name' => 'Driver User', 'password' => $password, 'email_verified_at' => now()]
+        // );
+        // $driver->assignRole($driverRole);
 
         // Customer User
-        $customer = User::firstOrCreate(
-            ['email' => 'customer@example.com'],
-            ['name' => 'Customer User', 'password' => $password, 'email_verified_at' => now()]
-        );
-        $customer->assignRole($customerRole);
+        // $customer = User::firstOrCreate(
+        //     ['email' => 'customer@example.com'],
+        //     ['name' => 'Customer User', 'password' => $password, 'email_verified_at' => now()]
+        // );
+        // $customer->assignRole($customerRole);
     }
 }

@@ -3,6 +3,7 @@ import { Flex } from '@radix-ui/themes';
 
 // Impor form/konten dari Partials
 import AccountDeleteForm from '@/Pages/Profile/Partials/AccountDeleteForm';
+import AppearanceForm from '@/Pages/Profile/Partials/AppearanceForm';
 import CustomForm from '@/Pages/Profile/Partials/CustomForm'; // Placeholder untuk form lain
 import PublicProfileForm from '@/Pages/Profile/Partials/PublicProfileForm';
 import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm';
@@ -33,12 +34,7 @@ export default function Main({ activeMenuKey, user }: MainProps) {
                     />
                 );
             case 'appearance':
-                return (
-                    <CustomForm
-                        title="Appearance"
-                        description="Customize the look and feel."
-                    />
-                );
+                return <AppearanceForm />;
             // ... case lainnya
             default:
                 // Tampilkan Public Profile sebagai default jika key tidak cocok

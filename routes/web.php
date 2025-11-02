@@ -21,11 +21,11 @@ Route::get('/admin/dashboard', function () {
     return Inertia::render('Admin/Dashboard', [
         'pageTitle' => 'Dashboard', // <-- Kirim judul sebagai prop
     ]);
-})->name('admin.dashboard');
+})->middleware(['auth', 'verified'])->name('admin.dashboard');
 
 // Route Chat
 Route::get('/admin/chat', function () {
-    return Inertia::render('Admin/Chat', [
+    return Inertia::render('Chat/Chat', [
         'pageTitle' => 'Messages', // <-- Kirim judul sebagai prop
     ]);
 })->name('admin.chat');
@@ -38,10 +38,6 @@ Route::get('/admin/profile', function () {
         // Kirim data lain jika perlu (misal: history)
     ]);
 })->name('admin.profile');
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

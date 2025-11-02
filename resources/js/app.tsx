@@ -1,4 +1,5 @@
 import '../css/app.css';
+import '../css/style.css';
 import './bootstrap';
 
 import '@radix-ui/themes/styles.css';
@@ -9,6 +10,7 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 
 import { Theme } from '@radix-ui/themes';
 
+import { BackgroundThemeProvider } from '@/Context/BackgroundThemeContext';
 import { ThemeProvider, useTheme } from '@/Context/ThemeContext';
 import { ReactNode } from 'react';
 
@@ -50,10 +52,11 @@ createInertiaApp({
 
         createRoot(el).render(
             <ThemeProvider storageKey="futurisme-theme">
-                {/* 5. Gunakan Wrapper baru kita */}
-                <RadixThemeWrapper>
-                    <App {...props} />
-                </RadixThemeWrapper>
+                <BackgroundThemeProvider>
+                    <RadixThemeWrapper>
+                        <App {...props} />
+                    </RadixThemeWrapper>
+                </BackgroundThemeProvider>
             </ThemeProvider>,
         );
     },

@@ -1,7 +1,7 @@
 // resources/js/Components/Chat/Ui/ChatHeader.tsx
 import { Icon } from '@iconify/react';
 import { Avatar, Box, Flex, IconButton, Text } from '@radix-ui/themes';
-import { ChatContact } from './ChatListItem'; // Impor interface
+import { ChatContact } from './Ui/ChatListItem'; // Impor interface
 
 interface ChatHeaderProps {
     contact: ChatContact | null; // Kontak yang sedang dipilih

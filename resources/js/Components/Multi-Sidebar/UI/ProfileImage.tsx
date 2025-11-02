@@ -1,6 +1,4 @@
-// resources/js/Components/Profile/UI/ProfileImage.tsx
-
-import { User } from '@/types'; // Import User type
+import { User } from '@/types';
 import { Icon } from '@iconify/react';
 import { useForm } from '@inertiajs/react';
 import {
@@ -19,16 +17,14 @@ interface ProfileImageProps {
 }
 
 export default function ProfileImage({ user }: ProfileImageProps) {
-    // ... (state dan fungsi handle* tetap sama)
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
-    const fileInputRef = useRef<HTMLInputElement>(null); // Ref for file input
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         avatar: null as File | null,
     });
 
-    // Effect to clean up object URL when previewImage changes or component unmounts
     useEffect(() => {
         return () => {
             if (previewImage) {
@@ -40,7 +36,6 @@ export default function ProfileImage({ user }: ProfileImageProps) {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files ? e.target.files[0] : null;
 
-        // Revoke previous preview URL if it exists before creating a new one
         if (previewImage) {
             URL.revokeObjectURL(previewImage);
         }
@@ -56,29 +51,26 @@ export default function ProfileImage({ user }: ProfileImageProps) {
 
     const handleCloseDialog = () => {
         setDialogOpen(false);
-        reset('avatar'); // Reset only the avatar field
-        setPreviewImage(null); // Clear preview image
+        reset('avatar');
+        setPreviewImage(null);
         if (fileInputRef.current) {
-            fileInputRef.current.value = ''; // Clear file input value
+            fileInputRef.current.value = '';
         }
     };
 
     const handleOpenChange = (open: boolean) => {
         if (!open) {
-            handleCloseDialog(); // If dialog is closing, reset everything
+            handleCloseDialog();
         }
         setDialogOpen(open);
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Assuming a route named 'profile.update.avatar' exists in your Inertia.js setup
         post(route('profile.update.avatar'), {
             onSuccess: () => {
-                handleCloseDialog(); // Close dialog and reset on success
+                handleCloseDialog();
             },
-            // onError is implicitly handled by `errors` object from useForm
-            // You could add specific error handling here if needed
         });
     };
 
@@ -94,21 +86,16 @@ export default function ProfileImage({ user }: ProfileImageProps) {
                     fallback="?"
                     className="bg-gray-200 shadow-md dark:bg-gray-700"
                 />
-                {/* Tombol edit bisa disembunyikan jika user tidak ada */}
             </Box>
         );
     }
 
-    // Jika user ada, lanjutkan seperti biasa
     const userName = user.name || 'User';
     const userInitial = userName.charAt(0).toUpperCase() || 'U';
-    // Asumsikan backend mengirimkan URL lengkap.
-    // Jika tidak, Anda mungkin perlu menambahkan prefix di sini.
     const userAvatarUrl = user.avatar_url || undefined;
 
     return (
         <Box className="relative inline-block">
-            {/* Avatar Pengguna */}
             <Avatar
                 radius="full"
                 size="7"
@@ -117,7 +104,6 @@ export default function ProfileImage({ user }: ProfileImageProps) {
                 className="shadow-md"
             />
 
-            {/* Tombol Edit */}
             <IconButton
                 size="1"
                 radius="full"
@@ -129,7 +115,6 @@ export default function ProfileImage({ user }: ProfileImageProps) {
                 <Icon icon="heroicons:pencil-solid" className="h-3 w-3" />
             </IconButton>
 
-            {/* Dialog */}
             <Dialog.Root open={isDialogOpen} onOpenChange={handleOpenChange}>
                 <Dialog.Content style={{ maxWidth: 450 }}>
                     <Dialog.Title>Upload Profile Picture</Dialog.Title>
@@ -145,11 +130,10 @@ export default function ProfileImage({ user }: ProfileImageProps) {
                                     radius="full"
                                     size="7"
                                     src={previewImage || userAvatarUrl}
-                                    fallback={userInitial} // Baris 92 sekarang aman
+                                    fallback={userInitial}
                                     className="border-2 border-dashed border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-700"
                                 />
                             </Flex>
-                            {/* Custom file input trigger */}
                             <Button
                                 type="button"
                                 variant="soft"
@@ -162,8 +146,8 @@ export default function ProfileImage({ user }: ProfileImageProps) {
                                 type="file"
                                 accept="image/png, image/jpeg, image/webp"
                                 onChange={handleFileChange}
-                                ref={fileInputRef} // Attach ref
-                                className="sr-only" // Visually hide the actual input
+                                ref={fileInputRef}
+                                className="sr-only"
                             />
                             {data.avatar && (
                                 <Text size="1" color="gray">
