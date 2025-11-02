@@ -2,6 +2,7 @@
 import { Flex } from '@radix-ui/themes';
 
 // Impor form/konten dari Partials
+import AccountProfileForm from '@/Pages/Profile/Partials/AccountProfileForm';
 import AccountDeleteForm from '@/Pages/Profile/Partials/AccountDeleteForm';
 import AppearanceForm from '@/Pages/Profile/Partials/AppearanceForm';
 import CustomForm from '@/Pages/Profile/Partials/CustomForm'; // Placeholder untuk form lain
@@ -19,6 +20,8 @@ interface MainProps {
 export default function Main({ activeMenuKey, user }: MainProps) {
     const renderContent = () => {
         switch (activeMenuKey) {
+            case 'account-profile':
+                return <AccountProfileForm />;
             case 'public-profile':
                 return <PublicProfileForm user={user} />;
             case 'password-auth':

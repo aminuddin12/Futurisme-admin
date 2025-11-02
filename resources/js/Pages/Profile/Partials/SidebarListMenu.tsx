@@ -16,6 +16,11 @@ export const sidebarMenuData: ProfileSidebarItemGroup[] = [
         title: 'Account',
         items: [
             {
+                key: 'account-profile',
+                label: 'Account Profile',
+                icon: 'heroicons:identification',
+            },
+            {
                 key: 'public-profile',
                 label: 'Public Profile',
                 icon: 'heroicons:user-circle',

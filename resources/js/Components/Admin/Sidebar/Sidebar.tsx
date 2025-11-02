@@ -67,8 +67,10 @@ const menuItems: MenuItem[] = [
     {
         name: 'User Profile',
         icon: 'heroicons:user-solid',
-        href: route('admin.profile'),
-        routeName: 'admin.profile',
+        submenu: [
+            { name: 'Account', href: route('admin.profile'), routeName: 'admin.profile' },
+            { name: 'Settings', href: route('admin.profile.settings'), routeName: 'admin.profile.settings' },
+        ],
     },
     {
         name: 'Task',

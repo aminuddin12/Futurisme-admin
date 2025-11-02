@@ -79,8 +79,6 @@ class RolesAndPermissionsSeeder extends Seeder
         $admin = Insider::firstOrCreate(
             ['email' => 'admin@example.com'], // 1. Atribut untuk mencari user
             [                                 // 2. Atribut untuk membuat user jika tidak ada
-                'front_name' => 'Admin',
-                'last_name' => 'User',
                 'username' => 'administratos',
                 'password' => $password
             ]

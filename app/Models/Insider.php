@@ -25,8 +25,6 @@ class Insider extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'front_name',
-        'last_name',
         'username',
         'email',
         'password',
@@ -56,19 +54,37 @@ class Insider extends Authenticatable
     }
 
     /**
-     * Get the user's full name.
+     * Get the profile associated with the insider.
      */
-    public function getNameAttribute(): string
+    public function profile()
     {
-        return "{$this->front_name} {$this->last_name}";
+        return $this->hasOne(Profile::class);
     }
 
     /**
-     * Memeriksa apakah pengguna memiliki izin tertentu melalui peran mereka.
-     *
-     * @param \App\Models\Permission|string $permission
-     * @return bool
+     * Get the wages for the insider.
      */
+    public function wages()
+    {
+        return $this->hasMany(Wage::class);
+    }
+
+    /**
+     * Get the attendances for the insider.
+     */
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
+    /**
+     * Get the leaves for the insider.
+     */
+    public function leaves()
+    {
+        return $this->hasMany(Leave::class);
+    }
+
     public function hasPermissionTo($permission): bool
     {
         // Menentukan nama permission, baik dari objek maupun string.

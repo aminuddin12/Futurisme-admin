@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
         $this->call([
             RolesAndPermissionsSeeder::class,
+            WebConfigSeeder::class,
+            WebConfigDataSeeder::class,
             // Anda bisa menambahkan seeder lain di sini jika perlu
         ]);
 
