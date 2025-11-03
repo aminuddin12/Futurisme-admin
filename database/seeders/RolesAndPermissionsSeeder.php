@@ -36,18 +36,18 @@ class RolesAndPermissionsSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::findOrCreate($permission, 'web'); // Guard 'web' adalah default
+            Permission::findOrCreate($permission, 'insider'); // Guard 'insider' adalah default
         }
 
         // --- Define Roles ---
-        $adminRole = Role::findOrCreate('Admin', 'web');
-        $insiderRole = Role::findOrCreate('Insider', 'web');
-        $vendorOwnerRole = Role::findOrCreate('Vendor Owner', 'web');
-        $vendorTeamRole = Role::findOrCreate('Vendor Team', 'web');
-        $merchantOwnerRole = Role::findOrCreate('Merchant Owner', 'web');
-        $merchantTeamRole = Role::findOrCreate('Merchant Team', 'web');
-        $driverRole = Role::findOrCreate('Driver', 'web');
-        $customerRole = Role::findOrCreate('Customer', 'web'); // Default Role
+        $adminRole = Role::findOrCreate('Admin', 'insider');
+        $insiderRole = Role::findOrCreate('Insider', 'insider');
+        $vendorOwnerRole = Role::findOrCreate('Vendor Owner', 'insider');
+        $vendorTeamRole = Role::findOrCreate('Vendor Team', 'insider');
+        $merchantOwnerRole = Role::findOrCreate('Merchant Owner', 'insider');
+        $merchantTeamRole = Role::findOrCreate('Merchant Team', 'insider');
+        $driverRole = Role::findOrCreate('Driver', 'insider');
+        $customerRole = Role::findOrCreate('Customer', 'insider'); // Default Role
 
         // --- Assign Permissions to Roles ---
         // Admin gets all permissions (handled by Gate::before later)

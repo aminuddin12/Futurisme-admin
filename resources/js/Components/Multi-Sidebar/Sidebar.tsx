@@ -18,7 +18,7 @@ export default function Sidebar({
         <Flex
             direction="column"
             gap="1"
-            className="sticky top-4 h-fit w-auto flex-shrink-0 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+            className="w-80px sticky top-4 h-fit flex-shrink-0 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"
         >
             {menuGroups.map((group, groupIndex) => (
                 <div key={group.title}>
