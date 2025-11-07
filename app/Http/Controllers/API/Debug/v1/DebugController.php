@@ -10,6 +10,7 @@ class DebugController extends Controller
 {
     /**
      * Menampilkan informasi debug dasar.
+     * dan sebagai pusat pengetesan API
      */
     public function index(): JsonResponse
     {

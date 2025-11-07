@@ -10,6 +10,7 @@ class ApiGateMiddleware
 {
     /**
      * Handle an incoming request.
+     * saya ingin menambahkan config terlebih dahulu
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */

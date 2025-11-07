@@ -16,8 +16,10 @@ class LoginController extends Controller
      */
     public function login(Request $request): JsonResponse
     {
+        // saya ingin validasi di sini menentukan login otomatis berupa email dan username dan memndapatkan uIdentity
+        // setelah mendapatkan uIdentity, lalu memanggil ke model UserPasswd, menyocokkan passwoord dengan status newPass
         $request->validate([
-            'uIdentity' => 'required|string', // Bisa username atau email
+            'username' => 'required|string', // Bisa username atau email
             'password' => 'required|string',
         ]);
 

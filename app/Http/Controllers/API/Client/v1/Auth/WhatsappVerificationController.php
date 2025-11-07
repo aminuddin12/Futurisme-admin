@@ -10,6 +10,7 @@ class WhatsappVerificationController extends Controller
 {
     /**
      * Mengirim kode OTP ke nomor Whatsapp user.
+     * tapi saya ingin nantinya verifikasi dengan whatsapp API juga agar sistem berjalan dengan baik
      */
     public function sendOtp(Request $request): JsonResponse
     {

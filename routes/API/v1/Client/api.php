@@ -7,6 +7,8 @@ use App\Http\Controllers\API\Client\v1\Auth\EmailVerificationController;
 use App\Http\Controllers\API\Client\v1\Auth\WhatsappVerificationController;
 use Illuminate\Http\Request;
 
+
+// Saya ingin Menambahkan Gerbang sebelum mengakses Login untuk Pengakses mendapatkan Token terlebih dahulu sebelum Membuka Rute API
 // Rute Publik (Autentikasi)
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);

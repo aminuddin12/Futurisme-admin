@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 class Controller extends BaseController
 {
     /**
-     * Menampilkan pesan sukses.
+     * Menampilkan pesan sukses. untuk Test Sementara
      */
     public function index(): JsonResponse
     {

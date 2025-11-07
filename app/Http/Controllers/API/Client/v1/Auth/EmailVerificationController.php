@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 class EmailVerificationController extends Controller
 {
     /**
-     * Kirim ulang link verifikasi email.
+     * Kirim ulang link verifikasi email jika user menambahkan email baru. atau membuat email cadangan di UserSecondIdentity
      */
     public function sendVerificationEmail(Request $request): JsonResponse
     {

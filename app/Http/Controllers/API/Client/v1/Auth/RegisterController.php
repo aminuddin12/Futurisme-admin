@@ -17,6 +17,11 @@ class RegisterController extends Controller
      */
     public function register(Request $request): JsonResponse
     {
+        /**
+         * Saya ingin setelah data registrasi berhasil di kirim ke server,
+         * data yang perlu di masukkan di tabel user_identities berupa data yang dikirim dari frontend
+         * lalu untuk password disimpan di user_passwds dengan status newPass
+         */
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
