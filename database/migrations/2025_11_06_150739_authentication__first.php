@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('user_identities', function (Blueprint $table) {
             $table->id();
-            $table->string('uIdentification', 16)->unique();
+            $table->string('uIdentification', 16)->unique()-> primary();
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('profile_img')->nullable();
-            $table->string('phoneRegionale', 10)->nullable();
-            $table->string('phoneNumber', 25)->unique()->nullable();
+            $table->string('phone_region', 10)->nullable();
+            $table->string('phone_number', 25)->unique()->nullable();
             $table->json('social_login')->nullable();
             $table->string('status', 20)->default('offline'); // online, offline, suspended, banned
             $table->boolean('verified')->default(false);
@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('status', 20)->default('newPass'); // newPass, oldPass
             $table->rememberToken();
             $table->timestamps();
+            $table->unique(['uIdentification', 'status']);
         });
 
         Schema::create('user_second_identities', function (Blueprint $table) {
@@ -49,8 +50,8 @@ return new class extends Migration
             $table->string('uIdentification', 16)->index();
             $table->ipAddress()->nullable();
             $table->text('user_agent')->nullable();
-            $table->string('device_id')->nullable()->index();
-            $table->string('device_fingerprint')->nullable()->index();
+            $table->string('device_id', 191)->nullable()->index();
+            $table->string('device_fingerprint', 191)->nullable()->index();
             $table->string('os_name')->nullable();
             $table->string('app_key'); // Kunci aplikasi yg digunakan (e.g., 'web_admin', 'mobile_customer')
             $table->string('app_version'); // Versi aplikasi
@@ -64,10 +65,11 @@ return new class extends Migration
 
         Schema::create('user_passwd_reset_tokens', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->nullable()->index();
-            $table->string('email')->nullable()->index();
-            $table->string('phoneRegionale', 10)->nullable();
-            $table->string('phoneNumber', 25)->nullable();
+            // $table->string('username')->nullable()->index();
+            // $table->string('email')->nullable()->index();
+            // $table->string('phoneRegionale', 10)->nullable();
+            // $table->string('phoneNumber', 25)->nullable();
+            $table->string('uIdentification', 16)->nullable()->index();
             $table->string('token')->unique();
             $table->timestamp('created_at')->nullable();
             // Tidak ada updated_at
