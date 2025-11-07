@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
-use App\Models\User;
+use App\Models\Client\UserIdentity as User;
 
 class RegisterController extends Controller
 {
