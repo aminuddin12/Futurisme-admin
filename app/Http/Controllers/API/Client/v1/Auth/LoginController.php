@@ -3,64 +3,78 @@
 namespace App\Http\Controllers\API\Client\v1\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
+use App\Helpers\DateTimeFormatHelper;
 use App\Models\Client\UserIdentity as User;
+use App\Models\Client\UserPasswd;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\JsonResponse;
 
 class LoginController extends Controller
 {
-    /**
-     * Menangani permintaan login.
-     */
     public function login(Request $request): JsonResponse
     {
-        // saya ingin validasi di sini menentukan login otomatis berupa email dan username dan memndapatkan uIdentity
-        // setelah mendapatkan uIdentity, lalu memanggil ke model UserPasswd, menyocokkan passwoord dengan status newPass
-        $request->validate([
-            'username' => 'required|string', // Bisa username atau email
-            'password' => 'required|string',
+        $data = $request->validate([
+            'credential' => 'required|string',
+            'password'   => 'required|string',
         ]);
 
-        // Coba login via email
-        $credentials = [
-            'email' => $request->uIdentity,
-            'password' => $request->password
-        ];
+        $credential = $data['credential'];
+        $password   = $data['password'];
 
-        // Jika gagal, coba login via username
-        if (!Auth::attempt($credentials)) {
-            $credentials = [
-                'username' => $request->uIdentity,
-                'password' => $request->password
-            ];
-
-            if (!Auth::attempt($credentials)) {
-                throw ValidationException::withMessages([
-                    'identity' => ['Kredensial yang diberikan tidak cocok dengan data kami.'],
-                ]);
-            }
+        if (filter_var($credential, FILTER_VALIDATE_EMAIL)) {
+            $user = User::where('email', $credential)->first();
+        } elseif (preg_match('/^[0-9]+$/', $credential)) {
+            $user = User::where('phone', $credential)->first();
+        } else {
+            $user = User::where('username', $credential)->first();
         }
 
-        /** @var User $user */
-        $user = Auth::user();
-        $token = $user->createToken('client-auth-token')->plainTextToken;
+        if (! $user) {
+            return response()->json([
+                'message' => 'Data User yang anda maksudkan tidak terdaftar',
+            ], 404);
+        }
+
+        $identity = User::where('uIdentities', $user->uIdentities)->first();
+
+        if (! $identity) {
+            return response()->json([
+                'message' => 'Data identitas untuk pengguna ini tidak ditemukan',
+            ], 404);
+        }
+
+        $userPassNew = UserPasswd::where('uIdentities', $identity->uIdentity ?? $identity->uIdentities)
+            ->where('status', 'newPass')
+            ->first();
+
+        if ($userPassNew && Hash::check($password, $userPassNew->password)) {
+            return response()->json([
+                'message'     => 'Login berhasil',
+                'kode'        => 200,
+                'user_id'     => $user->id,
+                'uIdentities' => $identity->uIdentity ?? $identity->uIdentities,
+            ], 200);
+        }
+
+        $userPassOld = UserPasswd::where('uIdentities', $identity->uIdentity ?? $identity->uIdentities)
+            ->where('status', 'oldPass')
+            ->orderByDesc('updated_at')
+            ->first();
+
+        if ($userPassOld && Hash::check($password, $userPassOld->password)) {
+            $lastUsed = DateTimeFormatHelper::diffSimple($userPassOld->updated_at);
+
+            return response()->json([
+                'message' => 'Anda menggunakan sandi lama anda yang dipakai terakhir kali ' . $lastUsed . ' yang lalu',
+                'kode'    => 201,
+                'user_id' => $user->id,
+                'uIdentities' => $identity->uIdentity ?? $identity->uIdentities,
+            ], 200);
+        }
 
         return response()->json([
-            'message' => 'Login berhasil',
-            'user' => $user,
-            'token' => $token,
-        ]);
-    }
-
-    /**
-     * Menangani permintaan logout.
-     */
-    public function logout(Request $request): JsonResponse
-    {
-        $request->user()->currentAccessToken()->delete();
-
-        return response()->json(['message' => 'Logout berhasil']);
+            'message' => 'Password anda salah',
+        ], 401);
     }
 }
