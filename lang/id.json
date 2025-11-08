@@ -1,0 +1,7 @@
+{
+  "auth.registration_success": "Registrasi anda sudah berhasil. Mohon verifikasi email untuk menggunakan layanan kami.",
+  "auth.registration_failed": "Registrasi gagal. Silakan coba lagi.",
+  "auth.login_success": "Login berhasil.",
+  "auth.invalid_credentials": "Kredensial tidak valid.",
+  "auth.password_old": "Anda menggunakan sandi lama anda yang dipakai terakhir kali :time yang lalu."
+}

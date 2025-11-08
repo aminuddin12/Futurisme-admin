@@ -42,6 +42,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'api.gate' => \App\Http\Middleware\ApiGateMiddleware::class,
             'role' => EnsureUserHasRole::class,
+            'lang' => \App\Http\Middleware\SetLanguage::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

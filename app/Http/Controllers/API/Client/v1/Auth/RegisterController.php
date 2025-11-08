@@ -4,55 +4,61 @@ namespace App\Http\Controllers\API\Client\v1\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules;
-use App\Models\Client\UserIdentity as User;
-use App\Models\Client\UserPasswd as Passwd;
+use App\Models\Client\UserIdentity;
+use App\Models\Client\UserPasswd;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
-    /**
-     * Menangani permintaan registrasi user baru.
-     */
-    public function register(Request $request): JsonResponse
+    public function register(Request $request)
     {
-        /**
-         * Saya ingin setelah data registrasi berhasil di kirim ke server,
-         * data yang perlu di masukkan di tabel user_identities berupa data yang dikirim dari frontend
-         * lalu untuk password disimpan di user_passwds dengan status newPass
-         */
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'username' => 'required|string|unique:user_identities,username',
+            'email' => 'required|email|unique:user_identities,email',
+            'password' => 'required|min:8',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return response()->json([
+                'status' => 'error',
+                'message' => $validator->errors()->first(),
+            ], 422);
         }
 
-        $user = User::create([
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        DB::beginTransaction();
+        try {
+            $userIdentity = UserIdentity::create([
+                'username' => $request->username,
+                'email' => $request->email,
+                'phone' => $request->phone ?? null,
+                'status' => 'pending',
+            ]);
 
-        // Berikan role default jika ada (misal: 'client')
-        // $user->assignRole('client');
+            UserPasswd::create([
+                'uIdentities' => $userIdentity->uIdentification,
+                'password' => Hash::make($request->password),
+                'status' => 'newPass',
+            ]);
 
-        // Kirim email verifikasi (jika diaktifkan)
-        // event(new \Illuminate\Auth\Events\Registered($user));
+            DB::commit();
 
-        $token = $user->createToken('client-auth-token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'Registrasi berhasil. Silakan verifikasi email Anda.',
-            'user' => $user,
-            'token' => $token
-        ], 201);
+            return response()->json([
+                'status' => 'success',
+                'message' => __('auth.registration_success'),
+                'data' => [
+                    'uIdentification' => $userIdentity->uIdentification,
+                    'email' => $userIdentity->email,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 'error',
+                'message' => __('auth.registration_failed'),
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

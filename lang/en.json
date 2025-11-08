@@ -1,0 +1,7 @@
+{
+  "auth.registration_success": "Your registration was successful. Please verify your email to use our service.",
+  "auth.registration_failed": "Registration failed. Please try again.",
+  "auth.login_success": "Login successful.",
+  "auth.invalid_credentials": "Invalid credentials.",
+  "auth.password_old": "You are using your old password from :time ago."
+}
