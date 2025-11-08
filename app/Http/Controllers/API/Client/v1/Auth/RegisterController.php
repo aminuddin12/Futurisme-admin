@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 use App\Models\Client\UserIdentity as User;
+use App\Models\Client\UserPasswd as Passwd;
 
 class RegisterController extends Controller
 {
