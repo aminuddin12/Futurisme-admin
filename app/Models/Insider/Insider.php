@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Insider;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -96,7 +96,7 @@ class Insider extends Authenticatable
         }
 
         // Memeriksa apakah ada di antara peran pengguna yang memiliki izin dengan nama yang cocok.
-        return $this->roles()->whereHas('permissions', function ($query) use ($permission) {
+        return $this->roles()->whereHas('permissions', function ($query) use ($permissionName) {
             $query->where('name', $permissionName);
         })->exists();
     }

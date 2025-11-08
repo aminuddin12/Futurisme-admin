@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Insider;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Wage extends Model
+class Position extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -15,7 +15,7 @@ class Wage extends Model
      *
      * @var string
      */
-    protected $table = 'wages';
+    protected $table = 'positions';
 
     /**
      * The attributes that are mass assignable.
@@ -23,20 +23,16 @@ class Wage extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'insider_id',
-        'period',
-        'basic_salary',
-        'allowance',
-        'salary_deduction',
-        'total_salary',
-        'status',
+        'position_name',
+        'description',
+        'image_url',
     ];
 
     /**
-     * Get the insider that owns the wage.
+     * Get the profiles for the position.
      */
-    public function insider()
+    public function profiles()
     {
-        return $this->belongsTo(Insider::class);
+        return $this->hasMany(Profile::class);
     }
 }

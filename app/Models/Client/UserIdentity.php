@@ -5,12 +5,14 @@ namespace App\Models\Client;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class UserIdentity extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable, HasRoles;
 
-    protected $table = 'user_identities';
+    protected $table = 'users';
 
     protected $fillable = [
         'username',

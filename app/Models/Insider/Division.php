@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Insider;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Position extends Model
+class Division extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -15,7 +15,7 @@ class Position extends Model
      *
      * @var string
      */
-    protected $table = 'positions';
+    protected $table = 'divisions';
 
     /**
      * The attributes that are mass assignable.
@@ -23,13 +23,13 @@ class Position extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'position_name',
+        'division_name',
         'description',
         'image_url',
     ];
 
     /**
-     * Get the profiles for the position.
+     * Get the profiles for the division.
      */
     public function profiles()
     {

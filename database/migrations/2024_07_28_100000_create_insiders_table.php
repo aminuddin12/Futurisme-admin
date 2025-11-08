@@ -61,13 +61,14 @@ return new class extends Migration
             $table->string('house_number_2')->nullable();
             $table->string('street');
             $table->text('additional_address')->nullable();
+            $table->string('maps_location')->nullable();
             $table->date('birth_date')->nullable();
             $table->string('birth_location')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('face_pict')->nullable();
             $table->date('entry_date');
             $table->foreignId('position_id');
-            $table->foreignId('division_id'); // Hanya definisikan kolom
+            $table->foreignId('division_id');
             $table->timestamps();
             $table->softDeletes();
 

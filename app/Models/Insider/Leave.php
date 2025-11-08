@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Insider;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Attendance extends Model
+class Leave extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -15,7 +15,7 @@ class Attendance extends Model
      *
      * @var string
      */
-    protected $table = 'attendances';
+    protected $table = 'leaves';
 
     /**
      * The attributes that are mass assignable.
@@ -24,11 +24,12 @@ class Attendance extends Model
      */
     protected $fillable = [
         'insider_id',
-        'date',
-        'time_in',
-        'time_out',
+        'submission_date',
+        'start_date',
+        'end_date',
+        'type_leave',
+        'reason',
         'status',
-        'description',
     ];
 
     /**
@@ -37,11 +38,13 @@ class Attendance extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'date' => 'date',
+        'submission_date' => 'date',
+        'start_date' => 'date',
+        'end_date' => 'date',
     ];
 
     /**
-     * Get the insider that owns the attendance.
+     * Get the insider that owns the leave.
      */
     public function insider()
     {
