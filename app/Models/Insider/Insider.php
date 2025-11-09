@@ -21,10 +21,6 @@ class Insider extends Authenticatable
         'username',
         'email',
         'password',
-        'status',
-        'role',
-        'created_by',
-        'updated_by',
         // tambahkan kolom lain yang boleh mass assign
     ];
 

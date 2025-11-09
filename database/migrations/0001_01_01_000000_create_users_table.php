@@ -49,14 +49,9 @@ return new class extends Migration
 
         Schema::create('users_passwd_reset_tokens', function (Blueprint $table) {
             $table->id();
-            // $table->string('username')->nullable()->index();
-            // $table->string('email')->nullable()->index();
-            // $table->string('phoneRegionale', 10)->nullable();
-            // $table->string('phoneNumber', 25)->nullable();
             $table->string('uIdentification', 16)->nullable()->index();
             $table->string('token')->unique();
             $table->timestamp('created_at')->nullable();
-            // Tidak ada updated_at
         });
 
          Schema::create('users_sessions', function (Blueprint $table) {
