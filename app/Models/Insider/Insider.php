@@ -2,32 +2,30 @@
 
 namespace App\Models\Insider;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Insider\Profile;
+use App\Helpers\IdentityHelper;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Hash;
 
 class Insider extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles, SoftDeletes;
+    use HasApiTokens, Notifiable, HasFactory;
 
-    /**
-     * The guard name for this model.
-     *
-     * @var string
-     */
-    protected $guard = 'insider';
+    protected $table = 'insiders';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
+        'uIdentification',
         'username',
         'email',
         'password',
+        'status',
+        'role',
+        'created_by',
+        'updated_by',
+        // tambahkan kolom lain yang boleh mass assign
     ];
 
     /**
@@ -53,12 +51,33 @@ class Insider extends Authenticatable
         ];
     }
 
+    protected static function booted()
+    {
+        static::creating(function ($insider) {
+            if (empty($insider->uIdentification)) {
+                // gunakan helpermu — pastikan method ini ada
+                $insider->uIdentification = IdentityHelper::generateUniqueUIdentification();
+            }
+
+            if (!empty($insider->password) && !\Illuminate\Support\Str::startsWith($insider->password, '$2y$')) {
+                // hash password jika belum di-hash
+                $insider->password = Hash::make($insider->password);
+            }
+        });
+
+        static::updating(function ($insider) {
+            if (isset($insider->password) && !\Illuminate\Support\Str::startsWith($insider->password, '$2y$')) {
+                $insider->password = Hash::make($insider->password);
+            }
+        });
+    }
+
     /**
      * Get the profile associated with the insider.
      */
     public function profile()
     {
-        return $this->hasOne(Profile::class);
+        return $this->hasOne(Profile::class, 'uIdentification', 'uIdentification');
     }
 
     /**
@@ -99,5 +118,18 @@ class Insider extends Authenticatable
         return $this->roles()->whereHas('permissions', function ($query) use ($permissionName) {
             $query->where('name', $permissionName);
         })->exists();
+    }
+
+    public function toPublicArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'uIdentification' => $this->uIdentification,
+            'username' => $this->username,
+            'email' => $this->email,
+            'status' => $this->status,
+            'role' => $this->role,
+            'profile' => $this->relationLoaded('profile') ? $this->profile->toArray() : $this->profile,
+        ];
     }
 }

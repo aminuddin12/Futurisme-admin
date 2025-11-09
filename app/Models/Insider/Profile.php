@@ -24,8 +24,13 @@ class Profile extends Model
      */
     protected $fillable = [
         'id_code',
-        'insider_id',
+        //'insider_id',
+        'uIdentification',
         'identity_number',
+        'identity_type',
+        'phone_region',
+        'phone_number',
+        'whatsapp_verified_status',
         'identity_pict',
         'first_name',
         'last_name',
@@ -64,7 +69,7 @@ class Profile extends Model
      */
     public function insider()
     {
-        return $this->belongsTo(Insider::class);
+        return $this->belongsTo(Insider::class, 'uIdentification', 'uIdentification');
     }
 
     /**

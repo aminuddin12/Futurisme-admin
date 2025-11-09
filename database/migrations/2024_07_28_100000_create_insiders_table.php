@@ -46,7 +46,7 @@ return new class extends Migration
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
             $table->string('uIdentification', 16)->unique();
-            $table->string('id_code')->unique()->comment('Employee ID Code');
+            $table->string('id_code')->unique()->nullable()->comment('Employee ID Code');
             // $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
             $table->string('identity_number')->nullable(); // KTP/Passport
             $table->string('identity_type')->nullable();
@@ -63,18 +63,18 @@ return new class extends Migration
             $table->string('sub_district')->nullable();
             $table->string('apartment')->nullable();
             $table->string('building_number')->nullable();
-            $table->string('house_number_1');
+            $table->string('house_number_1')->nullable();
             $table->string('house_number_2')->nullable();
-            $table->string('street');
+            $table->string('street')->nullable();
             $table->text('additional_address')->nullable();
             $table->string('maps_location')->nullable();
             $table->date('birth_date')->nullable();
             $table->string('birth_location')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('face_pict')->nullable();
-            $table->date('entry_date');
-            $table->foreignId('position_id');
-            $table->foreignId('division_id');
+            $table->date('entry_date')->default(now());
+            $table->foreignId('position_id')->nullable();
+            $table->foreignId('division_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
@@ -124,6 +124,12 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('insider_password_resets', function (Blueprint $table) {
+            $table->string('email')->primary();
+            $table->string('token');
+            $table->timestamp('created_at')->nullable();
+        });
     }
 
     /**
@@ -131,6 +137,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('insider_password_resets');
         Schema::dropIfExists('leaves');
         Schema::dropIfExists('attendances');
         Schema::dropIfExists('wages');

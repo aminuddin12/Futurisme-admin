@@ -13,6 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
 
         using: function (\Illuminate\Routing\Router $router) {
+
+            $router->middleware(['api', 'api.gate'])
+                ->prefix('api/v1/insider/')
+                ->group(base_path('routes/API/v1/Insider/api.php'));
+
             $router->middleware('api')
                 ->prefix('api/v1/client/')
                 ->group(base_path('routes/API/v1/Client/api.php'));
