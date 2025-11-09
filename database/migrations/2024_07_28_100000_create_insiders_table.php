@@ -49,9 +49,13 @@ return new class extends Migration
             $table->string('id_code')->unique()->comment('Employee ID Code');
             // $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
             $table->string('identity_number')->nullable(); // KTP/Passport
+            $table->string('identity_type')->nullable();
             $table->string('identity_pict')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('phone_region', 10)->nullable();
+            $table->string('phone_number', 25)->unique()->nullable();
+            $table->enum('whatsapp_verification_status', ['verified', 'unverified', 'pending'])->nullable();
             $table->string('country')->nullable();
             $table->string('state')->nullable();
             $table->string('regency')->nullable();
