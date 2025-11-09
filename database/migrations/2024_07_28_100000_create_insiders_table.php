@@ -55,7 +55,7 @@ return new class extends Migration
             $table->string('last_name')->nullable();
             $table->string('phone_region', 10)->nullable();
             $table->string('phone_number', 25)->unique()->nullable();
-            $table->enum('whatsapp_verification_status', ['verified', 'unverified', 'pending'])->nullable();
+            $table->enum('whatsapp_verification_status', ['verified', 'unverified', 'pending'])->default('unverified');
             $table->string('country')->nullable();
             $table->string('state')->nullable();
             $table->string('regency')->nullable();
