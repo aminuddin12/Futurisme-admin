@@ -9,6 +9,7 @@ use App\Models\Client\UserIdentity;
 use App\Models\Client\UserPasswd;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\LangHelper;
 
 class RegisterController extends Controller
 {
@@ -46,7 +47,7 @@ class RegisterController extends Controller
 
             return response()->json([
                 'status' => 'success',
-                'message' => __('auth.registration_success'),
+                'message' => LangHelper::msg('auth.registration_success'),
                 'data' => [
                     'uIdentification' => $userIdentity->uIdentification,
                     'email' => $userIdentity->email,
@@ -56,7 +57,7 @@ class RegisterController extends Controller
             DB::rollBack();
             return response()->json([
                 'status' => 'error',
-                'message' => __('auth.registration_failed'),
+                'message' => LangHelper::msg('auth.registration_failed'),
                 'error' => $e->getMessage(),
             ], 500);
         }

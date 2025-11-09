@@ -8,17 +8,25 @@ use Illuminate\Support\Facades\App;
 
 class SetLanguage
 {
+    /**
+     * Handle an incoming request.
+     */
     public function handle(Request $request, Closure $next)
     {
-        // Ambil parameter lang dari request, header, atau default ke 'en'
-        $lang = $request->input('lang', $request->header('Accept-Language', 'en'));
+        // Ambil parameter lang dari input (body / query / header)
+        $lang = $request->input('lang') ??
+                $request->header('Accept-Language', 'en');
 
-        // Jika bahasa tersedia di folder lang/
-        if (in_array($lang, ['en', 'id'])) {
-            App::setLocale($lang);
-        } else {
-            App::setLocale('en');
+        // Pastikan hanya bahasa yang tersedia yang digunakan
+        $availableLangs = ['en', 'id'];
+        if (! in_array($lang, $availableLangs)) {
+            $lang = 'en';
         }
+
+        App::setLocale($lang);
+
+        // Simpan bahasa di request agar bisa digunakan di helper
+        $request->attributes->set('lang', $lang);
 
         return $next($request);
     }

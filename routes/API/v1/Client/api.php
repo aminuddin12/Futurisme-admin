@@ -1,4 +1,5 @@
 <?php
+// Lokasi file ini ada di /routes/API/v1/Client/api.php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\Client\v1\Auth\LoginController;
@@ -10,8 +11,8 @@ use Illuminate\Http\Request;
 
 // Saya ingin Menambahkan Gerbang sebelum mengakses Login untuk Pengakses mendapatkan Token terlebih dahulu sebelum Membuka Rute API
 // Rute Publik (Autentikasi)
-Route::post('/register', [RegisterController::class, 'register']);
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('register', [RegisterController::class, 'register']);
+Route::post('login', [LoginController::class, 'login']);
 
 // Rute Verifikasi (Whatsapp)
 Route::prefix('verify/whatsapp')->group(function () {
@@ -23,10 +24,10 @@ Route::prefix('verify/whatsapp')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
 
     // Logout
-    Route::post('/logout', [LoginController::class, 'logout']);
+    Route::post('logout', [LoginController::class, 'logout']);
 
     // Get User Profile
-    Route::get('/user', function (Request $request) {
+    Route::get('user', function (Request $request) {
         return $request->user();
     });
 

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('insiders', function (Blueprint $table) {
             $table->id();
+            $table->string('uIdentification', 16)->unique();
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -44,8 +45,9 @@ return new class extends Migration
         // Profile table with foreign keys
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
+            $table->string('uIdentification', 16)->unique();
             $table->string('id_code')->unique()->comment('Employee ID Code');
-            $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
+            // $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
             $table->string('identity_number')->nullable(); // KTP/Passport
             $table->string('identity_pict')->nullable();
             $table->string('first_name')->nullable();
@@ -80,7 +82,8 @@ return new class extends Migration
         // Additional related tables
         Schema::create('wages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
+            $table->string('uIdentification', 16)->unique();
+            // $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
             $table->string('period'); // e.g., "2025-10"
             $table->decimal('basic_salary', 15, 2);
             $table->decimal('allowance', 15, 2)->default(0);
@@ -93,7 +96,8 @@ return new class extends Migration
 
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
+            $table->string('uIdentification', 16)->unique();
+            // $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
             $table->date('date');
             $table->time('time_in')->nullable();
             $table->time('time_out')->nullable();
@@ -105,7 +109,8 @@ return new class extends Migration
 
         Schema::create('leaves', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
+            $table->string('uIdentification', 16)->unique();
+            // $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
             $table->date('submission_date');
             $table->date('start_date');
             $table->date('end_date');

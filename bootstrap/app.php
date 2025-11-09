@@ -14,22 +14,22 @@ return Application::configure(basePath: dirname(__DIR__))
 
         using: function (\Illuminate\Routing\Router $router) {
             $router->middleware('api')
-                ->prefix('api/client/v1')
+                ->prefix('api/v1/client/')
                 ->group(base_path('routes/API/v1/Client/api.php'));
 
             // WEB API (Pakai 'api.gate' kustom)
             $router->middleware(['api', 'api.gate'])
-                ->prefix('api/web/v1')
+                ->prefix('api/v1/web/')
                 ->group(base_path('routes/API/v1/web/api.php'));
 
             // MOBILE API (Pakai 'api.gate' kustom)
             $router->middleware(['api', 'api.gate'])
-                ->prefix('api/mobile/v1')
+                ->prefix('api/mobile/v1/')
                 ->group(base_path('routes/API/v1/Mobile/api.php'));
 
             // DEBUG API (Pakai 'api.gate' kustom)
             $router->middleware(['api', 'api.gate'])
-                ->prefix('api/debug/v1')
+                ->prefix('api/v1/debug/')
                 ->group(base_path('routes/API/v1/Debug/api.php'));
         }
     )
@@ -38,6 +38,9 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
             // Middleware kustom atau tambahan lainnya bisa ditambahkan di sini
+        ]);
+        $middleware->api(prepend: [
+            \App\Http\Middleware\SetLanguage::class,
         ]);
         $middleware->alias([
             'api.gate' => \App\Http\Middleware\ApiGateMiddleware::class,
