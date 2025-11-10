@@ -86,7 +86,7 @@ return [
 
         // 'vendors' => [
         //     'driver' => 'eloquent',
-        //     'model' => App\Models\Vendor::class,
+        //     'model' => App\Models\Vendor\VendorIdentity::class,
         // ],
     ],
 

@@ -15,7 +15,7 @@ class VendorIdentity extends Model
     protected $table = 'vendors';
 
     protected $fillable = [
-        'vIdentification',
+        //'vIdentification',
         'company_name',
         'email',
         'contact_person',
