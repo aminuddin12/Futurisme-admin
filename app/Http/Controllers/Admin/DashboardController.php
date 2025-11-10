@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\Role;
-use App\Models\Permission;
+use App\Models\Insider\Role;
+use App\Models\Insider\Permission;
 
 class DashboardController extends Controller
 {

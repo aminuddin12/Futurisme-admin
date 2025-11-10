@@ -5,6 +5,7 @@ namespace App\Models\Insider;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Helpers\ProfileCodeHelper;
 
 class Profile extends Model
 {
@@ -87,4 +88,10 @@ class Profile extends Model
     {
         return $this->belongsTo(Division::class);
     }
+
+    public function assignIdCodeIfApproved()
+    {
+        return ProfileCodeHelper::generateIfApproved($this);
+    }
+
 }
