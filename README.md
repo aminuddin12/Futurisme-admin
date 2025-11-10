@@ -1,66 +1,104 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+  
+  <!-- Ganti dengan logo proyek Anda jika ada -->
+  <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" alt="Laravel Logo" width="400">
+
+  <h1 align="center">Futurisme Admin Backend</h1>
+
+  <p align="center">
+    Sistem backend untuk manajemen "Insider" pada platform Futurisme.
+    <br />
+    <a href="#"><strong>Jelajahi Dokumentasi API »</strong></a>
+    <br />
+    <br />
+    <a href="#">Laporkan Bug</a>
+    ·
+    <a href="#">Minta Fitur Baru</a>
+  </p>
+</div>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status">
+  <img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version">
+  <img src="https://img.shields.io/packagist/l/laravel/framework" alt="License">
 </p>
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tentang Proyek
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Futurisme Admin Backend** adalah sebuah API service yang dirancang untuk menjadi tulang punggung sistem manajemen internal. Proyek ini menangani semua kebutuhan terkait data "Insider", mulai dari pendaftaran, autentikasi, manajemen profil, hingga fitur-fitur kepegawaian lainnya seperti absensi dan penggajian.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Dibangun dengan Laravel, API ini menawarkan struktur yang solid, aman, dan mudah untuk dikembangkan lebih lanjut.
 
-## Learning Laravel
+### Dibangun Dengan
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+*   [Laravel](https://laravel.com/)
+*   [Laravel Sanctum](https://laravel.com/docs/sanctum)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Memulai
 
-## Laravel Sponsors
+Untuk menjalankan salinan lokal proyek ini, ikuti langkah-langkah sederhana di bawah ini.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Prasyarat
 
-### Premium Partners
+Pastikan Anda telah menginstal perangkat lunak berikut:
+*   PHP (versi sesuai `composer.json`)
+*   Composer
+*   Database (misalnya MySQL, PostgreSQL)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Instalasi
+
+1.  **Clone repository**
+    ```sh
+    git clone https://github.com/your_username/futurisme-admin.git
+    cd futurisme-admin
+    ```
+2.  **Install dependensi PHP**
+    ```sh
+    composer install
+    ```
+3.  **Buat dan konfigurasi file `.env`**
+    Salin `.env.example` menjadi `.env` dan sesuaikan konfigurasi database Anda.
+    ```sh
+    cp .env.example .env
+    php artisan key:generate
+    ```
+4.  **Jalankan migrasi database**
+    ```sh
+    php artisan migrate
+    ```
+5.  **Jalankan server pengembangan**
+    ```sh
+    php artisan serve
+    ```
+    Server akan berjalan di `http://127.0.0.1:8000`.
+
+---
+
+## Ringkasan API Endpoint
+
+Berikut adalah beberapa endpoint utama yang tersedia.
+
+### Autentikasi
+*   `POST /api/v1/insider/register` - Mendaftarkan Insider baru.
+*   `POST /api/v1/insider/login` - Login untuk mendapatkan token akses.
+*   `POST /api/v1/insider/forgot-password` - Memulai proses reset password.
+*   `POST /api/v1/insider/reset-password` - Mengatur ulang password dengan token.
+
+### Pengguna (Memerlukan Autentikasi)
+*   `POST /api/v1/insider/logout` - Logout dan menghapus token saat ini.
+*   `GET /api/v1/insider/me` - Mendapatkan data profil dari Insider yang sedang login.
+
+Autentikasi ditangani menggunakan **Laravel Sanctum**. Sertakan `Bearer Token` yang didapat saat login pada *header* `Authorization` untuk mengakses *endpoint* yang dilindungi.
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Kontribusi adalah hal yang membuat komunitas *open source* menjadi tempat yang luar biasa untuk belajar, menginspirasi, dan berkreasi. Setiap kontribusi yang Anda berikan sangat **kami hargai**.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE.txt` untuk informasi lebih lanjut.
+
