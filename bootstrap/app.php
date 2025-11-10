@@ -29,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
             // MOBILE API (Pakai 'api.gate' kustom)
             $router->middleware(['api', 'api.gate'])
-                ->prefix('api/mobile/v1/')
+                ->prefix('api/v1/mobile/')
                 ->group(base_path('routes/API/v1/Mobile/api.php'));
 
             // DEBUG API (Pakai 'api.gate' kustom)

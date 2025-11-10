@@ -15,7 +15,7 @@ class Wage extends Model
      *
      * @var string
      */
-    protected $table = 'wages';
+    protected $table = 'iwages';
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +23,7 @@ class Wage extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'insider_id',
+        'iIdentification',
         'period',
         'basic_salary',
         'allowance',
@@ -37,6 +37,6 @@ class Wage extends Model
      */
     public function insider()
     {
-        return $this->belongsTo(Insider::class);
+        return $this->belongsTo(Insider::class, 'iIdentification', 'iIdentification');
     }
 }

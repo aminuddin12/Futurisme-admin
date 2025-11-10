@@ -15,7 +15,7 @@ class Attendance extends Model
      *
      * @var string
      */
-    protected $table = 'attendances';
+    protected $table = 'iattendances';
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +23,7 @@ class Attendance extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'insider_id',
+        'iIdentification',
         'date',
         'time_in',
         'time_out',
@@ -45,6 +45,6 @@ class Attendance extends Model
      */
     public function insider()
     {
-        return $this->belongsTo(Insider::class);
+        return $this->belongsTo(Insider::class, 'iIdentification', 'iIdentification');
     }
 }

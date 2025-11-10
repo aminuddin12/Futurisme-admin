@@ -15,7 +15,7 @@ class Division extends Model
      *
      * @var string
      */
-    protected $table = 'divisions';
+    protected $table = 'idivisions';
 
     /**
      * The attributes that are mass assignable.

@@ -16,7 +16,7 @@ class Profile extends Model
      *
      * @var string
      */
-    protected $table = 'profiles';
+    protected $table = 'iprofiles';
 
     /**
      * The attributes that are mass assignable.
@@ -26,7 +26,7 @@ class Profile extends Model
     protected $fillable = [
         'id_code',
         //'insider_id',
-        'uIdentification',
+        'iIdentification',
         'identity_number',
         'identity_type',
         'phone_region',
@@ -70,7 +70,7 @@ class Profile extends Model
      */
     public function insider()
     {
-        return $this->belongsTo(Insider::class, 'uIdentification', 'uIdentification');
+        return $this->belongsTo(Insider::class, 'iIdentification', 'iIdentification');
     }
 
     /**

@@ -15,7 +15,7 @@ class Leave extends Model
      *
      * @var string
      */
-    protected $table = 'leaves';
+    protected $table = 'ileaves';
 
     /**
      * The attributes that are mass assignable.
@@ -23,7 +23,7 @@ class Leave extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'insider_id',
+        'iIdentification',
         'submission_date',
         'start_date',
         'end_date',
@@ -48,6 +48,6 @@ class Leave extends Model
      */
     public function insider()
     {
-        return $this->belongsTo(Insider::class);
+        return $this->belongsTo(Insider::class, 'iIdentification', 'iIdentification');
     }
 }

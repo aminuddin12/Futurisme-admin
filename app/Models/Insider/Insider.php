@@ -17,7 +17,7 @@ class Insider extends Authenticatable
     protected $table = 'insiders';
 
     protected $fillable = [
-        'uIdentification',
+        'iIdentification',
         'username',
         'email',
         'password',
@@ -50,9 +50,9 @@ class Insider extends Authenticatable
     protected static function booted()
     {
         static::creating(function ($insider) {
-            if (empty($insider->uIdentification)) {
+            if (empty($insider->iIdentification)) {
                 // gunakan helpermu — pastikan method ini ada
-                $insider->uIdentification = IdentityHelper::generateUniqueUIdentification();
+                $insider->iIdentification = IdentityHelper::generateUniqueUIdentification();
             }
 
             if (!empty($insider->password) && !\Illuminate\Support\Str::startsWith($insider->password, '$2y$')) {
@@ -73,7 +73,7 @@ class Insider extends Authenticatable
      */
     public function profile()
     {
-        return $this->hasOne(Profile::class, 'uIdentification', 'uIdentification');
+        return $this->hasOne(Profile::class, 'iIdentification', 'iIdentification');
     }
 
     /**
@@ -81,7 +81,7 @@ class Insider extends Authenticatable
      */
     public function wages()
     {
-        return $this->hasMany(Wage::class);
+        return $this->hasMany(Wage::class, 'iIdentification', 'iIdentification');
     }
 
     /**
@@ -89,7 +89,7 @@ class Insider extends Authenticatable
      */
     public function attendances()
     {
-        return $this->hasMany(Attendance::class);
+        return $this->hasMany(Attendance::class, 'iIdentification', 'iIdentification');
     }
 
     /**
@@ -97,7 +97,7 @@ class Insider extends Authenticatable
      */
     public function leaves()
     {
-        return $this->hasMany(Leave::class);
+        return $this->hasMany(Leave::class, 'iIdentification', 'iIdentification');
     }
 
     public function hasPermissionTo($permission): bool
@@ -120,7 +120,7 @@ class Insider extends Authenticatable
     {
         return [
             'id' => $this->id,
-            'uIdentification' => $this->uIdentification,
+            'iIdentification' => $this->iIdentification,
             'username' => $this->username,
             'email' => $this->email,
             'status' => $this->status,

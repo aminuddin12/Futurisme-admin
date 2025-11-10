@@ -44,6 +44,16 @@ return [
             'driver' => 'session',
             'provider' => 'insiders',
         ],
+
+        'vendor' => [
+            'driver' => 'session',
+            'provider' => 'vendors',
+        ],
+
+        'client' => [
+            'driver' => 'session',
+            'provider' => 'clients',
+        ],
     ],
 
     /*
@@ -66,13 +76,18 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Client\UserIdentity::class,
         ],
 
         'insiders' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Insider::class,
+            'model' => App\Models\Insider\Insider::class,
         ],
+
+        // 'vendors' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\Vendor::class,
+        // ],
     ],
 
     /*
@@ -107,6 +122,19 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+        // 'vendors' => [
+        //     'provider' => 'vendors',
+        //     'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+        //     'expire' => 60,
+        //     'throttle' => 60,
+        // ],
+        // 'clients' => [
+        //     'provider' => 'clients',
+        //     'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+        //     'expire' => 60,
+        //     'throttle' => 60,
+        // ],
     ],
 
     /*

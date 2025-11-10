@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('insiders', function (Blueprint $table) {
             $table->id();
-            $table->string('uIdentification', 16)->unique();
+            $table->string('iIdentification', 16)->unique();
             $table->string('username')->unique();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
         });
 
         // Lookup tables
-        Schema::create('positions', function (Blueprint $table) {
+        Schema::create('ipositions', function (Blueprint $table) {
             $table->id();
             $table->string('position_name')->unique();
             $table->text('description')->nullable();
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('divisions', function (Blueprint $table) {
+        Schema::create('idivisions', function (Blueprint $table) {
             $table->id();
             $table->string('division_name')->unique();
             $table->text('description')->nullable();
@@ -43,9 +43,9 @@ return new class extends Migration
         });
 
         // Profile table with foreign keys
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('iprofiles', function (Blueprint $table) {
             $table->id();
-            $table->string('uIdentification', 16)->unique();
+            $table->string('iIdentification', 16)->unique();
             $table->string('id_code')->unique()->nullable()->comment('Employee ID Code');
             // $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
             $table->string('identity_number')->nullable(); // KTP/Passport
@@ -79,14 +79,14 @@ return new class extends Migration
             $table->softDeletes();
 
             // Definisikan foreign key secara manual untuk kejelasan
-            $table->foreign('position_id')->references('id')->on('positions');
-            $table->foreign('division_id')->references('id')->on('divisions');
+            $table->foreign('position_id')->references('id')->on('ipositions');
+            $table->foreign('division_id')->references('id')->on('idivisions');
         });
 
         // Additional related tables
-        Schema::create('wages', function (Blueprint $table) {
+        Schema::create('iwages', function (Blueprint $table) {
             $table->id();
-            $table->string('uIdentification', 16)->unique();
+            $table->string('iIdentification', 16)->unique();
             // $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
             $table->string('period'); // e.g., "2025-10"
             $table->decimal('basic_salary', 15, 2);
@@ -98,9 +98,9 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('attendances', function (Blueprint $table) {
+        Schema::create('iattendances', function (Blueprint $table) {
             $table->id();
-            $table->string('uIdentification', 16)->unique();
+            $table->string('iIdentification', 16)->unique();
             // $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
             $table->date('date');
             $table->time('time_in')->nullable();
@@ -111,9 +111,9 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        Schema::create('leaves', function (Blueprint $table) {
+        Schema::create('ileaves', function (Blueprint $table) {
             $table->id();
-            $table->string('uIdentification', 16)->unique();
+            $table->string('iIdentification', 16)->unique();
             // $table->foreignId('insider_id')->constrained('insiders')->cascadeOnDelete();
             $table->date('submission_date');
             $table->date('start_date');
@@ -138,12 +138,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('insider_password_resets');
-        Schema::dropIfExists('leaves');
-        Schema::dropIfExists('attendances');
-        Schema::dropIfExists('wages');
-        Schema::dropIfExists('profiles');
-        Schema::dropIfExists('divisions');
-        Schema::dropIfExists('positions');
+        Schema::dropIfExists('ileaves');
+        Schema::dropIfExists('iattendances');
+        Schema::dropIfExists('iwages');
+        Schema::dropIfExists('iprofiles');
+        Schema::dropIfExists('idivisions');
+        Schema::dropIfExists('ipositions');
         Schema::dropIfExists('insiders');
     }
 };
