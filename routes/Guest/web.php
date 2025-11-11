@@ -15,10 +15,10 @@ Route::get('/', function () {
 });
 
 // Muat rute otentikasi (login, register, dll.)
-require __DIR__.'/auth.php';
+// require __DIR__.'/auth.php';
 
 // Definisikan grup rute admin dengan middleware yang benar dan aman.
 // Middleware 'web' sudah otomatis diterapkan pada file ini.
-Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
-    require __DIR__.'/Admin.php';
-});
+// Route::middleware(['auth', 'role:Admin'])->prefix('admin')->name('admin.')->group(function () {
+//     require __DIR__.'/Admin.php';
+// });

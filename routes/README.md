@@ -8,8 +8,7 @@ Aplikasi ini memisahkan rute menjadi beberapa file untuk menjaga keteraturan dan
 
 ## Struktur Direktori Rute
 
-*   `routes/web.php`: Rute utama untuk antarmuka pengguna berbasis web.
-*   `routes/auth.php`: Rute-rute khusus untuk autentikasi pengguna web (login, register, reset password, dll.).
+*   `routes/Guest/web.php`: Rute utama untuk antarmuka pengguna berbasis web.
 *   `routes/Admin.php`: Rute-rute untuk panel administrasi, yang dimuat oleh `web.php`.
 *   `routes/API/v1/Insider/api.php`: Rute-rute untuk API manajemen "Insider".
 
@@ -25,30 +24,6 @@ File ini mendefinisikan rute-rute yang menangani antarmuka pengguna berbasis web
 | `GET`  | `/login`             | Menampilkan halaman login.                   | Disediakan oleh `routes/auth.php`.    |
 | `GET`  | `/register`          | Menampilkan halaman registrasi.              | Disediakan oleh `routes/auth.php`.    |
 | `ANY`  | `/admin/{...}`       | Rute-rute untuk panel administrasi.          | Memerlukan login & peran **Admin**.   |
-
----
-
-## Rute Autentikasi Web (`routes/auth.php`)
-
-File ini berisi rute-rute standar Laravel Breeze untuk proses autentikasi pengguna web, seperti pendaftaran, login, dan pengaturan ulang kata sandi.
-
-| Method | URI                               | Fungsi                                       | Middleware |
-| :----- | :-------------------------------- | :------------------------------------------- | :--------- |
-| `GET`  | `/register`                       | Menampilkan form pendaftaran.                | `guest`    |
-| `POST` | `/register`                       | Memproses pendaftaran pengguna baru.         | `guest`    |
-| `GET`  | `/login`                          | Menampilkan form login.                      | `guest`    |
-| `POST` | `/login`                          | Memproses permintaan login.                  | `guest`    |
-| `GET`  | `/forgot-password`                | Menampilkan form permintaan reset password.  | `guest`    |
-| `POST` | `/forgot-password`                | Mengirim link reset password ke email.       | `guest`    |
-| `GET`  | `/reset-password/{token}`         | Menampilkan form reset password.             | `guest`    |
-| `POST` | `/reset-password`                 | Memproses reset password.                    | `guest`    |
-| `GET`  | `/verify-email`                   | Menampilkan notifikasi verifikasi email.     | `auth`     |
-| `GET`  | `/verify-email/{id}/{hash}`       | Memverifikasi email pengguna.                | `auth`     |
-| `POST` | `/email/verification-notification`| Mengirim ulang notifikasi verifikasi email.  | `auth`     |
-| `GET`  | `/confirm-password`               | Menampilkan form konfirmasi password.        | `auth`     |
-| `POST` | `/confirm-password`               | Memproses konfirmasi password.               | `auth`     |
-| `PUT`  | `/password`                       | Memperbarui password pengguna.               | `auth`     |
-| `POST` | `/logout`                         | Logout pengguna.                             | `auth`     |
 
 ---
 
