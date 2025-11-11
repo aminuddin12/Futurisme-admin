@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API\Client\v1\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\APIController as Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 // use Illuminate\Foundation\Auth\EmailVerificationRequest;

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Vendor\Auth\ForgotPasswordController;
-use App\Http\Controllers\Vendor\Auth\ResetPasswordController;
+//use App\Http\Controllers\Vendor\Auth\ResetPasswordController;
 
 Route::prefix('vendor/password')
     ->name('vendor.auth.password.')
@@ -17,11 +17,6 @@ Route::prefix('vendor/password')
             ->name('email');
 
         // Reset with token
-        Route::get('reset/{token}', [ResetPasswordController::class, 'showResetForm'])
-            ->middleware('guest:vendor')
-            ->name('form');
-
-        Route::post('reset', [ResetPasswordController::class, 'reset'])
-            ->middleware('guest:vendor')
-            ->name('submit');
+        //Route::get('reset/{token}', [ResetPasswordController::class, 'showResetForm'])->middleware('guest:vendor')->name('form');
+        //Route::post('reset', [ResetPasswordController::class, 'reset'])->middleware('guest:vendor')->name('submit');
     });
