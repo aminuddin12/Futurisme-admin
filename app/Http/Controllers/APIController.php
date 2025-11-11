@@ -7,31 +7,11 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\JsonResponse;
+use App\Traits\ResponseFormatter;
 
 class APIController extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ResponseFormatter;
 
-    /**
-     * Standard JSON success response.
-     */
-    protected function apiSuccess($data = null, ?string $message = null, int $status = 200): JsonResponse
-    {
-        return response()->json([
-            'status'  => 'success',
-            'message' => $message,
-            'data'    => $data,
-        ], $status);
-    }
 
-    /**
-     * Standard JSON error response.
-     */
-    protected function apiError(?string $message = null, int $status = 400): JsonResponse
-    {
-        return response()->json([
-            'status'  => 'error',
-            'message' => $message,
-        ], $status);
-    }
 }

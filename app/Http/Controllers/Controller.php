@@ -8,10 +8,11 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Inertia\Inertia;
 use Illuminate\Http\RedirectResponse;
+use App\Traits\ResponseFormatter;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ResponseFormatter;
 
     /**
      * Render an Inertia view with shared/common props.
@@ -33,27 +34,5 @@ class Controller extends BaseController
         }
 
         return Inertia::render($component, array_merge($common, $props));
-    }
-
-    /**
-     * Redirect with success flash message.
-     */
-    protected function redirectSuccess(string $route, array $params = [], ?string $message = null): RedirectResponse
-    {
-        if ($message) {
-            session()->flash('success', $message);
-        }
-        return redirect()->route($route, $params);
-    }
-
-    /**
-     * Redirect with error flash message.
-     */
-    protected function redirectError(string $route, array $params = [], ?string $message = null): RedirectResponse
-    {
-        if ($message) {
-            session()->flash('error', $message);
-        }
-        return redirect()->route($route, $params);
     }
 }

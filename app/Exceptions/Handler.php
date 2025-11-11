@@ -5,38 +5,48 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
-    // …
-
     public function register(): void
     {
         $this->renderable(function (Throwable $e, Request $request) {
-            // Cek jika request menuju API (contoh: prefix api/ atau expectsJson)
             if ($request->is('api/*') || $request->expectsJson()) {
+
+                // Pakai handler custom kita
                 if ($e instanceof NotFoundHttpException) {
-                    return response()->json([
-                        'status'  => 'error',
-                        'message' => 'Resource not found.'
-                    ], 404);
+                    return CustomResponseHandler::respond(
+                        404,
+                        'Resource not found.',
+                        null,
+                        $request
+                    );
                 }
+
                 if ($e instanceof MethodNotAllowedHttpException) {
-                    return response()->json([
-                        'status'  => 'error',
-                        'message' => 'Method not allowed.'
-                    ], 405);
+                    return CustomResponseHandler::respond(
+                        405,
+                        'Method not allowed.',
+                        null,
+                        $request
+                    );
                 }
-                // Untuk error internal server
-                return response()->json([
-                    'status'  => 'error',
-                    'message' => 'Internal Server Error.'
-                ], 500);
+
+                // Ambil kode dari HttpException kalau ada
+                $code = $e instanceof HttpExceptionInterface
+                    ? $e->getStatusCode()
+                    : 500;
+
+                $message = $e->getMessage() ?: (Response::$statusTexts[$code] ?? 'Internal Server Error');
+
+                return CustomResponseHandler::respond($code, $message, null, $request);
             }
 
-            // Kalau bukan API, fallback ke parent
+            // Non-API → fallback ke tampilan default Laravel
             return null;
         });
     }
