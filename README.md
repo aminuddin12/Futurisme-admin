@@ -78,21 +78,46 @@ Pastikan Anda telah menginstal perangkat lunak berikut:
 
 ---
 
-## Ringkasan API Endpoint
+## Struktur Rute & Endpoint
 
-Berikut adalah beberapa endpoint utama yang tersedia.
+Proyek ini memiliki dua jenis rute utama: **Rute Web** untuk antarmuka pengguna dan **Rute API** untuk layanan backend.
 
-### Autentikasi
-*   `POST /api/v1/insider/register` - Mendaftarkan Insider baru.
-*   `POST /api/v1/insider/login` - Login untuk mendapatkan token akses.
-*   `POST /api/v1/insider/forgot-password` - Memulai proses reset password.
-*   `POST /api/v1/insider/reset-password` - Mengatur ulang password dengan token.
+### Rute Web (`routes/web.php`)
 
-### Pengguna (Memerlukan Autentikasi)
-*   `POST /api/v1/insider/logout` - Logout dan menghapus token saat ini.
-*   `GET /api/v1/insider/me` - Mendapatkan data profil dari Insider yang sedang login.
+Rute ini menangani antarmuka berbasis web yang dirender menggunakan Inertia.js.
 
-Autentikasi ditangani menggunakan **Laravel Sanctum**. Sertakan `Bearer Token` yang didapat saat login pada *header* `Authorization` untuk mengakses *endpoint* yang dilindungi.
+| Method | URI                  | Fungsi                                       | Catatan                               |
+| :----- | :------------------- | :------------------------------------------- | :------------------------------------ |
+| `GET`  | `/`                  | Menampilkan halaman utama (landing page).    | Publik.                               |
+| `GET`  | `/login`             | Menampilkan halaman login.                   | Disediakan oleh `routes/auth.php`.    |
+| `GET`  | `/register`          | Menampilkan halaman registrasi.              | Disediakan oleh `routes/auth.php`.    |
+| `ANY`  | `/admin/{...}`       | Rute-rute untuk panel administrasi.          | Memerlukan login & peran **Admin**.   |
+
+### Rute API (`routes/API/v1/Insider/api.php`)
+
+Endpoint API utama berada di bawah prefix `/api/v1/insider/`. Otentikasi ditangani menggunakan **Laravel Sanctum**. Untuk mengakses endpoint yang terproteksi, sertakan `Bearer Token` yang didapat saat login pada *header* `Authorization`.
+
+#### 1. Autentikasi & Manajemen Akun (Publik)
+
+Endpoint ini dapat diakses secara publik tanpa memerlukan token otentikasi.
+
+| Method | Endpoint                  | Fungsi                                       | Request Body / Catatan                |
+| :----- | :------------------------ | :------------------------------------------- | :------------------------------------ |
+| `POST` | `/register`               | Mendaftarkan Insider baru beserta profilnya. | `username`, `email`, `password`, dll. |
+| `POST` | `/login`                  | Login untuk mendapatkan token akses.         | `credential` (email/username), `password`. |
+| `POST` | `/forgot-password`        | Meminta token untuk reset password.          | `credential` (email/username).        |
+| `POST` | `/reset-password`         | Mengatur ulang password menggunakan token.   | `credential`, `token`, `password`.    |
+
+#### 2. Profil Pengguna (Terproteksi)
+
+Endpoint ini memerlukan otentikasi menggunakan token Sanctum.
+
+| Method | Endpoint                  | Fungsi                                       | Catatan                               |
+| :----- | :------------------------ | :------------------------------------------- | :------------------------------------ |
+| `POST` | `/logout`                 | Logout dan menghapus token sesi saat ini.    | -                                     |
+| `GET`  | `/me`                     | Mendapatkan data profil dari Insider yang sedang login. | -                                     |
+
+---
 
 ## Contributing
 
@@ -101,4 +126,3 @@ Kontribusi adalah hal yang membuat komunitas *open source* menjadi tempat yang l
 ## License
 
 Didistribusikan di bawah Lisensi MIT. Lihat `LICENSE.txt` untuk informasi lebih lanjut.
-
