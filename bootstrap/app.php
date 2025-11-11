@@ -14,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
 
         using: function (\Illuminate\Routing\Router $router) {
 
+            $router->middleware('web')
+                ->group(base_path('routes/Guest/web.php'));
+
             $router->middleware(['api', 'api.gate'])
                 ->prefix('api/v1/insider/')
                 ->group(base_path('routes/API/v1/Insider/api.php'));
@@ -49,6 +52,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->alias([
             'api.gate' => \App\Http\Middleware\ApiGateMiddleware::class,
+            'check.maintenance' => \App\Http\Middleware\CheckMaintenance::class,
             'role' => EnsureUserHasRole::class,
             'lang' => \App\Http\Middleware\SetLanguage::class,
         ]);
