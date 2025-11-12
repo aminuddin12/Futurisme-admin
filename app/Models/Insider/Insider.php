@@ -17,7 +17,6 @@ class Insider extends Authenticatable
     protected $table = 'insiders';
 
     protected $fillable = [
-        'iIdentification',
         'username',
         'email',
         'password',
