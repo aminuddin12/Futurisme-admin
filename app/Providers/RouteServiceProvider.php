@@ -54,21 +54,19 @@ class RouteServiceProvider extends ServiceProvider
                     // Diberi prefix 'insider' dan nama 'insider.'
                     // Hasil: /insider/login, /insider/register
                     // Nama Rute: insider.login, insider.register
-                    Route::prefix('insider')
-                        ->name('insider.')
-                        ->group(base_path('routes/Admin/auth.php'));
+
+                    // Route::prefix('insider')->name('insider.')->group(base_path('routes/Admin/auth.php'));
 
                     // 3. Rute Internal Insider (Admin) yang Terlindungi
                     // Dimuat dari routes/Admin/web.php
                     // WAJIB dilindungi dengan middleware 'auth:insider'
                     // Hasil: /dashboard, /profile, /settings
-                    Route::middleware('auth:insider')
-                        ->group(base_path('routes/Admin/web.php'));
+                    // Route::middleware('auth:insider')->group(base_path('routes/Admin/web.php'));
 
                     // 4. Rute Vendor
                     // Dimuat dari routes/Vendor/web.php
                     // File ini sudah menangani prefix 'vendor' dan middleware 'auth:vendor' sendiri.
-                    Route::group(base_path('routes/Vendor/web.php'));
+                    // Route::group(base_path('routes/Vendor/web.php'));
 
                     // 5. Catatan Penting:
                     // File 'routes/auth.php' (bawaan Breeze) sengaja tidak dimuat di sini.
