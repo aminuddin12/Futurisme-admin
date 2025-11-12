@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\App;
-use App\Http\Controllers\Web\IndexController;
+use app\Http\Controllers\Web\IndexController;
 
 Route::get('/maintenance', function () {
     return inertia('Maintenance');
