@@ -20,6 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
             $router->middleware('web')
                 ->group(base_path('routes/Admin/auth.php'));
 
+            $router->middleware('web')
+                ->prefix('insider/')
+                ->group(base_path('routes/Admin/web.php'));
+
             $router->middleware(['api', 'api.gate'])
                 ->prefix('api/v1/insider/')
                 ->group(base_path('routes/API/v1/Insider/api.php'));

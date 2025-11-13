@@ -70,7 +70,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                             </DropdownMenu.Trigger>
                             <DropdownMenu.Content align="end">
                                 <DropdownMenu.Item asChild>
-                                    <Link href={route('admin.profile')}>
+                                    <Link href={route('insider.profile')}>
                                         Profile
                                     </Link>
                                 </DropdownMenu.Item>

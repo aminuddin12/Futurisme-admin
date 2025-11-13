@@ -20,8 +20,8 @@ const menuData: MenuGroup[] = [
                 label: 'Dashboard',
                 icon: 'heroicons:squares-2x2',
                 iconFilled: 'heroicons:squares-2x2-solid',
-                href: route('admin.dashboard'),
-                routeName: 'admin.dashboard',
+                href: route('insider.dashboard'),
+                routeName: 'insider.dashboard',
             },
             {
                 key: 'menu-analytics',
@@ -29,7 +29,7 @@ const menuData: MenuGroup[] = [
                 icon: 'heroicons:chart-pie',
                 iconFilled: 'heroicons:chart-pie-solid',
                 href: '#',
-                routeName: 'admin.analytics',
+                routeName: 'insider.analytics',
             },
             {
                 key: 'menu-cal',
@@ -63,8 +63,8 @@ const menuData: MenuGroup[] = [
                     {
                         key: 'sub-chat',
                         label: 'Chat',
-                        href: route('admin.chat'),
-                        routeName: 'admin.chat',
+                        href: route('insider.chat'),
+                        routeName: 'insider.chat',
                     },
                     {
                         key: 'sub-img',
@@ -236,8 +236,8 @@ const menuData: MenuGroup[] = [
                 label: 'Website Settings',
                 icon: 'heroicons:cog-6-tooth',
                 iconFilled: 'heroicons:cog-6-tooth-solid',
-                href: route('admin.settings'),
-                routeName: 'admin.settings',
+                href: route('insider.settings'),
+                routeName: 'insider.settings',
             },
             {
                 key: 'menu-logs',
@@ -252,8 +252,8 @@ const menuData: MenuGroup[] = [
                 label: 'Profile Settings',
                 icon: 'heroicons:user-circle',
                 iconFilled: 'heroicons:user-circle-solid',
-                href: route('admin.profile'),
-                routeName: 'admin.profile',
+                href: route('insider.profile'),
+                routeName: 'insider.profile',
             },
         ],
     },

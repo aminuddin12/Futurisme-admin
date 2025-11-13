@@ -33,8 +33,8 @@ const menuItems: MenuItem[] = [
     {
         name: 'Dashboard',
         icon: 'heroicons:squares-2x2-solid',
-        href: route('admin.dashboard'),
-        routeName: 'admin.dashboard',
+        href: route('insider.dashboard'),
+        routeName: 'insider.dashboard',
     },
     {
         name: 'AI Assistant',
