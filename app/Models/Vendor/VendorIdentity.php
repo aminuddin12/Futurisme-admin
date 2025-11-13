@@ -60,4 +60,14 @@ class VendorIdentity extends Model
 
         return $vIdentification;
     }
+    public function password()
+    {
+        return $this->hasOne(VendorPasswd::class, 'vIdentification', 'vIdentification');
+    }
+
+    // Override method untuk mengambil password
+    public function getAuthPassword()
+    {
+        return $this->password->password_hash ?? null;
+    }
 }

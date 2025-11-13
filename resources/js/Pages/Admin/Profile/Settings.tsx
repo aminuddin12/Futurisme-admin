@@ -1,5 +1,5 @@
+import FormField from '@/Components/FormField';
 import AdminLayout from '@/Layouts/AdminLayout';
-import { FormField } from '@/components/FormField';
 import { Division, Insider, PageProps, Position, Profile } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler } from 'react';

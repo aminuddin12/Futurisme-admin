@@ -1,5 +1,10 @@
 import { Box, Text } from '@radix-ui/themes';
-import React, { isValidElement, useId, type ComponentProps, type PropsWithChildren } from 'react';
+import React, {
+    isValidElement,
+    useId,
+    type ComponentProps,
+    type PropsWithChildren,
+} from 'react';
 
 interface FormFieldProps
     extends PropsWithChildren<
@@ -10,11 +15,6 @@ interface FormFieldProps
         }
     > {}
 
-/**
- * A reusable and accessible form field component.
- * It wraps a label, the input control (children), and an optional error message.
- * It automatically links the label to the input using a generated ID for accessibility.
- */
 export default function FormField({
     label,
     children,
