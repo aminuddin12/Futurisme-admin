@@ -3,11 +3,11 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Insider\Role;
-use App\Models\Insider\Permission;
-use App\Models\Insider\Insider;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use App\Models\Insider\Insider; // Model untuk Admin
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -16,113 +16,74 @@ class RolesAndPermissionsSeeder extends Seeder
      */
     public function run(): void
     {
-        // Reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        // 1. Reset cached roles and permissions
+        // Ini penting agar Spatie mengenali guard baru
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // --- Define Permissions ---
-        $permissions = [
-            // General Admin Permissions (contoh)
-            'manage settings', 'view dashboard stats', 'manage users', 'manage roles', 'impersonate user',
-            // Insider Permissions (contoh)
-            'view internal reports', 'access beta features', 'provide feedback', 'moderate content', 'view analytics',
-            // Vendor Permissions (contoh)
-            'manage products', 'view orders', 'manage vendor profile', 'respond to inquiries', 'access vendor dashboard',
-            // Merchant Permissions (contoh)
-            'manage store', 'process payments', 'view sales data', 'manage inventory', 'access merchant dashboard',
-            // Driver Permissions (contoh)
-            'accept delivery', 'update delivery status', 'view route', 'manage driver profile', 'access driver dashboard',
-            // Customer Permissions (contoh)
-            'place order', 'view own orders', 'update profile', 'manage addresses', 'view products',
-        ];
+        // 2. Definisikan Nama Guard
+        $guardInsider = 'insider';
+        $guardVendor = 'vendor';
+        $guardClient = 'client'; // Anda juga bisa menggunakan 'web' jika itu guard untuk pelanggan
 
-        foreach ($permissions as $permission) {
-            Permission::findOrCreate($permission, 'insider'); // Guard 'insider' adalah default
-        }
+        // 3. Buat Permissions untuk setiap guard
 
-        // --- Define Roles ---
-        $adminRole = Role::findOrCreate('Admin', 'insider');
-        $insiderRole = Role::findOrCreate('Insider', 'insider');
-        $vendorOwnerRole = Role::findOrCreate('Vendor Owner', 'insider');
-        $vendorTeamRole = Role::findOrCreate('Vendor Team', 'insider');
-        $merchantOwnerRole = Role::findOrCreate('Merchant Owner', 'insider');
-        $merchantTeamRole = Role::findOrCreate('Merchant Team', 'insider');
-        $driverRole = Role::findOrCreate('Driver', 'insider');
-        $customerRole = Role::findOrCreate('Customer', 'insider'); // Default Role
+        // === PERMISSIONS UNTUK INSIDER (Pegawai) ===
+        Permission::create(['name' => 'manage settings', 'guard_name' => $guardInsider]);
+        Permission::create(['name' => 'view dashboard', 'guard_name' => $guardInsider]);
+        Permission::create(['name' => 'manage insiders', 'guard_name' => $guardInsider]);
+        Permission::create(['name' => 'manage vendors', 'guard_name' => $guardInsider]);
+        Permission::create(['name' => 'manage clients', 'guard_name' => $guardInsider]);
 
-        // --- Assign Permissions to Roles ---
-        // Admin gets all permissions (handled by Gate::before later)
+        // === PERMISSIONS UNTUK VENDOR (Penyedia) ===
+        Permission::create(['name' => 'view vendor dashboard', 'guard_name' => $guardVendor]);
+        Permission::create(['name' => 'manage products', 'guard_name' => $guardVendor]);
+        Permission::create(['name' => 'manage orders', 'guard_name' => $guardVendor]);
 
-        // Insider
-        $insiderRole->givePermissionTo(['view internal reports', 'access beta features', 'provide feedback', 'moderate content', 'view analytics']);
-
-        // Vendor Owner (lebih banyak izin)
-        $vendorOwnerRole->givePermissionTo(['manage products', 'view orders', 'manage vendor profile', 'respond to inquiries', 'access vendor dashboard']);
-        // Vendor Team (izin lebih sedikit)
-        $vendorTeamRole->givePermissionTo(['view orders', 'respond to inquiries', 'access vendor dashboard']); // Contoh
-
-        // Merchant Owner
-        $merchantOwnerRole->givePermissionTo(['manage store', 'process payments', 'view sales data', 'manage inventory', 'access merchant dashboard']);
-        // Merchant Team
-        $merchantTeamRole->givePermissionTo(['view sales data', 'manage inventory', 'access merchant dashboard']); // Contoh
-
-        // Driver
-        $driverRole->givePermissionTo(['accept delivery', 'update delivery status', 'view route', 'manage driver profile', 'access driver dashboard']);
-
-        // Customer (izin dasar)
-        $customerRole->givePermissionTo(['place order', 'view own orders', 'update profile', 'manage addresses', 'view products']);
+        // === PERMISSIONS UNTUK CLIENT (Pelanggan) ===
+        Permission::create(['name' => 'view client dashboard', 'guard_name' => $guardClient]);
+        Permission::create(['name' => 'make purchases', 'guard_name' => $guardClient]);
+        Permission::create(['name' => 'view own profile', 'guard_name' => $guardClient]);
 
 
-        // --- Create Dummy Users ---
-        $password = Hash::make('password');
+        // 4. Buat Roles dan berikan permissions
 
-        // Admin User
-        $admin = Insider::firstOrCreate(
-            ['email' => 'admin@example.com'], // 1. Atribut untuk mencari user
-            [                                 // 2. Atribut untuk membuat user jika tidak ada
-                'username' => 'administratos',
-                'password' => $password
+        // === ROLE UNTUK INSIDER ===
+        // Role Super Admin (memiliki semua izin insider)
+        $superAdminRole = Role::create(['name' => 'Super Admin', 'guard_name' => $guardInsider]);
+        $superAdminRole->givePermissionTo(Permission::where('guard_name', $guardInsider)->get());
+
+        // Role Staff (hanya bisa melihat dashboard)
+        $staffRole = Role::create(['name' => 'Staff', 'guard_name' => $guardInsider]);
+        $staffRole->givePermissionTo('view dashboard');
+
+
+        // === ROLE UNTUK VENDOR ===
+        $vendorRole = Role::create(['name' => 'Vendor', 'guard_name' => $guardVendor]);
+        $vendorRole->givePermissionTo([
+            'view vendor dashboard',
+            'manage products',
+            'manage orders',
+        ]);
+
+        // === ROLE UNTUK CLIENT ===
+        $clientRole = Role::create(['name' => 'Customer', 'guard_name' => $guardClient]);
+        $clientRole->givePermissionTo([
+            'view client dashboard',
+            'make purchases',
+            'view own profile',
+        ]);
+
+        // 5. Buat User Super Admin (Insider)
+        // Pastikan tidak ada data duplikat
+        $adminUser = Insider::firstOrCreate(
+            ['email' => 'admin@futurisme.com'], // Cari berdasarkan email
+            [ // Data untuk dibuat jika tidak ada
+                'username' => 'superadmin',
+                'password' => Hash::make('password123') // GANTI DENGAN PASSWORD YANG AMAN
             ]
         );
-        $admin->assignRole($adminRole);
 
-        // Vendor Users
-        // $vendorOwner = User::firstOrCreate(
-        //     ['email' => 'vendor.owner@example.com'],
-        //     ['name' => 'Vendor Owner', 'password' => $password, 'email_verified_at' => now()]
-        // );
-        // $vendorOwner->assignRole($vendorOwnerRole);
-
-        // $vendorTeam = User::firstOrCreate(
-        //     ['email' => 'vendor.team@example.com'],
-        //     ['name' => 'Vendor Team Member', 'password' => $password, 'email_verified_at' => now()]
-        // );
-        // $vendorTeam->assignRole($vendorTeamRole);
-
-        // Merchant Users
-        // $merchantOwner = User::firstOrCreate(
-        //     ['email' => 'merchant.owner@example.com'],
-        //     ['name' => 'Merchant Owner', 'password' => $password, 'email_verified_at' => now()]
-        // );
-        // $merchantOwner->assignRole($merchantOwnerRole);
-
-        // $merchantTeam = User::firstOrCreate(
-        //     ['email' => 'merchant.team@example.com'],
-        //     ['name' => 'Merchant Team Member', 'password' => $password, 'email_verified_at' => now()]
-        // );
-        // $merchantTeam->assignRole($merchantTeamRole);
-
-        // Driver User
-        // $driver = User::firstOrCreate(
-        //     ['email' => 'driver@example.com'],
-        //     ['name' => 'Driver User', 'password' => $password, 'email_verified_at' => now()]
-        // );
-        // $driver->assignRole($driverRole);
-
-        // Customer User
-        // $customer = User::firstOrCreate(
-        //     ['email' => 'customer@example.com'],
-        //     ['name' => 'Customer User', 'password' => $password, 'email_verified_at' => now()]
-        // );
-        // $customer->assignRole($customerRole);
+        // 6. Tetapkan Role ke User
+        $adminUser->assignRole($superAdminRole);
     }
 }
