@@ -20,7 +20,12 @@ export default function Sidebar({
             gap="1"
             className="w-80px sticky top-4 h-fit flex-shrink-0 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800"
         >
-            {menuGroups.map((group, groupIndex) => (
+            {/* PERBAIKAN:
+              Tambahkan tanda tanya (?) setelah menuGroups.
+              Ini berarti "Jika menuGroups ada (tidak undefined), jalankan .map().
+              Jika tidak, jangan lakukan apa-apa (dan tidak akan crash)."
+            */}
+            {menuGroups?.map((group, groupIndex) => (
                 <div key={group.title}>
                     {groupIndex > 0 && (
                         <Separator my="3" className="dark:!bg-gray-700" />
@@ -33,7 +38,8 @@ export default function Sidebar({
                     >
                         {group.title}
                     </Text>
-                    {group.items.map((item) => (
+                    {/* Kita juga tambahkan '?' di sini untuk keamanan ekstra */}
+                    {group.items?.map((item) => (
                         <ProfileListItem
                             key={item.key}
                             icon={item.icon}

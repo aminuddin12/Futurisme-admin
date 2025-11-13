@@ -8,6 +8,8 @@ use Inertia\Inertia;
 
 
 // Halaman Utama Insider
+
+// Rute untuk halaman Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('insider.dashboard');
 Route::get('/profile', fn () => Inertia::render('Profile/AccountProfile'))->name('insider.profile');
 
