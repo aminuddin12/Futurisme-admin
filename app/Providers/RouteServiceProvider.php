@@ -16,7 +16,7 @@ class RouteServiceProvider extends ServiceProvider
      * Ini digunakan oleh Laravel untuk pengalihan setelah autentikasi.
      * Kita atur ke dashboard insider.
      */
-    public const HOME = '/dashboard';
+    public const HOME = 'admin/dashboard';
 
     /**
      * Namespace untuk controller-controller Anda (jika masih menggunakan $namespace).
@@ -36,9 +36,9 @@ class RouteServiceProvider extends ServiceProvider
             // Konfigurasi untuk rute API
             // Ini mengasumsikan Anda memiliki file routes/api.php utama
             // yang mungkin memuat file-file API v1 Anda.
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php')); // Sesuaikan jika nama file API utama Anda berbeda
+            // Route::middleware('api')
+            //     ->prefix('api')
+            //     ->group(base_path('routes/API/v1/Insider/api.php'));
 
             // Konfigurasi untuk rute Web
             Route::middleware('web')
@@ -55,18 +55,18 @@ class RouteServiceProvider extends ServiceProvider
                     // Hasil: /insider/login, /insider/register
                     // Nama Rute: insider.login, insider.register
 
-                    // Route::prefix('insider')->name('insider.')->group(base_path('routes/Admin/auth.php'));
+                    Route::prefix('insider')->name('insider.')->group(base_path('routes/Admin/auth.php'));
 
                     // 3. Rute Internal Insider (Admin) yang Terlindungi
                     // Dimuat dari routes/Admin/web.php
                     // WAJIB dilindungi dengan middleware 'auth:insider'
                     // Hasil: /dashboard, /profile, /settings
-                    // Route::middleware('auth:insider')->group(base_path('routes/Admin/web.php'));
+                    Route::middleware('auth:insider')->group(base_path('routes/Admin/web.php'));
 
                     // 4. Rute Vendor
                     // Dimuat dari routes/Vendor/web.php
                     // File ini sudah menangani prefix 'vendor' dan middleware 'auth:vendor' sendiri.
-                    // Route::group(base_path('routes/Vendor/web.php'));
+                    Route::group(base_path('routes/Vendor/web.php'));
 
                     // 5. Catatan Penting:
                     // File 'routes/auth.php' (bawaan Breeze) sengaja tidak dimuat di sini.

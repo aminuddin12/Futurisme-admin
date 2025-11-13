@@ -74,7 +74,7 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'clients' => [
             'driver' => 'eloquent',
             'model' => App\Models\Client\UserIdentity::class,
         ],
@@ -84,10 +84,10 @@ return [
             'model' => App\Models\Insider\Insider::class,
         ],
 
-        // 'vendors' => [
-        //     'driver' => 'eloquent',
-        //     'model' => App\Models\Vendor\VendorIdentity::class,
-        // ],
+        'vendors' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Vendor\VendorIdentity::class,
+        ],
     ],
 
     /*

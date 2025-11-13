@@ -71,6 +71,24 @@ return new class extends Migration
             $table->timestamp('last_activity');
             $table->timestamps();
         });
+
+        Schema::create('sessions', function (Blueprint $table) {
+            $table->string('id')->primary();
+
+            // Kolom user_id ini bisa null, karena tamu (guest)
+            // yang belum login juga memiliki sesi.
+            // Kolom ini akan terisi otomatis jika seorang user (dari guard default) login.
+            $table->foreignId('user_id')->nullable()->index();
+
+            $table->string('ip_address', 45)->nullable();
+            $table->text('user_agent')->nullable();
+
+            // Menyimpan semua data sesi (seperti _token, _flash, login_web_...)
+            $table->longText('payload');
+
+            $table->integer('last_activity')->index();
+        });
+
     }
 
     /**
@@ -78,7 +96,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-
+        Schema::dropIfExists('sessions');
         Schema::dropIfExists('users_passwd_reset_tokens');
         Schema::dropIfExists('users_sessions');
         Schema::dropIfExists('users_second_identities');
