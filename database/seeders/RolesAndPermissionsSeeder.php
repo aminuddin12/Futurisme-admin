@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Role;
-use App\Models\Permission;
-use App\Models\Insider;
+use App\Models\Insider\Role;
+use App\Models\Insider\Permission;
+use App\Models\Insider\Insider;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
