@@ -16,13 +16,13 @@ Route::middleware('guest:insider')->group(function () {
     Route::get('register', [RegisterController::class, 'create'])
         ->name('register');
 
-    Route::post('register', [RegisterController::class, 'store']);
+    Route::post('register', [RegisterController::class, 'store'])->name('register.post');
 
     // Rute Login
     Route::get('login', [LoginController::class, 'create'])
-        ->name('login');
+        ->name('login')->name('login.post');
 
-    Route::post('login', [LoginController::class, 'store']);
+    Route::post('login', [LoginController::class, 'store'])->name('login.store');
 
     // Rute Lupa Password
     Route::get('forgot-password', [ForgotPasswdController::class, 'createRequestForm'])
