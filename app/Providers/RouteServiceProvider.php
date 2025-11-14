@@ -49,12 +49,14 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware(['web', 'guest:insider']) // Terapkan 'web' DAN 'guest:insider'
                 ->prefix($insiderPath)
                 ->name('insider.')
-                ->group(base_path('routes/Admin/auth.php'));
+                ->group(base_path('routes/Insider/auth.php'));
 
 
             // 4. RUTE DASHBOARD INSIDER (Tetap)
             Route::middleware(['web', 'auth:insider']) // Terapkan 'web' DAN 'auth:insider'
-                ->group(base_path('routes/Admin/web.php'));
+                ->prefix($insiderPath)
+                ->name('insider.')
+                ->group(base_path('routes/Insider/web.php'));
 
 
             // 5. RUTE VENDOR (Dashboard)

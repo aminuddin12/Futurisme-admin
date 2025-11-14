@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 // Vendor panel routes
-Route::prefix('vendor')->name('vendor.')->middleware('auth:vendor')->group(function () {
+Route::middleware('auth:vendor')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\Vendor\DashboardController::class, 'index'])->name('dashboard');
 
         // Route::resource('profile', \App\Http\Controllers\Vendor\ProfileController::class);
