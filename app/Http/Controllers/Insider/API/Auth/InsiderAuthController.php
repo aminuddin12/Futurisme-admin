@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\API\Auth;
+namespace App\Http\Controllers\Insider\API\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Insider\Auth\RegisterRequest;

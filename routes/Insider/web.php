@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\WebSettingsController;
-use App\Http\Controllers\Admin\ProfileSettingController;
+use App\Http\Controllers\Insider\DashboardController;
+use App\Http\Controllers\Insider\WebSettingsController;
+use App\Http\Controllers\Insider\ProfileSettingController;
 use Inertia\Inertia;
 
 

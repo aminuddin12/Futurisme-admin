@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Auth;
+namespace App\Http\Controllers\Insider\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Insider\Auth\LoginRequest; // Diperbarui
@@ -19,7 +19,7 @@ class LoginController extends Controller
      */
     public function create(): Response
     {
-        // Asumsi halaman login Anda ada di 'Admin/Auth/Login'
+        // Asumsi halaman login Anda ada di 'Insider/Auth/Login'
         // Sesuaikan path ini jika nama komponen React Anda berbeda
         return Inertia::render('Auth/Login', [
             'canResetPassword' => Route::has('insider.password.request'),
@@ -36,7 +36,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        // Mengarahkan ke dashboard admin, atau default ke RouteServiceProvider::HOME
+        // Mengarahkan ke dashboard Insider, atau default ke RouteServiceProvider::HOME
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 

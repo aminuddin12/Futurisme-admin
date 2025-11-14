@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Auth;
+namespace App\Http\Controllers\Insider\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Insider\Insider; // Menggunakan model Insider
@@ -21,7 +21,7 @@ class RegisterController extends Controller
      */
     public function create(): Response
     {
-        // Asumsi halaman register Anda ada di 'Admin/Auth/Register'
+        // Asumsi halaman register Anda ada di 'Insider/Auth/Register'
         // Sesuaikan path ini jika nama komponen React Anda berbeda
         return Inertia::render('Auth/Register');
     }
@@ -46,7 +46,7 @@ class RegisterController extends Controller
         // Login pengguna dengan guard 'insider'
         Auth::guard('insider')->login($insider);
 
-        // Mengarahkan ke dashboard admin
+        // Mengarahkan ke dashboard Insider
         return redirect(RouteServiceProvider::HOME);
     }
 }

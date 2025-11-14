@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Insider;
 
 use App\Http\Controllers\Controller;
-use App\Models\Division;
-use App\Models\Insider;
-use App\Models\Position;
+use App\Models\Insider\Division;
+use App\Models\Insider\Insider;
+use App\Models\Insider\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;

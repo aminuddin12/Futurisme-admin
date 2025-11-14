@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\API;
+namespace App\Http\Controllers\Insider\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,7 +9,7 @@ use App\Models\Role;
 use App\Models\Permission;
 use App\Models\Insider\Profile;
 
-class AdminController extends Controller
+class InsiderController extends Controller
 {
     public function approveProfile($id)
     {

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\API\Auth\InsiderAuthController;
+use App\Http\Controllers\Insider\API\Auth\InsiderAuthController;
 
 
 Route::post('register', [InsiderAuthController::class, 'register']);

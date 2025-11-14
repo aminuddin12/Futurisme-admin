@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Admin\Auth\EmailVerificationController;
-use App\Http\Controllers\Admin\Auth\ForgotPasswdController;
-use App\Http\Controllers\Admin\Auth\LoginController;
-use App\Http\Controllers\Admin\Auth\RegisterController;
-use App\Http\Controllers\Admin\Auth\WhatsappVerificationController;
+use App\Http\Controllers\Insider\Auth\EmailVerificationController;
+use App\Http\Controllers\Insider\Auth\ForgotPasswdController;
+use App\Http\Controllers\Insider\Auth\LoginController;
+use App\Http\Controllers\Insider\Auth\RegisterController;
+use App\Http\Controllers\Insider\Auth\WhatsappVerificationController;
 use Illuminate\Support\Facades\Route;
 
 // Rute untuk Insider (Admin)

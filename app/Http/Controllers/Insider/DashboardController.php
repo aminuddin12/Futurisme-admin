@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Insider;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,7 +11,7 @@ use App\Models\Insider\Permission;
 class DashboardController extends Controller
 {
     /**
-     * Menampilkan halaman dashboard admin dengan data peran dan izin.
+     * Menampilkan halaman dashboard Insider dengan data peran dan izin.
      */
     public function index(Request $request)
     {
@@ -19,7 +19,7 @@ class DashboardController extends Controller
         $user = $request->user();
 
         // Mengambil data dan mengirimkannya ke view Inertia
-        return Inertia::render('Admin/Dashboard', [
+        return Inertia::render('Insider/Dashboard', [
             'userRoles' => $user->getRoleNames(),
             'allRoles' => Role::latest()->paginate(50)->withQueryString(),
             'allPermissions' => Permission::latest()->paginate(50)->withQueryString(),
