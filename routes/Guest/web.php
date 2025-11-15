@@ -18,10 +18,10 @@ use App\Http\Controllers\Web\IndexController;
 // use App\Http\Controllers\Web\CheckoutController;
 // use App\Http\Controllers\Web\WishlistController;
 // use App\Http\Controllers\Web\OrderController;
-// use App\Http\Controllers\Web\ProductController; // file ada
+use App\Http\Controllers\Web\ProductController;
 // use App\Http\Controllers\Web\ProductDetailController;
 // use App\Http\Controllers\Web\ProductReviewController;
-// use App\Http\Controllers\Web\StoreController; // file ada
+use App\Http\Controllers\Web\StoreController;
 // use App\Http\Controllers\Web\StoreCategoryController;
 // use App\Http\Controllers\Web\StoreDetailController;
 // use App\Http\Controllers\Web\StoreReviewController;
@@ -39,5 +39,12 @@ Route::get('/maintenance', function () {
 Route::middleware(['check.maintenance'])->group(function () {
 
     Route::get('/', [IndexController::class, 'index'])->name('home');
+    // Rute untuk Toko (Store)
+    Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
+    Route::get('/stores/{slug}', [StoreController::class, 'show'])->name('stores.show');
+
+    // Rute untuk Produk
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
 
 });
