@@ -22,7 +22,7 @@ class ForgotPasswdController extends Controller
      */
     public function createRequestForm(): Response
     {
-        return Inertia::render('Auth/ForgotPassword', [
+        return Inertia::render('Insider/Auth/ForgotPassword', [
             'status' => session('status'),
         ]);
     }
@@ -50,7 +50,7 @@ class ForgotPasswdController extends Controller
      */
     public function createResetForm(Request $request): Response
     {
-        return Inertia::render('Auth/ResetPassword', [
+        return Inertia::render('Insider/Auth/ResetPassword', [
             'email' => $request->email,
             'token' => $request->route('token'),
         ]);

@@ -1,6 +1,6 @@
 import AdminLayout from '@/Layouts/AdminLayout';
 import { cn } from '@/lib/utils';
-import { Head, PageProps as InertiaPageProps, Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { Badge, Box, Card, Flex, Heading, Table } from '@radix-ui/themes';
 
 // Tipe untuk data paginasi dari Laravel
@@ -29,6 +29,11 @@ interface Permission {
     name: string;
     guard_name: string;
     created_at: string;
+}
+
+// Define a base PageProps interface if not already defined elsewhere
+interface InertiaPageProps {
+    auth: { user: any }; // Adjust 'any' to a more specific user type if available
 }
 
 // Tipe untuk props halaman ini

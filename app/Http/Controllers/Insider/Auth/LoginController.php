@@ -21,7 +21,7 @@ class LoginController extends Controller
     {
         // Asumsi halaman login Anda ada di 'Insider/Auth/Login'
         // Sesuaikan path ini jika nama komponen React Anda berbeda
-        return Inertia::render('Auth/Login', [
+        return Inertia::render('Insider/Auth/Login', [
             'canResetPassword' => Route::has('insider.password.request'),
             'status' => session('status'),
         ]);

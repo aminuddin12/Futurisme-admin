@@ -23,7 +23,7 @@ class RegisterController extends Controller
     {
         // Asumsi halaman register Anda ada di 'Insider/Auth/Register'
         // Sesuaikan path ini jika nama komponen React Anda berbeda
-        return Inertia::render('Auth/Register');
+        return Inertia::render('Insider/Auth/Register');
     }
 
     /**
