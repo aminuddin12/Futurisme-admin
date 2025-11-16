@@ -78,7 +78,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                                 <DropdownMenu.Separator />
                                 <DropdownMenu.Item color="red" asChild>
                                     <Link
-                                        href={route('logout')}
+                                        href={route('insider.logout')}
                                         method="post"
                                         as="button"
                                     >

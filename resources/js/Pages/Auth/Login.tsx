@@ -28,7 +28,7 @@ export default function credential({
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('login'));
+        post(route('insider.login.store'));
     };
 
     return (

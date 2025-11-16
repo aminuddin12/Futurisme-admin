@@ -20,7 +20,7 @@ Route::middleware('guest:insider')->group(function () {
 
     // Rute Login
     Route::get('login', [LoginController::class, 'create'])
-        ->name('login')->name('login.post');
+        ->name('login');
 
     Route::post('login', [LoginController::class, 'store'])->name('login.store');
 

@@ -52,7 +52,7 @@ export default function LandingHeader() {
                 {/* Kanan: Actions */}
                 <div className="flex items-center gap-4">
                     <Link
-                        href={route('login')}
+                        href={route('insider.login')}
                         // 4. Modifikasi text color
                         className="hidden text-sm text-gray-700 hover:text-black lg:block dark:text-gray-300 dark:hover:text-white"
                     >

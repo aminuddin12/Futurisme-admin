@@ -39,11 +39,9 @@ Route::get('/maintenance', function () {
 Route::middleware(['check.maintenance'])->group(function () {
 
     Route::get('/', [IndexController::class, 'index'])->name('home');
-    // Rute untuk Toko (Store)
+
     Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
     Route::get('/stores/{slug}', [StoreController::class, 'show'])->name('stores.show');
-
-    // Rute untuk Produk
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/products/{slug}', [ProductController::class, 'show'])->name('products.show');
 
