@@ -11,61 +11,65 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    /**
-     * Path ke "home" route Anda.
-     */
     public const HOME = 'insider/dashboard';
+    public const iHOME = 'insider/dashboard';
+    public const vHOME = 'vendor/dashboard';
+    public const cOME = 'client/dashboard';
 
-    /**
-     * Konfigurasi bindings, filters, dll.
-     */
     public function boot(): void
     {
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            // 1. RUTE API
-            Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/Api/v1/api.php'));
-
-
-            // --- MULAI PERBAIKAN ---
-            // Kita tidak perlu satu grup 'web' besar.
-            // Kita akan terapkan middleware 'web' ke setiap file rute web secara individual.
-
-            // 2. RUTE TAMU (Guest)
-            // Ini menerapkan middleware 'web' ke semua rute di dalam file 'Guest/web.php'.
             Route::middleware('web')
                 ->group(base_path('routes/Guest/web.php'));
 
-
-            // 3. RUTE OTENTIKASI INSIDER (Dinamis)
-            $insiderPath = Cache::get('auth_path_insider');
-            if (empty($insiderPath)) {
-                $insiderPath = 'insider'; // Fallback default
-            }
-
-            Route::middleware(['web', 'guest:insider']) // Terapkan 'web' DAN 'guest:insider'
-                ->prefix($insiderPath)
+            Route::middleware('web')
+                ->prefix('insider')
+                ->name('insider.')
+                ->group(base_path('routes/Insider/web.php'));
+            Route::middleware('web')
+                ->prefix('insider')
                 ->name('insider.')
                 ->group(base_path('routes/Insider/auth.php'));
 
-
-            // 4. RUTE DASHBOARD INSIDER (Tetap)
-            Route::middleware(['web', 'auth:insider']) // Terapkan 'web' DAN 'auth:insider'
-                ->prefix($insiderPath)
-                ->name('insider.')
-                ->group(base_path('routes/Insider/web.php'));
-
-
-            // 5. RUTE VENDOR (Dashboard)
-            Route::middleware(['web', 'auth:vendor']) // Terapkan 'web' DAN 'auth:vendor'
-                ->prefix('vendor')
+            Route::middleware('web')
                 ->name('vendor.')
                 ->group(base_path('routes/Vendor/web.php'));
+            Route::middleware('web')
+                ->name('vendor.')
+                ->group(base_path('routes/Vendor/Auth/Login.php'));
+            Route::middleware('web')
+                ->name('vendor.')
+                ->group(base_path('routes/Vendor/Auth/Register.php'));
+            Route::middleware('web')
+                ->name('vendor.')
+                ->group(base_path('routes/Vendor/Auth/Password.php'));
+            Route::middleware('web')
+                ->name('vendor.')
+                ->group(base_path('routes/Vendor/Auth/Verify.php'));
 
-            // --- AKHIR PERBAIKAN ---
+            // 4. API Routes
+            Route::middleware('api')
+                ->prefix('api/v1/client')
+                ->name('api.v1.client')
+                ->group(base_path('routes/API/v1/Client/api.php'));
+            Route::middleware('api')
+                ->prefix('api/v1/web')
+                ->name('api.v1.web')
+                ->group(base_path('routes/API/v1/Web/api.php'));
+            Route::middleware('api')
+                ->prefix('api/v1/app')
+                ->name('api.v1.app')
+                ->group(base_path('routes/API/v1/Mobile/api.php'));
+            Route::middleware('api')
+                ->prefix('api/v1/insider')
+                ->name('api.v1.insider')
+                ->group(base_path('routes/API/v1/Insider/api.php'));
+            Route::middleware('api')
+                ->prefix('api/v1/debug')
+                ->name('api.v1.debug')
+                ->group(base_path('routes/API/v1/Debug/api.php'));
 
         });
     }

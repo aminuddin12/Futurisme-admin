@@ -17,9 +17,6 @@ export default function SubMenuItemComponent({
 
     return (
         <div className="relative">
-            {/* Garis Horizontal */}
-            <div className="absolute left-[-9px] top-[11px] h-px w-[10px] bg-gray-300 dark:bg-gray-700"></div>
-
             {/* Garis Vertikal (sembunyikan di item terakhir) */}
             {!isLast && (
                 <div className="absolute bottom-0 left-[-5px] top-[11px] w-px bg-gray-300 dark:bg-gray-700"></div>

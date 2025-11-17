@@ -1,271 +1,36 @@
-import { Icon } from '@iconify/react';
-import { Link } from '@inertiajs/react';
-import * as Tooltip from '@radix-ui/react-tooltip';
+import { usePage } from '@inertiajs/react'; // <-- Ditambahkan usePage
 import { Flex, Separator } from '@radix-ui/themes';
 import React from 'react';
 
-import Trigger from '../Sidebar/Trigger';
-import { useSidebar } from './modeChanger';
+import Trigger from './Trigger'; // <-- PERBAIKAN PATH (sebelumnya ../Sidebar/Trigger)
 import IconMenu from './UI/IconMenu';
-import { MenuGroup } from './UI/ListMenuItem';
+// Impor juga tipe MenuItem, asumsikan diekspor dari ListMenuItem
+import { PageProps } from '../../types/page'; // <-- Ditambahkan PageProps
+import { MenuGroup, MenuItem } from './UI/ListMenuItem';
 
-// Data yang sama dengan fullMode
-const menuData: MenuGroup[] = [
-    {
-        key: 'group-main',
-        title: 'Main',
-        items: [
-            {
-                key: 'menu-dash',
-                label: 'Dashboard',
-                icon: 'heroicons:squares-2x2',
-                iconFilled: 'heroicons:squares-2x2-solid',
-                href: route('insider.dashboard'),
-                routeName: 'insider.dashboard',
-            },
-            {
-                key: 'menu-analytics',
-                label: 'Analytics',
-                icon: 'heroicons:chart-pie',
-                iconFilled: 'heroicons:chart-pie-solid',
-                href: '#',
-                routeName: 'insider.analytics',
-            },
-            {
-                key: 'menu-cal',
-                label: 'Calendar',
-                icon: 'heroicons:calendar-days',
-                iconFilled: 'heroicons:calendar-days-solid',
-                href: '#',
-                routeName: 'admin.calendar',
-            },
-            {
-                key: 'menu-files',
-                label: 'File Manager',
-                icon: 'heroicons:folder',
-                iconFilled: 'heroicons:folder-solid',
-                href: '#',
-                routeName: 'admin.files',
-            },
-        ],
-    },
-    {
-        key: 'group-apps',
-        title: 'Apps',
-        items: [
-            {
-                key: 'menu-ai',
-                label: 'AI Assistant',
-                icon: 'heroicons:cpu-chip',
-                iconFilled: 'heroicons:cpu-chip-solid',
-                badge: { type: 'text', content: 'New', color: 'emerald' },
-                submenu: [
-                    {
-                        key: 'sub-chat',
-                        label: 'Chat',
-                        href: route('insider.chat'),
-                        routeName: 'insider.chat',
-                    },
-                    {
-                        key: 'sub-img',
-                        label: 'Image Gen',
-                        href: '#',
-                        routeName: 'admin.ai.image',
-                    },
-                ],
-            },
-            {
-                key: 'menu-ecom',
-                label: 'E-commerce',
-                icon: 'heroicons:shopping-cart',
-                iconFilled: 'heroicons:shopping-cart-solid',
-                badge: { type: 'number', content: 5, color: 'red' },
-                submenu: [
-                    {
-                        key: 'sub-prod',
-                        label: 'Products',
-                        href: '#',
-                        routeName: 'admin.ecommerce.products',
-                    },
-                    {
-                        key: 'sub-order',
-                        label: 'Orders',
-                        href: '#',
-                        routeName: 'admin.ecommerce.orders',
-                    },
-                    {
-                        key: 'sub-cust',
-                        label: 'Customers',
-                        href: '#',
-                        routeName: 'admin.ecommerce.customers',
-                    },
-                    {
-                        key: 'sub-report',
-                        label: 'Reports',
-                        href: '#',
-                        routeName: 'admin.ecommerce.reports',
-                    },
-                ],
-            },
-            {
-                key: 'menu-blog',
-                label: 'Blog',
-                icon: 'heroicons:pencil-square',
-                iconFilled: 'heroicons:pencil-square-solid',
-                submenu: [
-                    { key: 'sub-posts', label: 'Posts', href: '#', routeName: 'admin.blog.posts' },
-                    { key: 'sub-cat', label: 'Categories', href: '#', routeName: 'admin.blog.categories' },
-                    { key: 'sub-tags', label: 'Tags', href: '#', routeName: 'admin.blog.tags' },
-                ],
-            },
-            {
-                key: 'menu-email',
-                label: 'Email',
-                icon: 'heroicons:envelope',
-                iconFilled: 'heroicons:envelope-solid',
-                href: '#',
-                routeName: 'admin.email',
-            },
-            {
-                key: 'menu-ticket',
-                label: 'Support Ticket',
-                icon: 'heroicons:ticket',
-                iconFilled: 'heroicons:ticket-solid',
-                badge: { type: 'number', content: 12, color: 'gray' },
-                href: '#',
-                routeName: 'admin.tickets',
-            },
-        ],
-    },
-    {
-        key: 'group-management',
-        title: 'Management',
-        items: [
-            {
-                key: 'menu-users',
-                label: 'Insiders Management',
-                icon: 'heroicons:users',
-                iconFilled: 'heroicons:users-solid',
-                submenu: [
-                    { key: 'sub-ulist', label: 'User List', href: '#', routeName: 'admin.users.list' },
-                    { key: 'sub-roles', label: 'Roles & Permissions', href: '#', routeName: 'admin.users.roles' },
-                    { key: 'sub-groups', label: 'Groups', href: '#', routeName: 'admin.users.groups' },
-                    { key: 'attendance', label: 'Attendance', href: '#', routeName: 'admin.users.attendance' },
-                ],
-            },
-            {
-                key: 'menu-customers',
-                label: 'Customers Management',
-                icon: 'heroicons:face-smile',
-                iconFilled: 'heroicons:face-smile-solid',
-                href: '#',
-                routeName: 'admin.customers',
-            },
-            {
-                key: 'menu-departments',
-                label: 'Department Management',
-                icon: 'heroicons:building-office',
-                iconFilled: 'heroicons:building-office-solid',
-                href: '#',
-                routeName: 'admin.departments',
-            },
-            {
-                key: 'menu-teams',
-                label: 'Team Management',
-                icon: 'heroicons:user-group',
-                iconFilled: 'heroicons:user-group-solid',
-                href: '#',
-                routeName: 'admin.teams',
-            },
-            {
-                key: 'menu-projects',
-                label: 'Project Management',
-                icon: 'heroicons:briefcase',
-                iconFilled: 'heroicons:briefcase-solid',
-                href: '#',
-                routeName: 'admin.projects',
-            },
-        ],
-    },
-    {
-        key: 'group-docs',
-        title: 'Documentation',
-        items: [
-            {
-                key: 'menu-docs-start',
-                label: 'Getting Started',
-                icon: 'heroicons:rocket-launch',
-                iconFilled: 'heroicons:rocket-launch-solid',
-                href: '#',
-                routeName: 'admin.docs.start',
-            },
-            {
-                key: 'menu-docs-guides',
-                label: 'Guides',
-                icon: 'heroicons:book-open',
-                iconFilled: 'heroicons:book-open-solid',
-                submenu: [
-                    { key: 'sub-guide-auth', label: 'Authentication', href: '#', routeName: 'admin.docs.guides.auth' },
-                    { key: 'sub-guide-crud', label: 'CRUD Operations', href: '#', routeName: 'admin.docs.guides.crud' },
-                ],
-            },
-            {
-                key: 'menu-docs-api',
-                label: 'API Reference',
-                icon: 'heroicons:code-bracket-square',
-                iconFilled: 'heroicons:code-bracket-square-solid',
-                href: '#',
-                routeName: 'admin.docs.api',
-            },
-            {
-                key: 'menu-docs-settings',
-                label: 'Documentation Settings',
-                icon: 'heroicons:cog-8-tooth',
-                iconFilled: 'heroicons:cog-8-tooth-solid',
-                href: '#',
-                routeName: 'admin.docs.settings',
-            },
-        ],
-    },
-    {
-        key: 'group-settings',
-        title: 'Settings',
-        items: [
-            {
-                key: 'web-settings',
-                label: 'Website Settings',
-                icon: 'heroicons:cog-6-tooth',
-                iconFilled: 'heroicons:cog-6-tooth-solid',
-                href: route('insider.settings'),
-                routeName: 'insider.settings',
-            },
-            {
-                key: 'menu-logs',
-                label: 'System Logs',
-                icon: 'heroicons:document-text',
-                iconFilled: 'heroicons:document-text-solid',
-                href: '#',
-                routeName: 'admin.logs',
-            },
-            {
-                key: 'profile-settings',
-                label: 'Profile Settings',
-                icon: 'heroicons:user-circle',
-                iconFilled: 'heroicons:user-circle-solid',
-                href: route('insider.profile'),
-                routeName: 'insider.profile',
-            },
-        ],
-    },
-];
+// --- BLOK DATA DUMMY DIHAPUS ---
+// const menuData: MenuGroup[] = [ ...data statis... ];
+// --- AKHIR BLOK DATA DUMMY ---
 
 export default function IconMode() {
+    // --- TAMBAHAN BARU ---
+    // Mengambil sidebarMenu dari props Inertia
+    const { sidebarMenu } = usePage<PageProps>().props;
+    // Menetapkan data dinamis ke variabel menuData, tambahkan fallback array kosong
+    // Kita paksakan tipenya sebagai MenuGroup[] karena kita tahu datanya cocok
+    const menuData: MenuGroup[] = (sidebarMenu as MenuGroup[]) || [];
+    // --- AKHIR TAMBAHAN ---
+
     return (
         <Flex direction="column" className="h-full w-[72px]">
             {' '}
             {/* Lebar icon mode */}
             {/* Header: Trigger untuk expand */}
-            <Flex align="center" justify="center" className="h-[65px] flex-shrink-0">
+            <Flex
+                align="center"
+                justify="center"
+                className="h-[65px] flex-shrink-0"
+            >
                 <Trigger />
             </Flex>
             <Separator className="dark:!bg-gray-700" />
@@ -278,14 +43,36 @@ export default function IconMode() {
                         gap="1"
                         className="px-2"
                     >
-                        {menuData.map((group, index) => (
+                        {/* Filter(Boolean) ditambahkan untuk keamanan */}
+                        {menuData.filter(Boolean).map((group, index) => (
                             <React.Fragment key={group.key}>
-                                {index > 0 && (
-                                    <Separator className="mx-2 my-2 dark:!bg-gray-700" />
+                                {/* --- LOGIKA PERBAIKAN DI SINI --- */}
+
+                                {/* 1. Jika ini adalah GRUP (punya 'items') */}
+                                {group.items && group.items.length > 0 && (
+                                    <>
+                                        {/* Tampilkan separator HANYA jika bukan grup pertama */}
+                                        {index > 0 && (
+                                            <Separator className="mx-2 my-2 dark:!bg-gray-700" />
+                                        )}
+                                        {/* Render semua item di dalam grup */}
+                                        {group.items
+                                            .filter(Boolean)
+                                            .map((item) => (
+                                                <IconMenu
+                                                    key={item.key}
+                                                    item={item as MenuItem}
+                                                />
+                                            ))}
+                                    </>
                                 )}
-                                {group.items.map((item) => (
-                                    <IconMenu key={item.key} item={item} />
-                                ))}
+
+                                {/* 2. Jika ini adalah LINK LANGSUNG (punya 'href') */}
+                                {group.href && (
+                                    <IconMenu item={group as MenuItem} />
+                                )}
+
+                                {/* --- AKHIR LOGIKA PERBAIKAN --- */}
                             </React.Fragment>
                         ))}
                     </Flex>

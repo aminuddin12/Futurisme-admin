@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
+use App\Services\SidebarMenuService;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -30,6 +31,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $sidebarService = app(SidebarMenuService::class);
         return [
             ...parent::share($request),
             'auth' => [
@@ -39,6 +41,7 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+            'sidebarMenu' => fn () => $sidebarService->buildMenu(),
         ];
     }
 }

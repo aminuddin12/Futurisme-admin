@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             WebConfigSeeder::class,
             WebConfigDataSeeder::class,
+            SidebarMenuSeeder::class,
             // Anda bisa menambahkan seeder lain di sini jika perlu
         ]);
 

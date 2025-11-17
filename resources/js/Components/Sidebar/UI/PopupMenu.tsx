@@ -9,7 +9,12 @@ interface PopupMenuProps {
 
 export default function PopupMenu({ item }: PopupMenuProps) {
     return (
-        <Flex direction="column" gap="1" p="2" className="min-w-[160px]">
+        <Flex
+            direction="column"
+            gap="1"
+            p="2"
+            className="m-2 min-w-[160px] pl-6"
+        >
             <Text
                 size="1"
                 weight="medium"
