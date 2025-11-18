@@ -112,7 +112,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'can update tags', 'guard_name' => $guardInsider]);
         Permission::firstOrCreate(['name' => 'can delete tags', 'guard_name' => $guardInsider]);
 
-        // Group Communication and Documentation
+        // Group Communication
         Permission::firstOrCreate(['name' => 'access all documents', 'guard_name' => $guardInsider]);
         Permission::firstOrCreate(['name' => 'can create documents', 'guard_name' => $guardInsider]);
         Permission::firstOrCreate(['name' => 'can update documents', 'guard_name' => $guardInsider]);
@@ -185,15 +185,7 @@ class RolesAndPermissionsSeeder extends Seeder
         // Role Super Admin (memiliki semua izin insider)
         $superAdminRole = Role::create(['name' => 'Super Admin', 'guard_name' => $guardInsider]);
         $superAdminRole->givePermissionTo([
-            'access super admin dashboard',
-            'access ai assistant',
-            'access ai chat',
-            'access e-commerce',
-            'access products',
-            'access orders',
-            'access blog',
-            'access posts',
-            'access tickets',
+            'access super admin dashboard'
         ]);
 
         // Role Staff (hanya bisa melihat dashboard)
