@@ -18,6 +18,7 @@ return new class extends Migration
             Schema::table($tableNames['permissions'], function (Blueprint $table) use ($tableNames) {
                 // Menambahkan kolom parent_id setelah id
                 $table->unsignedBigInteger('parent_id')->nullable()->after('id');
+                $table->longText('hint')->nullable()->after('guard_name');
 
                 // Menambahkan foreign key ke dirinya sendiri (self-referencing)
                 $table->foreign('parent_id')
