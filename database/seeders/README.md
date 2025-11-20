@@ -1,46 +1,27 @@
-# Database Seeders
+[Main](#main) | [Role And Permission](#role-and-permission)
+
+---
+
+## Main
 
 ## Deskripsi
 
 Direktori ini berisi semua file *seeder* untuk database. Seeder digunakan untuk mengisi tabel database dengan data awal atau data dummy yang diperlukan untuk pengembangan dan pengujian aplikasi.
 
----
-
 ## Daftar Seeder
 
 Berikut adalah rincian untuk setiap file seeder yang ada di dalam direktori ini.
 
-### `UserSeeder.php` (Contoh)
+### `RolesAndPermissionsSeeder.php`
 
-*   **Tujuan:** Seeder ini digunakan untuk mengisi tabel `users` dengan data pengguna awal, seperti akun administrator atau beberapa akun pengguna dummy.
-*   **Struktur Data:**
-    ```json
-    {
-      "name": "string",
-      "email": "string|unique",
-      "password": "hashed_string",
-      "role": "string (e.g., 'admin', 'user')"
-    }
-    ```
-*   **Keterangan:** Jalankan seeder ini untuk membuat akun admin utama agar bisa masuk ke dalam sistem.
-
-### `ProductCategorySeeder.php` (Contoh)
-
-*   **Tujuan:** Mengisi tabel `product_categories` dengan daftar kategori produk yang standar.
-*   **Struktur Data:**
-    ```json
-    {
-      "name": "string",
-      "slug": "string|unique"
-    }
-    ```
-*   **Keterangan:** Kategori ini akan digunakan sebagai relasi untuk data produk.
+*   **Tujuan:** Menginisialisasi semua peran (*roles*) dan izin (*permissions*) yang diperlukan dalam aplikasi menggunakan paket `spatie/laravel-permission`. Seeder ini juga membuat akun Super Admin default.
+*   **Keterangan:** Seeder ini sangat penting dan harus dijalankan saat instalasi awal. Lihat tab Role And Permission untuk detail lebih lanjut.
 
 ---
 
 ## Cara Menjalankan Seeder
 
-Untuk menjalankan semua seeder, Anda dapat menggunakan perintah Artisan berikut:
+Untuk menjalankan **semua seeder** yang terdaftar di `DatabaseSeeder.php`, gunakan perintah:
 
 ```bash
 php artisan db:seed
