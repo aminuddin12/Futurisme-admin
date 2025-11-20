@@ -19,6 +19,7 @@ return new class extends Migration
                 // Menambahkan kolom parent_id setelah id
                 $table->unsignedBigInteger('parent_id')->nullable()->after('id');
                 $table->longText('hint')->nullable()->after('guard_name');
+                $table->enum('status',['published','draft', 'archived'])->default('published')->after('hint');
 
                 // Menambahkan foreign key ke dirinya sendiri (self-referencing)
                 $table->foreign('parent_id')
@@ -29,18 +30,19 @@ return new class extends Migration
         }
 
         // Tambah parent_id ke tabel roles
-        // if (Schema::hasTable($tableNames['roles'])) {
-        //     Schema::table($tableNames['roles'], function (Blueprint $table) use ($tableNames) {
-        //         // Menambahkan kolom parent_id setelah id
-        //         $table->unsignedBigInteger('parent_id')->nullable()->after('id');
+        if (Schema::hasTable($tableNames['roles'])) {
+            Schema::table($tableNames['roles'], function (Blueprint $table) use ($tableNames) {
+                // Menambahkan kolom parent_id setelah id
+                // $table->unsignedBigInteger('parent_id')->nullable()->after('id');
+                $table->string('type')->nullable()->after('guard_name');
 
-        //         // Menambahkan foreign key ke dirinya sendiri
-        //         $table->foreign('parent_id')
-        //             ->references('id')
-        //             ->on($tableNames['roles'])
-        //             ->onDelete('cascade');
-        //     });
-        // }
+                // Menambahkan foreign key ke dirinya sendiri
+                // $table->foreign('parent_id')
+                //     ->references('id')
+                //     ->on($tableNames['roles'])
+                //     ->onDelete('cascade');
+            });
+        }
     }
 
     /**
@@ -54,6 +56,7 @@ return new class extends Migration
             Schema::table($tableNames['permissions'], function (Blueprint $table) {
                 $table->dropForeign(['parent_id']);
                 $table->dropColumn('parent_id');
+                $table->dropColumn('hint');
             });
         }
 
