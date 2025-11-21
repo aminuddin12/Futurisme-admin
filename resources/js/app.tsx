@@ -5,6 +5,11 @@ import './bootstrap';
 import '@radix-ui/themes/styles.css';
 
 import { createInertiaApp } from '@inertiajs/react';
+import { addCollection } from '@iconify/react';
+import iconBundle from './icon-bundle.json';
+
+// Tambahkan koleksi ikon yang dibundel
+addCollection(iconBundle);
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 

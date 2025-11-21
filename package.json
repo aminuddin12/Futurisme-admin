@@ -2,12 +2,14 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "tsc && vite build && vite build --ssr",
-        "dev": "vite",
+        "icon-bundle": "node scripts/bundle-icons.mjs",
+        "build": "npm run icon-bundle && tsc && vite build && vite build --ssr",
+        "dev": "npm run icon-bundle && vite",
         "lint": "eslint resources/js --ext .js,.jsx,.ts,.tsx --ignore-path .gitignore --fix"
     },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",
+        "@iconify/tools": "^4.1.4",
         "@inertiajs/react": "^2.0.0",
         "@tailwindcss/forms": "^0.5.3",
         "@types/node": "^18.13.0",
