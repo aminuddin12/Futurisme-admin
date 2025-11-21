@@ -52,11 +52,13 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Group Communication
         Permission::firstOrCreate(['name' => 'access self email', 'guard_name' => $guardInsider]);
+        Permission::firstOrCreate(['name' => 'access all emails', 'guard_name' => $guardInsider]);
         Permission::firstOrCreate(['name' => 'access self chat', 'guard_name' => $guardInsider]);
         Permission::firstOrCreate(['name' => 'access tickets', 'guard_name' => $guardInsider]);
 
         // Group Insider Management
         $insiderManagement = Permission::firstOrCreate(['name' => 'insider and team dashboard', 'guard_name' => $guardInsider]); //page
+                        Permission::firstOrCreate(['name' => 'impersonate insider', 'guard_name' => $guardInsider, 'parent_id' => $insiderManagement->id]);
                         Permission::firstOrCreate(['name' => 'create new insider', 'guard_name' => $guardInsider, 'parent_id' => $insiderManagement->id]); //page
                         Permission::firstOrCreate(['name' => 'update status insider', 'guard_name' => $guardInsider, 'parent_id' => $insiderManagement->id]); //page
                         Permission::firstOrCreate(['name' => 'access all insider wages', 'guard_name' => $guardInsider, 'parent_id' => $insiderManagement->id]); //page
@@ -83,6 +85,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Group Vendors Management
         $vPOS = Permission::firstOrCreate(['name' => 'vendors and pos dashboard', 'guard_name' => $guardInsider]);
+                        Permission::firstOrCreate(['name' => 'impersonate vendor', 'guard_name' => $guardInsider, 'parent_id' => $vPOS->id]);
                         Permission::firstOrCreate(['name' => 'notify all vendors', 'guard_name' => $guardInsider, 'parent_id' => $vPOS->id]);
                         Permission::firstOrCreate(['name' => 'create new vendor', 'guard_name' => $guardInsider, 'parent_id' => $vPOS->id]);
                         Permission::firstOrCreate(['name' => 'create new vendor stores', 'guard_name' => $guardInsider, 'parent_id' => $vPOS->id]);
@@ -101,6 +104,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Group Client
         $acAllClient= Permission::firstOrCreate(['name' => 'access all client', 'guard_name' => $guardInsider]);
+                        Permission::firstOrCreate(['name' => 'impersonate client', 'guard_name' => $guardInsider, 'parent_id' => $acAllClient->id]);
                         Permission::firstOrCreate(['name' => 'notify all client', 'guard_name' => $guardInsider, 'parent_id' => $acAllClient->id]);
                         Permission::firstOrCreate(['name' => 'create new client', 'guard_name' => $guardInsider, 'parent_id' => $acAllClient->id]);
                         Permission::firstOrCreate(['name' => 'edit client profile', 'guard_name' => $guardInsider, 'parent_id' => $acAllClient->id]);
@@ -109,7 +113,6 @@ class RolesAndPermissionsSeeder extends Seeder
                         Permission::firstOrCreate(['name' => 'update client reports', 'guard_name' => $guardInsider, 'parent_id' => $acAllClient->id]);
                         Permission::firstOrCreate(['name' => 'access all client orders', 'guard_name' => $guardInsider, 'parent_id' => $acAllClient->id]);
                         Permission::firstOrCreate(['name' => 'update client orders', 'guard_name' => $guardInsider, 'parent_id' => $acAllClient->id]);
-                        Permission::firstOrCreate(['name' => 'access all client reports', 'guard_name' => $guardInsider, 'parent_id' => $acAllClient->id]);
 
         // Group Blogs
         $pageManagement = Permission::firstOrCreate(['name' => 'access all page management', 'guard_name' => $guardInsider]);
@@ -168,7 +171,18 @@ class RolesAndPermissionsSeeder extends Seeder
                         Permission::firstOrCreate(['name' => 'access all client permission', 'guard_name' => $guardInsider, 'parent_id' => $RolesAndPermission->id]);
                         Permission::firstOrCreate(['name' => 'can update client permission', 'guard_name' => $guardInsider, 'parent_id' => $RolesAndPermission->id]);
 
-        //Group Payments and Transactions
+        // Group Notifications
+        $notificationGroup = Permission::firstOrCreate(['name' => 'access notification management', 'guard_name' => $guardInsider]);
+                        Permission::firstOrCreate(['name' => 'send broadcast notification', 'guard_name' => $guardInsider, 'parent_id' => $notificationGroup->id]);
+                        Permission::firstOrCreate(['name' => 'manage notification templates', 'guard_name' => $guardInsider, 'parent_id' => $notificationGroup->id]);
+
+        // Group Settings (General)
+        $generalSettingsGroup = Permission::firstOrCreate(['name' => 'access general settings', 'guard_name' => $guardInsider]);
+                        Permission::firstOrCreate(['name' => 'update general settings', 'guard_name' => $guardInsider, 'parent_id' => $generalSettingsGroup->id]);
+                        Permission::firstOrCreate(['name' => 'access localization settings', 'guard_name' => $guardInsider, 'parent_id' => $generalSettingsGroup->id]);
+                        Permission::firstOrCreate(['name' => 'update localization settings', 'guard_name' => $guardInsider, 'parent_id' => $generalSettingsGroup->id]);
+
+        // Group Payments and Transactions
         $PaymentAndTransaction = Permission::firstOrCreate(['name' => 'access all payment and transaction', 'guard_name' => $guardInsider]);
                         Permission::firstOrCreate(['name' => 'payment and transactions dashboard', 'guard_name' => $guardInsider, 'parent_id' => $PaymentAndTransaction->id]);
                         Permission::firstOrCreate(['name' => 'access all transactions', 'guard_name' => $guardInsider, 'parent_id' => $PaymentAndTransaction->id]);
@@ -176,6 +190,11 @@ class RolesAndPermissionsSeeder extends Seeder
                         Permission::firstOrCreate(['name' => 'access all invoices', 'guard_name' => $guardInsider, 'parent_id' => $PaymentAndTransaction->id]);
                         Permission::firstOrCreate(['name' => 'access all refunds', 'guard_name' => $guardInsider, 'parent_id' => $PaymentAndTransaction->id]);
                         // Permission::firstOrCreate(['name' => 'access all subscriptions', 'guard_name' => $guardInsider, 'parent_id' => $PaymentAndTransaction->id]);
+
+        // Group SEO Management
+        $seoGroup = Permission::firstOrCreate(['name' => 'access seo management', 'guard_name' => $guardInsider]);
+                        Permission::firstOrCreate(['name' => 'update seo settings', 'guard_name' => $guardInsider, 'parent_id' => $seoGroup->id]);
+                        Permission::firstOrCreate(['name' => 'manage sitemap', 'guard_name' => $guardInsider, 'parent_id' => $seoGroup->id]);
 
         //group Site Management
         $siteManagementGroup = Permission::firstOrCreate(['name' => 'all site management', 'guard_name' => $guardInsider]);
@@ -191,6 +210,13 @@ class RolesAndPermissionsSeeder extends Seeder
                         Permission::firstOrCreate(['name' => 'access site logs', 'guard_name' => $guardInsider, 'parent_id' => $siteManagementGroup->id]);
 
         // Group Developer
+        $developerGroup = Permission::firstOrCreate(['name' => 'access all developer tools', 'guard_name' => $guardInsider]);
+                        Permission::firstOrCreate(['name' => 'access audit log', 'guard_name' => $guardInsider, 'parent_id' => $developerGroup->id]);
+                        Permission::firstOrCreate(['name' => 'access maintenance mode', 'guard_name' => $guardInsider, 'parent_id' => $developerGroup->id]);
+                        Permission::firstOrCreate(['name' => 'run system backup', 'guard_name' => $guardInsider, 'parent_id' => $developerGroup->id]);
+                        Permission::firstOrCreate(['name' => 'clear application cache', 'guard_name' => $guardInsider, 'parent_id' => $developerGroup->id]);
+                        Permission::firstOrCreate(['name' => 'access system health check', 'guard_name' => $guardInsider, 'parent_id' => $developerGroup->id]);
+
         $docManagement = Permission::firstOrCreate(['name' => 'access all documentation management', 'guard_name' => $guardInsider]);
                         Permission::firstOrCreate(['name' => 'can create documentation', 'guard_name' => $guardInsider, 'parent_id' => $docManagement->id]);
                         Permission::firstOrCreate(['name' => 'can update documentation', 'guard_name' => $guardInsider, 'parent_id' => $docManagement->id]);
@@ -231,8 +257,6 @@ class RolesAndPermissionsSeeder extends Seeder
                         Permission::firstOrCreate(['name' => 'v-team view products', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
                         Permission::firstOrCreate(['name' => 'v-team can create product', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
                         Permission::firstOrCreate(['name' => 'v-team can update product', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        Permission::firstOrCreate(['name' => 'v-team can delete product', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        // Stock
                         Permission::firstOrCreate(['name' => 'v-team view stocks', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
                         Permission::firstOrCreate(['name' => 'v-team can create stock', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
                         Permission::firstOrCreate(['name' => 'v-team can update stock', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
