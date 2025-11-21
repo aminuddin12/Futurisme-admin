@@ -252,39 +252,91 @@ class RolesAndPermissionsSeeder extends Seeder
                         Permission::firstOrCreate(['name' => 'vendor manage product categories', 'guard_name' => $guardVendor, 'parent_id' => $venProductManagement->id]);
                         Permission::firstOrCreate(['name' => 'vendor manage product attributes', 'guard_name' => $guardVendor, 'parent_id' => $venProductManagement->id]);
 
-        // Vendor Point of Sales Permissions for team members
-        $mainVenPosPermission = Permission::firstOrCreate(['name' => 'vendor pos main', 'guard_name' => $guardVendor]);
-                        // Products
-                        Permission::firstOrCreate(['name' => 'v-team view products', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        Permission::firstOrCreate(['name' => 'v-team can create product', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        Permission::firstOrCreate(['name' => 'v-team can update product', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        Permission::firstOrCreate(['name' => 'v-team view stocks', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        Permission::firstOrCreate(['name' => 'v-team can create stock', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        Permission::firstOrCreate(['name' => 'v-team can update stock', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        Permission::firstOrCreate(['name' => 'v-team can delete stock', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        // Orders
-                        Permission::firstOrCreate(['name' => 'v-team view orders', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        Permission::firstOrCreate(['name' => 'v-team can create orders', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        Permission::firstOrCreate(['name' => 'v-team can update orders', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        // Reviews
-                        Permission::firstOrCreate(['name' => 'v-team view reviews', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        Permission::firstOrCreate(['name' => 'v-team can reply review', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        // Transactions
-                        Permission::firstOrCreate(['name' => 'v-team view transactions', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        Permission::firstOrCreate(['name' => 'v-team view customers', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-                        Permission::firstOrCreate(['name' => 'v-team pos settings', 'guard_name' => $guardVendor, 'parent_id' => $mainVenPosPermission->id]);
-        // Vendor Store Management Permissions
+        // Vendor Order Management
+        $venOrderManagement = Permission::firstOrCreate(['name' => 'vendor order management', 'guard_name' => $guardVendor]);
+                        Permission::firstOrCreate(['name' => 'vendor view orders', 'guard_name' => $guardVendor, 'parent_id' => $venOrderManagement->id]);
+                        Permission::firstOrCreate(['name' => 'vendor update order status', 'guard_name' => $guardVendor, 'parent_id' => $venOrderManagement->id]);
+                        Permission::firstOrCreate(['name' => 'vendor process refunds', 'guard_name' => $guardVendor, 'parent_id' => $venOrderManagement->id]);
+                        Permission::firstOrCreate(['name' => 'vendor view shipping labels', 'guard_name' => $guardVendor, 'parent_id' => $venOrderManagement->id]);
 
-        // Vendor Management Permissions
-        Permission::firstOrCreate(['name' => 'manage vendor store', 'guard_name' => $guardVendor]);
+        // Vendor Finance & Payouts
+        $venFinanceManagement = Permission::firstOrCreate(['name' => 'vendor finance management', 'guard_name' => $guardVendor]);
+                        Permission::firstOrCreate(['name' => 'vendor view earnings', 'guard_name' => $guardVendor, 'parent_id' => $venFinanceManagement->id]);
+                        Permission::firstOrCreate(['name' => 'vendor request payout', 'guard_name' => $guardVendor, 'parent_id' => $venFinanceManagement->id]);
+                        Permission::firstOrCreate(['name' => 'vendor view transaction history', 'guard_name' => $guardVendor, 'parent_id' => $venFinanceManagement->id]);
 
+        // Vendor Marketing & Promotions
+        $venMarketingManagement = Permission::firstOrCreate(['name' => 'vendor marketing management', 'guard_name' => $guardVendor]);
+                        Permission::firstOrCreate(['name' => 'vendor create promo codes', 'guard_name' => $guardVendor, 'parent_id' => $venMarketingManagement->id]);
+                        Permission::firstOrCreate(['name' => 'vendor manage ads', 'guard_name' => $guardVendor, 'parent_id' => $venMarketingManagement->id]);
+                        Permission::firstOrCreate(['name' => 'vendor view marketing reports', 'guard_name' => $guardVendor, 'parent_id' => $venMarketingManagement->id]);
+
+        // Vendor Reviews & Support
+        $venSupportManagement = Permission::firstOrCreate(['name' => 'vendor support management', 'guard_name' => $guardVendor]);
+                        Permission::firstOrCreate(['name' => 'vendor view reviews', 'guard_name' => $guardVendor, 'parent_id' => $venSupportManagement->id]);
+                        Permission::firstOrCreate(['name' => 'vendor reply to reviews', 'guard_name' => $guardVendor, 'parent_id' => $venSupportManagement->id]);
+                        Permission::firstOrCreate(['name' => 'vendor access support tickets', 'guard_name' => $guardVendor, 'parent_id' => $venSupportManagement->id]);
+
+        // Vendor Team & Settings
+        $venTeamSettings = Permission::firstOrCreate(['name' => 'vendor team and settings', 'guard_name' => $guardVendor]);
+                        Permission::firstOrCreate(['name' => 'vendor manage team members', 'guard_name' => $guardVendor, 'parent_id' => $venTeamSettings->id]);
+                        Permission::firstOrCreate(['name' => 'vendor manage roles and permissions', 'guard_name' => $guardVendor, 'parent_id' => $venTeamSettings->id]);
+                        Permission::firstOrCreate(['name' => 'vendor update store profile', 'guard_name' => $guardVendor, 'parent_id' => $venTeamSettings->id]);
+                        Permission::firstOrCreate(['name' => 'vendor manage store settings', 'guard_name' => $guardVendor, 'parent_id' => $venTeamSettings->id]);
 
         // FOR CLIENT PERMISSIONS
         // Client (Client) Permissions
-        Permission::firstOrCreate(['name' => 'access client dashboard', 'guard_name' => $guardClient]);
-        Permission::firstOrCreate(['name' => 'access client orders', 'guard_name' => $guardClient]);
-        Permission::firstOrCreate(['name' => 'access client profile', 'guard_name' => $guardClient]);
+        $clientDashboard = Permission::firstOrCreate(['name' => 'access client dashboard', 'guard_name' => $guardClient]);
+        $clientOrder = Permission::firstOrCreate(['name' => 'client order management', 'guard_name' => $guardClient]);
+                        Permission::firstOrCreate(['name' => 'client view orders', 'guard_name' => $guardClient, 'parent_id' => $clientOrder->id]);
+                        Permission::firstOrCreate(['name' => 'client track orders', 'guard_name' => $guardClient, 'parent_id' => $clientOrder->id]);
+                        Permission::firstOrCreate(['name' => 'client request refund', 'guard_name' => $guardClient, 'parent_id' => $clientOrder->id]);
+                        Permission::firstOrCreate(['name' => 'client cancel order', 'guard_name' => $guardClient, 'parent_id' => $clientOrder->id]);
 
+        $clientProfile = Permission::firstOrCreate(['name' => 'client profile management', 'guard_name' => $guardClient]);
+                        Permission::firstOrCreate(['name' => 'client update profile', 'guard_name' => $guardClient, 'parent_id' => $clientProfile->id]);
+                        Permission::firstOrCreate(['name' => 'client manage addresses', 'guard_name' => $guardClient, 'parent_id' => $clientProfile->id]);
+                        Permission::firstOrCreate(['name' => 'client manage payment methods', 'guard_name' => $guardClient, 'parent_id' => $clientProfile->id]);
+                        Permission::firstOrCreate(['name' => 'client view wishlists', 'guard_name' => $guardClient, 'parent_id' => $clientProfile->id]);
+
+        $clientReview = Permission::firstOrCreate(['name' => 'client review management', 'guard_name' => $guardClient]);
+                        Permission::firstOrCreate(['name' => 'client create review', 'guard_name' => $guardClient, 'parent_id' => $clientReview->id]);
+                        Permission::firstOrCreate(['name' => 'client edit review', 'guard_name' => $guardClient, 'parent_id' => $clientReview->id]);
+                        Permission::firstOrCreate(['name' => 'client delete review', 'guard_name' => $guardClient, 'parent_id' => $clientReview->id]);
+
+        $clientSupport = Permission::firstOrCreate(['name' => 'client support access', 'guard_name' => $guardClient]);
+                        Permission::firstOrCreate(['name' => 'client create support ticket', 'guard_name' => $guardClient, 'parent_id' => $clientSupport->id]);
+                        Permission::firstOrCreate(['name' => 'client view support tickets', 'guard_name' => $guardClient, 'parent_id' => $clientSupport->id]);
+
+        $clientSubscription = Permission::firstOrCreate(['name' => 'client subscription management', 'guard_name' => $guardClient]);
+                        Permission::firstOrCreate(['name' => 'client view subscriptions', 'guard_name' => $guardClient, 'parent_id' => $clientSubscription->id]);
+                        Permission::firstOrCreate(['name' => 'client manage subscriptions', 'guard_name' => $guardClient, 'parent_id' => $clientSubscription->id]);
+
+        // Update existing roles to use new grouped permissions
+        // === ROLE UNTUK VENDOR ===
+        $vendorRole = Role::firstOrCreate(['name' => 'Vendor', 'guard_name' => $guardVendor]);
+        $vendorRole->syncPermissions([
+            'access vendor dashboard',
+            'vendor product management',
+            'vendor order management',
+            'vendor finance management',
+            'vendor marketing management',
+            'vendor support management',
+            'vendor team and settings',
+            'vendor change subscription',
+            'vendor view subscription billing',
+        ]);
+
+        // === ROLE UNTUK CLIENT ===
+        $clientRole = Role::firstOrCreate(['name' => 'Customer', 'guard_name' => $guardClient]);
+        $clientRole->syncPermissions([
+            'access client dashboard',
+            'client order management',
+            'client profile management',
+            'client review management',
+            'client support access',
+            'client subscription management',
+        ]);
 
 
         // 4. Buat Roles dan berikan permissions
