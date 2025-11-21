@@ -4,42 +4,43 @@ import './bootstrap';
 
 import '@radix-ui/themes/styles.css';
 
-import { createInertiaApp } from '@inertiajs/react';
 import { addCollection } from '@iconify/react';
-import iconBundle from './icon-bundle.json';
-
-// Tambahkan koleksi ikon yang dibundel
-addCollection(iconBundle);
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { createRoot, hydrateRoot } from 'react-dom/client';
-
+import { createInertiaApp } from '@inertiajs/react';
 import { Theme } from '@radix-ui/themes';
+import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { ReactNode } from 'react';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 
 import { BackgroundThemeProvider } from '@/Context/BackgroundThemeContext';
 import { ThemeProvider, useTheme } from '@/Context/ThemeContext';
-import { ReactNode } from 'react';
+
+// --- ICON BUNDLING SETUP ---
+// Import file JSON yang dihasilkan oleh script `npm run icon-bundle`
+// Gunakan try-catch atau pastikan file ini ada sebelum build.
+// Jika Anda baru pertama kali clone, jalankan `npm run icon-bundle` dulu.
+import iconBundle from './icon-bundle.json';
+
+// Cek apakah iconBundles adalah array (karena script baru menghasilkan array)
+if (Array.isArray(iconBundle)) {
+    iconBundle.forEach((bundle: any) => {
+        addCollection(bundle);
+    });
+} else {
+    // Fallback jika formatnya single object (untuk jaga-jaga)
+    addCollection(iconBundle as any);
+}
+// ---------------------------
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 function RadixThemeWrapper({ children }: { children: ReactNode }) {
     const { theme } = useTheme();
 
-    // Map our "system" theme to Radix's accepted "inherit" value and narrow the type.
     const appearance =
         theme === 'system'
             ? 'inherit'
             : (theme as 'light' | 'dark' | 'inherit');
-    return (
-        <Theme
-            // 3. Hubungkan state tema kita ke prop `appearance` Radix
-            appearance={appearance}
-            // Anda bisa tambahkan props Radix lainnya di sini
-            // accentColor="blue"
-            // grayColor="slate"
-        >
-            {children}
-        </Theme>
-    );
+    return <Theme appearance={appearance}>{children}</Theme>;
 }
 
 createInertiaApp({
