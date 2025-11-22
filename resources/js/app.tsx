@@ -14,19 +14,13 @@ import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BackgroundThemeProvider } from '@/Context/BackgroundThemeContext';
 import { ThemeProvider, useTheme } from '@/Context/ThemeContext';
 
-// --- ICON BUNDLING SETUP ---
-// Import file JSON yang dihasilkan oleh script `npm run icon-bundle`
-// Gunakan try-catch atau pastikan file ini ada sebelum build.
-// Jika Anda baru pertama kali clone, jalankan `npm run icon-bundle` dulu.
 import iconBundle from './icon-bundle.json';
 
-// Cek apakah iconBundles adalah array (karena script baru menghasilkan array)
 if (Array.isArray(iconBundle)) {
     iconBundle.forEach((bundle: any) => {
         addCollection(bundle);
     });
 } else {
-    // Fallback jika formatnya single object (untuk jaga-jaga)
     addCollection(iconBundle as any);
 }
 // ---------------------------
@@ -67,6 +61,6 @@ createInertiaApp({
         );
     },
     progress: {
-        color: '#4B5563',
+        color: '#ff1d1dff',
     },
 });

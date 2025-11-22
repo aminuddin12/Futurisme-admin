@@ -8,22 +8,59 @@ import NumberBadge from '../Badge/NumberBadge';
 import TextBadge from '../Badge/TextBadge';
 import MenuTrigger from '../menuTrigger';
 import { useSidebar } from '../modeChanger';
-import { MenuItem } from './ListMenuItem'; // Impor tipe data
+// import { MenuItem } from './ListMenuItem'; // Opsional: Bisa di-uncomment jika tipe data sudah sesuai
 import SubMenuItemComponent from './SubMenuItem';
 
+// Definisikan interface yang lebih longgar untuk menangani snake_case dari Laravel
 interface MenuItemProps {
-    item: MenuItem;
+    item: {
+        key: string;
+        label: string;
+        href?: string;
+
+        // Support kedua format casing
+        icon?: string;
+
+        iconFilled?: string; // CamelCase
+        icon_filled?: string; // Snake_case (dari DB)
+
+        routeName?: string; // CamelCase
+        route_name?: string; // Snake_case (dari DB)
+
+        badge?: {
+            type: string;
+            content: string | number;
+            color?: string;
+        };
+        submenu?: any[];
+    };
 }
 
 export default function MenuItemComponent({ item }: MenuItemProps) {
     const { expandedMenus, toggleMenu } = useSidebar();
+
+    // --- 1. NORMALISASI DATA (FIX BUG) ---
+    // Ambil data dari property snake_case jika camelCase tidak ada
+    const routeName = item.routeName || item.route_name;
+    const iconFilled = item.iconFilled || item.icon_filled;
+    const iconNormal = item.icon;
+    // -------------------------------------
+
     const isOpen = expandedMenus.includes(item.key);
     const hasSubmenu = item.submenu && item.submenu.length > 0;
 
-    const isDirectlyActive = item.routeName && route().current(item.routeName);
+    // --- 2. PERBAIKAN LOGIKA ACTIVE ---
+    // Gunakan routeName yang sudah dinormalisasi
+    const isDirectlyActive = routeName && route().current(routeName);
+
     const isSubmenuActive =
         hasSubmenu &&
-        item.submenu?.some((sub) => route().current(sub.routeName));
+        item.submenu?.some((sub) => {
+            // Handle submenu route_name juga jika perlu
+            const subRoute = sub.routeName || sub.route_name;
+            return subRoute && route().current(subRoute);
+        });
+
     const isActive = !!isDirectlyActive || !!isSubmenuActive;
 
     // Tentukan elemen pembungkus: Link jika punya href, div jika hanya toggle
@@ -34,46 +71,44 @@ export default function MenuItemComponent({ item }: MenuItemProps) {
 
     return (
         <div className="flex flex-col">
-            {/* PERBAIKAN ERROR NESTING:
-        Wrapper (div/Link) hanya membungkus Ikon dan Teks.
-        Badge dan Trigger (button) adalah SIBLING di dalam Flex.
-      */}
             <Flex
                 align="center"
                 justify="between"
                 className={cn(
                     'group mx-2 cursor-pointer rounded-lg px-3 py-2 transition-colors duration-200',
                     isActive
-                        ? 'bg-emerald-100/80 dark:bg-emerald-900/50' // Latar aktif (soft)
-                        : 'hover:bg-gray-200/50 dark:hover:bg-gray-700/30', // Hover
+                        ? 'bg-emerald-100/80 dark:bg-emerald-900/50'
+                        : 'hover:bg-gray-200/50 dark:hover:bg-gray-700/30',
                     isSubmenuActive &&
                         !isOpen &&
-                        'bg-gray-100 dark:bg-gray-800', // Parent dari submenu aktif (tapi tertutup)
+                        'bg-gray-100 dark:bg-gray-800',
                 )}
             >
                 {/* Bagian Kiri (Link/Button) */}
                 <WrapperElement
                     {...wrapperProps}
-                    className="flex min-w-0 flex-1 items-center gap-2.5" // flex-1 dan min-w-0 untuk truncate
+                    className="flex min-w-0 flex-1 items-center gap-2.5"
                 >
+                    {/* --- 3. RENDER IKON DENGAN DATA YANG BENAR --- */}
                     <Icon
-                        icon={isActive ? item.iconFilled : item.icon}
+                        icon={isActive && iconFilled ? iconFilled : iconNormal}
                         className={cn(
                             'h-4 w-4 shrink-0',
                             isActive
-                                ? 'text-emerald-500' // Ikon aktif
-                                : 'text-gray-500 dark:text-gray-400', // Ikon inaktif
+                                ? 'text-emerald-500'
+                                : 'text-gray-500 dark:text-gray-400',
                         )}
                     />
+
                     <Text
-                        size="2" // Radix size 2
+                        size="2"
                         weight={isActive ? 'medium' : 'regular'}
                         truncate
                         className={cn(
-                            'text-xs', // Ukuran font
+                            'text-xs',
                             isActive
-                                ? 'text-emerald-700 dark:text-emerald-300' // Teks aktif
-                                : 'text-gray-700 group-hover:text-gray-900 dark:text-gray-300 dark:group-hover:text-gray-100', // Teks inaktif
+                                ? 'text-emerald-700 dark:text-emerald-300'
+                                : 'text-gray-700 group-hover:text-gray-900 dark:text-gray-300 dark:group-hover:text-gray-100',
                         )}
                     >
                         {item.label}
@@ -111,9 +146,8 @@ export default function MenuItemComponent({ item }: MenuItemProps) {
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="relative mt-0.5 overflow-hidden pl-8 pr-2" // Indentasi submenu
+                        className="relative mt-0.5 overflow-hidden pl-8 pr-2"
                     >
-                        {/* Garis Vertikal Utama */}
                         <div className="absolute bottom-1 left-[27px] top-0 w-px bg-gray-200 dark:bg-gray-700"></div>
 
                         {item.submenu?.map((subItem, index) => (

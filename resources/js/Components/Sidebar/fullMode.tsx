@@ -1,42 +1,24 @@
 import { Icon } from '@iconify/react';
-import { Link, usePage } from '@inertiajs/react'; // <-- Ditambahkan usePage
+import { Link, usePage } from '@inertiajs/react';
 import { Flex, Separator, Text } from '@radix-ui/themes';
 import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
 
-import { PageProps } from '../../types/page'; // <-- Ditambahkan PageProps
+import { PageProps } from '../../types/page';
 import GroupTrigger from './groupTrigger';
 import { useSidebar } from './modeChanger';
 import Trigger from './Trigger';
 import MenuItemComponent, { MenuGroup } from './UI/MenuItem';
 
-// --- BLOK DATA DUMMY DIHAPUS ---
-// const menuData: MenuGroup[] = [ ...data statis... ];
-// --- AKHIR BLOK DATA DUMMY ---
-
 export default function FullMode() {
     const { expandedGroups, toggleGroup } = useSidebar();
-
-    // --- TAMBAHAN BARU ---
-    // Mengambil sidebarMenu dari props Inertia
     const { sidebarMenu } = usePage<PageProps>().props;
-    // Menetapkan data dinamis ke variabel menuData, tambahkan fallback array kosong
-    // Kita paksakan tipenya sebagai MenuGroup[] karena kita tahu datanya cocok
-    const menuData: MenuGroup[] = (sidebarMenu as MenuGroup[]) || [];
-    // --- AKHIR TAMBAHAN ---
 
-    // Scrollbar kustom
-    const customScrollbarHideCSS = {
-        '&::-webkit-scrollbar': { display: 'none' },
-        '-ms-overflow-style': 'none',
-        'scrollbar-width': 'none',
-    } as React.CSSProperties;
+    // Pastikan data menu ada dan sesuai format
+    const menuData: MenuGroup[] = (sidebarMenu as MenuGroup[]) || [];
 
     return (
         <Flex direction="column" className="w-90 h-full">
-            {' '}
-            {/* Lebar full mode */}
-            {/* Header */}
+            {/* Header Sidebar */}
             <Flex
                 align="center"
                 justify="between"
@@ -59,14 +41,16 @@ export default function FullMode() {
                 </Link>
                 <Trigger />
             </Flex>
+
             <Separator className="dark:!bg-gray-700" />
-            {/* Navigasi */}
+
+            {/* Area Navigasi (Scrollable) */}
             <div className="no-scrollbar flex-1 overflow-y-auto">
                 <nav className="mt-4 flex flex-col justify-between">
                     <div>
-                        {/* Filter(Boolean) ditambahkan untuk keamanan jika ada data null/undefined */}
                         {menuData.filter(Boolean).map((group) => (
                             <div key={group.key} className="mb-3">
+                                {/* Judul Group & Trigger Collapse */}
                                 <Flex
                                     align="center"
                                     justify="between"
@@ -85,6 +69,8 @@ export default function FullMode() {
                                         onClick={() => toggleGroup(group.key)}
                                     />
                                 </Flex>
+
+                                {/* List Menu dalam Group (Animasi Collapse) */}
                                 <AnimatePresence>
                                     {expandedGroups.includes(group.key) && (
                                         <motion.div
@@ -98,21 +84,46 @@ export default function FullMode() {
                                             className="overflow-hidden"
                                         >
                                             <Flex direction="column" gap="0.5">
-                                                {/* --- INI PERBAIKANNYA --- */}
-                                                {/* Menambahkan cek 'group.items &&'
-                                                    Ini untuk menangani grup yang merupakan link (spt Dashboard)
-                                                    yang mungkin memiliki 'items: []' atau 'items: undefined' dari service.
-                                                    Juga filter(Boolean) untuk keamanan ekstra jika ada item yang null.
-                                                */}
                                                 {group.items &&
                                                     group.items
                                                         .filter(Boolean)
-                                                        .map((item) => (
-                                                            <MenuItemComponent
-                                                                key={item.key}
-                                                                item={item}
-                                                            />
-                                                        ))}
+                                                        .map((item) => {
+                                                            // --- LOGIKA PERBAIKAN DI SINI ---
+
+                                                            // 1. Cek apakah rute saat ini sesuai dengan menu ini
+                                                            const isActive =
+                                                                route().current(
+                                                                    item.route_name,
+                                                                );
+
+                                                            // 2. Tentukan ikon:
+                                                            // Jika aktif DAN punya icon_filled, pakai icon_filled.
+                                                            // Jika tidak, pakai icon biasa.
+                                                            const iconToDisplay =
+                                                                isActive &&
+                                                                item.icon_filled
+                                                                    ? item.icon_filled
+                                                                    : item.icon;
+
+                                                            // 3. Clone item dengan ikon yang sudah dimanipulasi
+                                                            // agar MenuItemComponent merender ikon yang tepat
+                                                            const modifiedItem =
+                                                                {
+                                                                    ...item,
+                                                                    icon: iconToDisplay,
+                                                                };
+
+                                                            return (
+                                                                <MenuItemComponent
+                                                                    key={
+                                                                        item.key
+                                                                    }
+                                                                    item={
+                                                                        modifiedItem
+                                                                    }
+                                                                />
+                                                            );
+                                                        })}
                                             </Flex>
                                         </motion.div>
                                     )}

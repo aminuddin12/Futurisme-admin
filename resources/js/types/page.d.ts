@@ -1,6 +1,5 @@
-import { PageProps as InertiaPageProps } from '@inertiajs/core';
+import { Division, Insider, Position, Profile } from './';
 import { User } from './user';
-import { Insider, Profile, Position, Division } from './';
 
 // Definisikan tipe dasar untuk props yang selalu ada dari Inertia/Laravel
 export type PageProps<
