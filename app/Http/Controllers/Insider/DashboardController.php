@@ -25,4 +25,44 @@ class DashboardController extends Controller
             'allPermissions' => Permission::latest()->paginate(50)->withQueryString(),
         ]);
     }
+
+    public function adminDashboard()
+    {
+        return Inertia::render('Dashboard/AdminDashboard');
+    }
+
+    public function accountingDashboard()
+    {
+        return Inertia::render('Dashboard/AccountingDashboard');
+    }
+
+    public function developerDashboard()
+    {
+        return Inertia::render('Dashboard/DeveloperDashboard');
+    }
+
+    public function hrDashboard()
+    {
+        return Inertia::render('Dashboard/HrDashboard');
+    }
+
+    public function salesDashboard()
+    {
+        return Inertia::render('Dashboard/SalesDashboard');
+    }
+
+    public function vendorsAdminDashboard()
+    {
+        return Inertia::render('Dashboard/VendorsAdminDashboard');
+    }
+
+    public function csDashboard()
+    {
+        return Inertia::render('Dashboard/CsDashboard');
+    }
+
+    public function marketingDashboard()
+    {
+        return Inertia::render('Dashboard/MarketingDashboard');
+    }
 }
